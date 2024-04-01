@@ -1,0 +1,67 @@
+.userCard {
+    cursor: pointer;
+    border-radius: 10px;
+    list-style-type: none; 
+    background-color: var(--quinary-color);
+    padding: 0px;
+    overflow: hidden;
+    margin: 5px auto;
+    width: 90%;
+    max-width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.userCard h3 {
+    margin: 0px 8px; 
+    word-wrap: break-word;
+}
+
+
+.cardBanner {
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-bottom: 0px; 
+    display: flex; 
+    align-items: center; 
+    background-color: var(--quaternary-color);
+    color: var(--text-color2);
+}
+
+
+.cardBannerInactive {
+    background-color: #d9534f; 
+}
+
+
+.userPhotoDiv{
+    background-color: #accae9;
+    width: 32px;
+    height: 32px;
+    border: 0px;
+    padding: 0px;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: baseline; 
+}
+
+.userPhoto {
+    width: 32px;
+    height: auto;
+    border-radius: 25px;
+}
+
+.userRoleDiv{
+    margin-left: 20px;
+}
+
+
+
+.cardBody {
+    padding: 2px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

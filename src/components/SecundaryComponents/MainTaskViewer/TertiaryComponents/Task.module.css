@@ -1,0 +1,156 @@
+.taskItem {
+    border-radius: 10px;
+    list-style-type: none; 
+    background-color: var(--quinary-color);
+    padding: 0px;
+    overflow: hidden;
+    margin: 5px auto;
+    width: 90%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative; 
+
+}
+
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+  
+    margin: 0px;
+    padding: 0px;
+}
+
+
+
+.category_author {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content {
+    padding: 5px 10px;
+}
+
+.priorityDiv {
+    max-width: 15px;
+    min-width: 8px;
+    max-height: 15px;
+    min-height: 8px;
+    float: left;
+    padding: 1px 1px;
+    margin: 4px 5px 5px 5px;
+    font-size: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.low-priority {
+    background-color: rgb(51, 255, 0);
+    opacity: 0.5;
+}
+
+.medium-priority {
+    background-color: rgb(237, 241, 7);
+    opacity: 0.8;
+}
+
+.high-priority {
+    background-color: red;
+    opacity: 0.5;
+}
+
+.taskItem:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.taskItem h3, p {
+    margin: 0px 8px;
+}
+
+.titleOnBannerCapsule{
+    border-radius: 30px;
+
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px;
+    padding: 0px;
+
+}
+.todoBanner .titleOnBannerCapsule{
+    background-color: var(--todo-color);
+}
+.doingBanner .titleOnBannerCapsule{
+    background-color: var(--doing-color);
+}
+.doneBanner .titleOnBannerCapsule{
+    background-color: var(--done-color);
+}
+.deletedBanner .titleOnBannerCapsule{
+    background-color: var(--deleted-task-color);
+}
+
+.todoBanner .titleOnBanner {
+    width: 61%;
+    background-color: var(--todo-color2);
+}
+
+.doingBanner .titleOnBanner {
+    width: 61%;
+    background-color: var(--doing-color2);
+}
+
+.doneBanner .titleOnBanner {
+    width: 61%;
+    background-color: var(--done-color2);
+}
+.deletedBanner .titleOnBanner {
+    width: 61%;
+    background-color: var(--deleted-task-color2);
+}
+
+.todoBanner .category_author {
+    padding: 4px;
+    width: 39%;
+    background-color: var(--todo-color2);
+}
+
+.doingBanner .category_author {
+    padding: 4px;
+    width: 39%;
+    background-color: var(--doing-color2);
+    
+}
+
+.doneBanner .category_author {
+    padding: 4px;
+    width: 39%;
+    background-color: var(--done-color2);
+  
+}
+.deletedBanner .category_author {
+    padding: 4px;
+    width: 39%;
+    background-color: var(--deleted-task-color2);
+}
+
+.actionsContainer {
+    display: none; 
+    position: absolute;
+    right: 10px; 
+    top: 10px; 
+  }
+  .taskItem:hover .actionsContainer {
+    display: flex; 
+  }
+  h4{
+    margin: 0px;
+    font-weight: normal;
+  }
+  .taskItemNoEdit:hover{
+    transform: none;
+    box-shadow: none;
+
+  }

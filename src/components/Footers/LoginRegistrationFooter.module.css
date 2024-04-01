@@ -1,0 +1,20 @@
+
+footer {
+    background-color: rgba(145, 150, 157, 0.6); 
+    color: #fff;
+    text-align: center;
+    padding: 20px 0px 0px 0px;
+    width: 100%;
+    position: static;
+    bottom: 0;
+  }
+  
+  .textAbout {
+    background-color: #ffffff;
+    color: #333;
+    text-align: justify;
+    padding: 50px 50px;
+  }
+  .textAboutP {
+    text-indent: 40px; 
+  }

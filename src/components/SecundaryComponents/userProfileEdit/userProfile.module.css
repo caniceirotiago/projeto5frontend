@@ -1,0 +1,76 @@
+.profileContainer {
+  display: flex;
+  flex-wrap: wrap; 
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.userHeader {
+  flex: 1 1 300px; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  margin-right: 20px; 
+}
+
+.userPhoto {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border-radius: 50%;
+}
+
+.username {
+  font-size: 24px;
+  color: #333;
+}
+
+.formsContainer {
+  flex: 2 1 600px; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+.toggleFormButton {
+  margin-top: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 36px; 
+  padding: 0 10px; 
+  font-size: 14px; 
+  background-color: var(--tertiary-color); 
+  color: var(--text-color); 
+  border: none; 
+  white-space: nowrap; 
+  transition: background-color 0.3s, color 0.3s, transform 0.2s; 
+}
+.toggleFormButton:hover {
+  background-color: var(--quaternary-color); 
+  color: var(--text-color2); 
+  transform: scale(1.03); 
+}
+
+@media (max-width: 768px) {
+  .profileContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .userHeader {
+    align-items: center;
+    margin-right: 0;
+  }
+
+  .formsContainer {
+    align-items: center;
+    width: 100%; 
+  }
+
+
+}

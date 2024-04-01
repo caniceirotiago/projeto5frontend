@@ -1,0 +1,102 @@
+body,
+html {
+   font-family: "Helvetica Neue", Arial, sans-serif;
+   color: var(--text-color);
+   background-color: var(--background-color);
+   margin: 0;
+   padding: 0;
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+}
+
+.homePage,
+#root {
+   height: 100%;
+}
+
+body.theme-light {
+   --primary-color: #e6e1dd;
+   --secondary-color: rgb(255, 255, 255, 0.111);
+   --tertiary-color: rgb(255, 255, 255, 0.111);
+   --quaternary-color: #78909C;
+   --quinary-color: rgb(255, 255, 255, 1);
+   --todo-color: rgb(112, 170, 228);
+   --todo-color2: rgb(112, 170, 228, 0.5);
+   --doing-color: rgb(244, 151, 108);
+   --doing-color2: rgb(244, 151, 108, 0.5);
+   --done-color: rgb(188, 238, 172);
+   --done-color2: rgb(188, 238, 172, 0.5);
+   --deleted-task-color: rgb(207, 102, 121);
+   --deleted-task-color2: rgb(207, 102, 121, 0.5);
+   --header-color: rgba(5, 16, 46, 0.9);
+   --background-color: #dcc6bc;
+   --form-background: #dcc6bc;
+   --text-color: rgb(0, 0, 0, 1);
+   --text-color2: rgb(255, 255, 255, 1);
+   --no_functionColor: rgba(87, 87, 87, 0.33);
+   --deleted_banner: rgb(177, 0, 0, 0.9);
+   --menu-color: #dcc6bc;
+   --menu-hover: #8b8b8b;
+}
+
+body.theme-dark {
+   --primary-color: #2D2D2D;
+   --secondary-color: rgba(255, 255, 255, 0.05);
+   --tertiary-color: rgba(255, 255, 255, 0.05);
+   --quaternary-color: #39424e;
+   --quinary-color: rgba(255, 255, 255, 0.1);
+   --todo-color: rgb(80, 125, 188);
+   --todo-color2: rgb(80, 125, 188, 0.4);
+   --doing-color: rgb(63, 81, 181);
+   --doing-color2: rgb(63, 81, 181, 0.4);
+   --deleted-task-color: rgb(207, 102, 121);
+   --deleted-task-color2: rgb(207, 102, 121, 0.5);
+   --done-color: rgb(76, 175, 80);
+   --done-color2: rgb(76, 175, 80, 0.4);
+   --header-color: #32383E;
+   --background-color: #121212;
+   --form-background: #242424;
+   --text-color: #E0E0E0;
+   --text-color2: #FFFFFF;
+   --no_functionColor: rgba(131, 131, 131, 0.33);
+   --deleted_banner: #D32F2F;
+   --menu-color: #1E1E1E;
+   --menu-hover: #37474F;
+}
+
+.Toastify__toast-container--top-center {
+   top: 12px;
+   width: 30%;
+   padding: 0px;
+   margin: 0;
+   align-items: center;
+}
+
+.Toastify__toast {
+   margin: 0;
+   padding: 1px;
+   min-height: 10px;
+   max-height: 19px;
+   display: grid;
+   align-items: center;
+   justify-content: center;
+   background-color: var(--quaternary-color);
+   color: var(--text-color);
+   border: 1px solid var(--primary-color);
+   border-radius: 5px;
+   box-shadow: none;
+}
+
+.Toastify__toast-body {
+   align-items: center;
+   font-size: 14px;
+   overflow: visible;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   padding: 0px;
+}
+
+.Toastify__close-button {
+   display: none;
+}

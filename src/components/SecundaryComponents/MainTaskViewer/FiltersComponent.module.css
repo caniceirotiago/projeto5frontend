@@ -1,0 +1,58 @@
+
+.filtersContainer {
+  display: flex;
+  align-items: center; 
+  margin: 0px;
+
+  padding: 0px;
+}
+
+.filtersContainer select, .filtersContainer button {
+  height: 36px; 
+  margin-left: 8px;
+  margin-bottom: 0px;
+  border-radius: 5px;
+  padding: 0 12px; 
+  background-color: var(--secondary-color);
+  border: none; 
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.2;
+  box-sizing: border-box;
+  transition: background-color 0.3s, color 0.3s; 
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+}
+
+.filtersContainer select:hover, .filtersContainer button:hover {
+  background-color: var(--menu-hover); 
+  color: var(--text-color2); 
+}
+
+.filtersContainer button {
+  background-color: var(--doing-color); 
+}
+
+.filtersContainer button:hover {
+  background-color: var(--done-color); 
+}
+
+
+.filtersContainer button.clearFilters {
+  height: 36px; 
+  padding: 0 10px; 
+  font-size: 14px; 
+  background-color: var(--tertiary-color); 
+  color: var(--text-color); 
+  border: none; 
+  white-space: nowrap; 
+  transition: background-color 0.3s, color 0.3s, transform 0.2s; 
+}
+
+.filtersContainer button.clearFilters:hover {
+  background-color: var(--quaternary-color); 
+  color: var(--text-color2); 
+  transform: scale(1.03); 
+}

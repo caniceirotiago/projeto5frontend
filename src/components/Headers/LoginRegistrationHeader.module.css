@@ -1,0 +1,45 @@
+
+.loginRegistrationHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    text-align: center;
+    width: 100%;
+    padding: 0px 0;
+    background-color: rgba(100, 91, 91, 0.2); 
+    position: fixed;
+    top: 0;
+    backdrop-filter: blur(5px);
+    z-index: 2;
+  }
+  .topRightFlags li {
+    display: inline;
+    margin-right: 10px;
+  }
+  
+  .topRightFlags button {
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+  }
+  .topRightFlags button:hover {
+    color: #bcc6db;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .topRightFlags button.active {
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  .logo {
+    max-width: 88px; 
+    height: auto; 
+    display: flex; 
+    margin-right: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+  

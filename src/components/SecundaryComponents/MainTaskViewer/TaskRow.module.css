@@ -1,0 +1,11 @@
+.tasksRow {
+    display: flex;
+    gap: 10px;
+    height: 100%;
+ }
+ .tasksRowContainer{
+    display: flex;
+    flex-direction: column;
+    height: 89%;
+ }
+ 

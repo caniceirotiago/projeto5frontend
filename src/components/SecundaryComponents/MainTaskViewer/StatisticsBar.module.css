@@ -1,0 +1,19 @@
+
+.taskBarChart {
+    width: 100px; 
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 2px 4px rgb(0, 0, 0);
+ }
+ 
+ .taskBar {
+    display: flex;
+    height: 100%; 
+    transition: width 0.5s ease;
+    border: 2px;
+ }

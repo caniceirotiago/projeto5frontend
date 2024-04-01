@@ -1,0 +1,126 @@
+
+.modal {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0; 
+    bottom: 0; 
+    background-color: var(--tertiary-color); 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    border-radius: 4px;
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+    
+  }
+  
+.modalContent {
+  border-radius: 10px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%; 
+  height: 100%; 
+  position: relative; 
+  padding: 0px 0px;
+  border-radius: 4px;
+  flex-grow: 1;
+  display: grid;
+  overflow-y: auto;
+  padding-top: 0px;
+  gap: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 20px;
+  justify-self: center;
+  width: 90%;
+  height: 100%;
+  
+}
+
+.input, .select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  color: #333;
+  width: 100%; 
+  background-color: transparent; 
+  border: none; 
+  border-bottom: 2px solid #e0e0e0; 
+}
+  
+.btnDiv {
+  display: flex;
+  gap: 10px;
+  margin: 20px;
+}
+.button{
+  cursor: pointer;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 36px; 
+  width: 33%; 
+  padding: 10px 10px; 
+  font-size: 14px; 
+  background-color: var(--tertiary-color); 
+  color: var(--text-color); 
+  border: none; 
+  white-space: nowrap; 
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+.button:hover {
+  background-color: var(--quaternary-color);
+  color: var(--text-color2); 
+  transform: scale(1.03); 
+}
+
+.form:hover {
+  transform: scale(1) !important;
+  box-shadow: none;
+}
+.input,  .select {
+  color: var(--text-color); 
+}
+.userPhotoContainer {
+  display: flex;
+  justify-content: center; 
+  margin-bottom: 20px;
+}
+
+.userPhoto {
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+}
+
+.modalContent::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.modalContent::-webkit-scrollbar-track {
+  background: var(--tertiary-color); 
+  border-radius: 8px;
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 8px; 
+}
+.modalContent::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+  

@@ -1,0 +1,119 @@
+.column {
+   background-color: var(--tertiary-color);
+   border-radius: 8px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   flex: 1;
+   padding: 0px;
+   margin-bottom: 20px; 
+   text-align: center;
+   width: 23vw;
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+}
+.header {
+   display: flex;
+   align-items: center;
+   justify-items: center;
+}
+.header h4 {
+   margin: 0px;
+   padding: 18px 0px;
+   flex-grow: 1;
+   justify-self: center;
+}
+.counterInvisible {
+   visibility: hidden; 
+   width: 40px; 
+   height: 30px; 
+   margin-right: 7px; 
+}
+
+.counterCircle {
+   background-color: var(--primary-color);
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+   height: 30px;
+   width: 40px;
+   border-radius: 20px;
+   margin-right: 7px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   color: var(--text-color);
+   font-weight: bold;
+   position: relative; 
+   transition: transform 0.2s ease-in-out; 
+ }
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(10px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-10px);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.counterCircle span {
+  display: inline-block;
+  animation: slideOut 0.4s ease-in-out, slideIn 0.4s ease-in-out;
+}
+ 
+
+.counterCircle h3{
+   margin: 0px;
+   padding: 3px;
+}
+
+.scrollableUl {
+   overflow-y: auto;
+   height: 100%;
+   
+   padding: 0px;
+}
+
+.scrollableUl::-webkit-scrollbar {
+   width: 8px; 
+}
+
+.scrollableUl::-webkit-scrollbar-track {
+   background: var(--tertiary-color);
+   border-radius: 8px;
+}
+
+.scrollableUl::-webkit-scrollbar-thumb {
+   background: #888; 
+   border-radius: 8px; 
+}
+
+.scrollableUl::-webkit-scrollbar-thumb:hover {
+   background: #555; 
+}
+
+.addButton {
+   background-color: var(--primary-color);
+   border-bottom-right-radius: 5px;
+   border-bottom-left-radius: 5px;
+   cursor: pointer;
+   padding: 6px;
+   border: none;
+   color: var(--text-color);
+}
+
+.addButton:hover {
+   background-color: var(--quinary-color);
+}
+

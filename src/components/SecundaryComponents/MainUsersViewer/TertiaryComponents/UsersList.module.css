@@ -1,0 +1,112 @@
+.usersListContainer {
+    display: flex;
+    background-color: var(--tertiary-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    padding: 0px;
+    margin-bottom: 20px; 
+    text-align: center;
+    
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-grow: 1;
+    justify-self: center;
+    width: 10%;
+}
+
+.listHeader {
+    background-color: #007bff; 
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+.userList {
+    overflow-y: auto;
+    height: 100%;
+    border: 1px solid #ccc;
+    border-top: none; 
+}
+ .userList::-webkit-scrollbar {
+   width: 8px; 
+}
+
+.userList::-webkit-scrollbar-track {
+   background: var(--tertiary-color); 
+   border-radius: 8px;
+}
+
+.userList::-webkit-scrollbar-thumb {
+   background: #888; 
+   border-radius: 8px;
+}
+
+.userList::-webkit-scrollbar-thumb:hover {
+   background: #555; 
+}
+
+.usersListBanner{
+
+   font-size: 13px; 
+   border: 1px solid #ccc;
+   outline: none; 
+   width: 100%; 
+   margin: 0 0 0px 0; 
+   box-sizing: border-box;
+   border-radius: 8px 8px 0 0; 
+   background-color: #f9f9f9; 
+   display: flex;
+}
+.searchInput {
+   padding: 4px 10px; 
+   font-size: 13px; 
+   border: none;
+   outline: none; 
+   width: 34%; 
+   margin: 0 0 0px 0; 
+   box-sizing: border-box;
+   border-radius: 8px 0px 0 0; 
+   background-color: #f9f9f9; 
+}
+.addUserButton {
+   padding: 4px 10px;
+   font-size: 13px;
+   border: none; 
+   outline: none;
+   width: 34%; 
+   margin: 0; 
+   box-sizing: border-box;
+   border-radius: 0 8px 0 0; 
+   background-color: var(--quaternary-color); 
+   color: #fff; 
+   cursor: pointer; 
+   border-left: 1px solid #ccc; 
+   transition: background-color 0.3s ease; 
+}
+
+.addUserButton:hover {
+   background-color: var(--header-color); 
+}
+
+.addUserButton:active {
+   background-color: #004494; 
+}
+.title{
+   flex-grow: 1;
+   margin: 0 10px;
+   font-size: 16px; 
+   color: var(--quaternary-color);
+   text-align: center;
+
+}
+
+.searchInput:focus {
+   border-color: #007bff; 
+   background-color: #fff; 
+}
+
+
+

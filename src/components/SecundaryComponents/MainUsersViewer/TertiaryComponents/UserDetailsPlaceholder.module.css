@@ -1,0 +1,19 @@
+.placeholderContainer {
+    background-image: url('../../../../assets/placeholderform.png'); 
+    background-size: cover;
+    background-position: center;
+    width: 50%; 
+    height: 100%; 
+    display: flex;
+    background-color: var(--tertiary-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    padding: 0px;
+    margin-bottom: 20px; 
+    flex-direction: column;
+    flex-grow: 1;
+    justify-self: center;
+    position: relative;
+    margin-right: 20px;
+}
