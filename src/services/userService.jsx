@@ -1,5 +1,5 @@
 // src/services/userService.jsx
-const API_BASE_URL = "http://localhost:8080/projeto4backend/rest/users";
+const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/users";
 
 /**
  * userService

@@ -16,6 +16,7 @@ import { Flip } from 'react-toastify';
 import DialogModal from './components/Modal/DialogModal';
 import DialogBoxStore from './stores/DialogModalStore';
 import ErrorMessageFormModal from './components/Modal/ErrorMessageFormModal ';
+import DashboardPage from './pages/DashboardPage';
 
 /**
  * App Component
@@ -78,6 +79,7 @@ function App() {
             <Route path="/users" element={<ProtectedRoute><MainLayout><UsersManagerPage /></MainLayout></ProtectedRoute>} />
             <Route path="/tasks" element={<ProtectedRoute><MainLayout><DeletedTasksManagerPage /></MainLayout></ProtectedRoute>} />
             <Route path="/categories" element={<ProtectedRoute><MainLayout><CategoriesManagerPage /></MainLayout></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute><MainLayout><DashboardPage /></MainLayout></ProtectedRoute>} />
         </Routes>
       </Router>
     </>

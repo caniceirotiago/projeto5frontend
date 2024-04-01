@@ -1,5 +1,5 @@
 // src/services/taskService.jsx
-const API_BASE_URL = "http://localhost:8080/projeto4backend/rest/tasks";
+const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/tasks";
 
 /**
  * taskService

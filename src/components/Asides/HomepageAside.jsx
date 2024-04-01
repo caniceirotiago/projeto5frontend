@@ -2,7 +2,7 @@
 import React, { useEffect , useState} from 'react';
 import styles from './HomepageAside.module.css';
 import useLayoutStore from '../../stores/layoutStore';
-import { FaArrowLeft, FaArrowRight, FaPlus, FaProjectDiagram, FaTasks, FaRunning, FaUsers, FaClipboardList, FaTags } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaPlus, FaProjectDiagram, FaTasks, FaRunning, FaUsers, FaClipboardList, FaTags, FaChartLine } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import AccessControl from '../Auth/AcessControl';
 
@@ -81,6 +81,10 @@ const HomepageAside = () => {
                 <Link to="/categories" className={styles.menuItem}>
                     <FaTags className={styles.icon} />
                     <span className={showText ? styles.menuText : styles.menuTextHidden}>Categories</span>
+                </Link>
+                <Link to="/dashboard" className={styles.menuItem}>
+                    <FaChartLine className={styles.icon} />
+                    <span className={showText ? styles.menuText : styles.menuTextHidden}>Dashboard</span>
                 </Link>
             </AccessControl> 
             

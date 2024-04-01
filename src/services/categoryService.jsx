@@ -1,5 +1,5 @@
 // src/services/categoryService.jsx
-const API_BASE_URL = "http://localhost:8080/projeto4backend/rest/category";
+const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/category";
 
 /**
  * categoryService

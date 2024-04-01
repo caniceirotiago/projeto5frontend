@@ -1,0 +1,24 @@
+
+.mainContainer {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: scroll;
+}
+.mainContainer::-webkit-scrollbar {
+    width: 8px; 
+  }
+  
+  .mainContainer::-webkit-scrollbar-track {
+    background: var(--tertiary-color);
+    border-radius: 8px;
+  }
+  
+  .mainContainer::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 8px;
+  }
+  .mainContainer::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
