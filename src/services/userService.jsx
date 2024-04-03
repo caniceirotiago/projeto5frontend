@@ -204,7 +204,61 @@ const userService = {
             throw error;
         }
     },
+    confirmAccount: async (token) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/confirm?token=${token}`, {               
+                method: "POST", // Ou POST, dependendo de como você configurou seu backend
+                headers: { "Content-Type": "application/json" },
+            });
     
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Falha na confirmação da conta: ${errorText}`);
+            }
+    
+            return await response.json(); // Ou qualquer outra ação que você deseja realizar após a confirmação ser bem-sucedida
+        } catch (error) {
+            console.error("Erro na confirmação da conta:", error.message);
+            throw error;
+        }
+    },
+    requestPasswordReset: async (email) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/request-password-reset`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+            if (!response.ok) {
+                throw new Error('Falha na solicitação de redefinição de senha');
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Erro na solicitação de redefinição de senha:", error);
+            throw error;
+        }
+    },
+    
+    resetPassword: async (token, newPassword) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/reset-password`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ token, newPassword }),
+            });
+            if (!response.ok) {
+                throw new Error('Falha na redefinição de senha');
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Erro na redefinição de senha:", error);
+            throw error;
+        }
+    },
     
 };
 

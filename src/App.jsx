@@ -17,6 +17,9 @@ import DialogModal from './components/Modal/DialogModal';
 import DialogBoxStore from './stores/DialogModalStore';
 import ErrorMessageFormModal from './components/Modal/ErrorMessageFormModal ';
 import DashboardPage from './pages/DashboardPage';
+import ConfirmationPage from './pages/ConfirmRegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordForm from './components/Auth/ResetPasswordForm';
 
 /**
  * App Component
@@ -80,6 +83,10 @@ function App() {
             <Route path="/tasks" element={<ProtectedRoute><MainLayout><DeletedTasksManagerPage /></MainLayout></ProtectedRoute>} />
             <Route path="/categories" element={<ProtectedRoute><MainLayout><CategoriesManagerPage /></MainLayout></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><MainLayout><DashboardPage /></MainLayout></ProtectedRoute>} />
+            <Route path="/confirm" element={<ConfirmationPage />} />
+            <Route path="forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordForm />} />
+
         </Routes>
       </Router>
     </>

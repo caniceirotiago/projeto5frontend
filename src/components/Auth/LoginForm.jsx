@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../../stores/authStore'; 
-import styles from './LoginForm.module.css';
+import styles from './ForgotPasswordForm.module.css';
 import Image from "../../assets/user-login.png";
 
 /**
@@ -61,6 +61,7 @@ const LoginForm = () => {
             </div>
         </form>
         <div className={styles.signup}>Don't have an account? <Link to="/register">Sign up</Link></div>
+        <div className={styles.forgotPassword}><Link to="/forgot-password">Forgot the password?</Link></div>
       </div>
     );
 };

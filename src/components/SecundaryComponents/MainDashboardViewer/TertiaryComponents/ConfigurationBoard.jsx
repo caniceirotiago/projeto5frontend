@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import configService from '../../../../services/configurationService.jsx'; 
 import  toastStore  from '../../../../stores/toastMessageStore';
+import  userStore  from "../../../../stores/webSocketNotificationStore.jsx";
+import WebSocketClient from "./WebSocketClient.jsx";
 
 const ConfigurationForm = () => {
   const [timeout, setTimeout] = useState('');
   const [error, setError] = useState('');
+  const notifications = userStore((state) => state.notifications);
+WebSocketClient();
 
   // Carregar o valor atual do timeout ao iniciar o componente
   useEffect(() => {
@@ -53,6 +57,8 @@ const ConfigurationForm = () => {
       </div>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <button type="submit">Atualizar Configuração</button>
+      <h2>Notifications</h2>
+       <p>You have {notifications} notifications</p>
     </form>
   );
 };
