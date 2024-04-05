@@ -62,9 +62,9 @@ const userService = {
         }
     },
 
-    fetchUserInfo: async () => {
+    fetchUserInfo: async (profileUsername) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/info`, {
+            const response = await fetch(`${API_BASE_URL}/info/${profileUsername}`, {
                 method: "GET",
                 headers: getAuthHeaders(),
             });

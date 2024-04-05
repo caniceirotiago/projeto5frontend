@@ -21,18 +21,39 @@ import { taskService } from '../../../../services/taskService';
  */
 
 
-const Column = React.memo(({ title, children, taskCount, status, updateTasks, onAddTaskClick }) => {
+const Column = React.memo(({ title, children, taskCount, status, updateTasks, onAddTaskClick, setTasks }) => {
     const handleDragOver = (e) => {
         e.preventDefault(); 
     };
-    const handleDrop = async(e) => {
-    e.preventDefault(); 
-    const taskId = e.dataTransfer.getData('application/reactflow'); 
-    const columnStatus = e.currentTarget.getAttribute('status');
-    const updateData = { status: parseInt(columnStatus), id: parseInt(taskId)};
-    const result = await taskService.editTask(updateData);
-    if (result) updateTasks();
-    };
+    const handleDrop = async (e) => {
+        e.preventDefault();
+        const taskId = e.dataTransfer.getData('application/reactflow');
+        const columnStatus = parseInt(e.currentTarget.getAttribute('status'));
+        const updateData = { status: columnStatus, id: parseInt(taskId)};
+      
+        setTasks(prevTasks => prevTasks.map(task => {
+          if (task.id === parseInt(taskId)) {
+            return { ...task, status: columnStatus };
+          }
+          return task;
+        }));
+      
+        try {
+          const result = await taskService.editTask(updateData);
+          if (!result.success) {
+            setTasks(prevTasks => prevTasks.map(task => {
+              if (task.id === parseInt(taskId)) {
+                return { ...task, status: parseInt(task.originalStatus) };
+              }
+              return task;
+            }));
+            console.error('Error updating task status on the server.');
+          }
+        } catch (error) {
+          console.error('Exception when updating task status:', error);
+        }
+      };
+      
             
     return (
         <div className={styles.column}>

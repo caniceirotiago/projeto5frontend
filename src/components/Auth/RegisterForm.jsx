@@ -5,6 +5,9 @@ import { authService } from '../../services/authService';
 import styles from './RegisterForm.module.css';
 import Image from "../../assets/user-login.png";
 import ErrorMessageModalStore from '../../stores/ErrorMessageModalStore';
+import DialogModal from '../Modal/DialogModal';
+import DialogModalStore from '../../stores/DialogModalStore';
+
 
 /**
  * RegisterForm Component
@@ -69,8 +72,13 @@ const RegisterForm = ( ) => {
    if (isValid) {
       try {
          await authService.register(userData); 
-         if(!isAdmin)navigate('/'); 
+         DialogModalStore.getState().setDialogMessage('Confirmation Email Sent');
+         DialogModalStore.getState().setIsDialogOpen(true);
+         DialogModalStore.getState().setOnConfirm(async () => {
+            if(!isAdmin)navigate('/'); 
          else navigate('/users');
+         });
+         
        } catch (error) {
          console.error('Error:', error.message);
        }
@@ -86,6 +94,7 @@ const RegisterForm = ( ) => {
 
   return (
   <main className={styles.mainContent}>
+   <DialogModal />
   <form className={styles.registrationForm} onSubmit={handleSubmit}>
     <div className={styles.banner}>
        <img name="img_user" src={Image} alt="IMG" className={styles.loginIcon} />

@@ -15,7 +15,7 @@ import {
    * changes, which are then validated before the update is attempted.
    */
 
-const ProfileForm = ({ userProfile, onUpdateUserProfile }) => {
+const ProfileForm = ({ userProfile, onUpdateUserProfile , isOwnProfile}) => {
     const [profile, setProfile] = useState({
         email: '',
         phoneNumber: '',
@@ -133,9 +133,11 @@ const ProfileForm = ({ userProfile, onUpdateUserProfile }) => {
       {isEditing ? (
         <input className={styles.input} type="submit" value="Save Changes" />
       ) : (
-        <button type="button" onClick={() => setIsEditing(true)} className={styles.editButton}>
+        !isOwnProfile && (
+          <button type="button" onClick={() => setIsEditing(true)} className={styles.editButton} >
           Edit
         </button>
+        )
       )}
     </form>
   );

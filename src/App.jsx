@@ -78,7 +78,7 @@ function App() {
             <Route path="/" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} /> 
             <Route path="/home" element={<ProtectedRoute><MainLayout><HomePage /></MainLayout></ProtectedRoute>} />
-            <Route path="/userProfile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>}/>
+            <Route path="/userProfile/:username" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>}/>
             <Route path="/users" element={<ProtectedRoute><MainLayout><UsersManagerPage /></MainLayout></ProtectedRoute>} />
             <Route path="/tasks" element={<ProtectedRoute><MainLayout><DeletedTasksManagerPage /></MainLayout></ProtectedRoute>} />
             <Route path="/categories" element={<ProtectedRoute><MainLayout><CategoriesManagerPage /></MainLayout></ProtectedRoute>} />

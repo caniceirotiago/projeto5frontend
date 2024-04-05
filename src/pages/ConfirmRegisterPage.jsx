@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import userService from '../services/userService'; // Importa a função de serviço que fará a chamada de confirmação
+import userService from '../services/userService'; 
+import DialogModalStore from '../stores/DialogModalStore';
 
 const ConfirmationPage = () => {
     const navigate = useNavigate();
@@ -8,24 +9,27 @@ const ConfirmationPage = () => {
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        const token = searchParams.get('token'); // Extrai o token da query string
+        const token = searchParams.get('token'); 
         console.log('Token:', token);
 
         if (!token) {
-            console.error('Token não fornecido');
-            alert('Token não fornecido. Por favor, verifique o link e tente novamente.');
-            navigate('/'); // Você pode escolher redirecionar o usuário para uma página diferente se o token não for fornecido
+            console.error('Token not received');
+            alert('Token not received');
+            navigate('/'); 
             return;
         }
 
         const performConfirmation = async () => {
             try {
-                await userService.confirmAccount(token); // Chama a função de serviço para confirmar a conta
-                alert('Conta confirmada com sucesso! Você agora pode fazer login.');
-                navigate('/login'); // Redireciona para a página de login após a confirmação
+                await userService.confirmAccount(token); 
+                DialogModalStore.getState().setDialogMessage('Acount Confirmed!');
+                DialogModalStore.getState().setIsDialogOpen(true);
+                DialogModalStore.getState().setOnConfirm(async () => {
+                    navigate('/');
+                });
             } catch (error) {
-                console.error('Erro ao confirmar conta:', error);
-                alert('Falha ao confirmar a conta. Por favor, tente novamente.');
+                console.error('Error:', error);
+                alert('Error trying to confirm your account. Try again.');
             }
         };
 
@@ -34,7 +38,7 @@ const ConfirmationPage = () => {
 
     return (
         <div className="confirmationPage">
-            <div>A confirmar a sua conta...</div> {/* Você pode adicionar uma animação de carregamento aqui */}
+            <div>Confirming your Account...</div> 
         </div>
     );
 };

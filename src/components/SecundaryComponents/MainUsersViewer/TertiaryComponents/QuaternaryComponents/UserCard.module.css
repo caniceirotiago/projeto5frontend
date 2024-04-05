@@ -65,3 +65,20 @@
     flex-direction: row;
     align-items: center;
 }
+
+.userProfileBTN {
+    cursor: pointer;
+    border: none;
+    background-color: #f0f0f0;
+    padding: 0px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .userProfileBTN:hover{
+    background-color: #e0e0e0;
+  }
+  .userProfileBTN img {
+    width: 16px;
+    height: 16px;
+  }

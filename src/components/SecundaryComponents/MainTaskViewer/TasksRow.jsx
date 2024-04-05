@@ -86,7 +86,6 @@ const TasksRow = React.memo(() => {
     }, [filters]);
     
     const handleTaskClick = (task) => {
-
         setClickedTask(task);
         openViewTaskModal();
     }
@@ -128,6 +127,7 @@ const TasksRow = React.memo(() => {
         if (!columns[statusKey]) columns[statusKey] = [];
         columns[statusKey].push(
             <Task
+                setTasks={setTasks}
                 key={task.id}
                 task={task}
                 column={statusKey}
@@ -143,7 +143,7 @@ const TasksRow = React.memo(() => {
     const handleAddTask = async (taskData) => {
         const result = await taskService.addTask(taskData);
         if (result.success) {
-            fetchTasks(); 
+            setTasks((prevTasks) => [...prevTasks, taskData]);
             closeAddTaskModal();
             toastStore.getState().setMessage("Task added successfully (" + taskData.title + ")");
         } else {
@@ -151,10 +151,9 @@ const TasksRow = React.memo(() => {
         }
     };
     const handleUpdateTask = async (taskData) => {
+        setTasks((prevTasks) => prevTasks.map(task => task.id === taskData.id ? taskData : task));
         const result = await taskService.editTask(taskData);
-
         if (result.success) {
-            fetchTasks();
             closeViewTaskModal();
             toastStore.getState().setMessage("Task updated successfully (" + taskData.title + ")");
         } else {
@@ -178,13 +177,13 @@ const TasksRow = React.memo(() => {
     return (    
         <div className={styles.tasksRowContainer}>
             <div className={styles.tasksRow}>
-                <Column title="TO DO" status="100" taskCount={todoCount} updateTasks={fetchTasks} onAddTaskClick={openAddTaskModal}>
+                <Column title="TO DO" status="100" taskCount={todoCount} updateTasks={fetchTasks} onAddTaskClick={openAddTaskModal} setTasks={setTasks}>
                     {taskColumns.todo}
                 </Column>
-                <Column title="DOING" status="200" taskCount={doingCount} updateTasks={fetchTasks}>
+                <Column title="DOING" status="200" taskCount={doingCount} updateTasks={fetchTasks} setTasks={setTasks}>
                     {taskColumns.doing}
                 </Column>
-                <Column title="DONE" status="300" taskCount={doneCount} updateTasks={fetchTasks}>
+                <Column title="DONE" status="300" taskCount={doneCount} updateTasks={fetchTasks} setTasks={setTasks}>
                     {taskColumns.done}
                 </Column>                
                     {isAddTaskModalOpen && <AddTaskModal isOpen={isAddTaskModalOpen} onClose={closeAddTaskModal} updateTasks={fetchTasks} onSubmit={handleAddTask} />}

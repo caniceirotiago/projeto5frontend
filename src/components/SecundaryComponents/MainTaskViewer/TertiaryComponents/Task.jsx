@@ -31,7 +31,7 @@ import DialogModalStore from '../../../../stores/DialogModalStore';
  * - username: The username of the task's author, used for permission checks.
  */
 
-const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , updateDeletedTasks, username}) => {
+const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , updateDeletedTasks, username, setTasks}) => {
   const [showActions, setShowActions] = useState(false); 
   const handleMouseEnter = () => setShowActions(true);
   const handleMouseLeave = () => setShowActions(false);
@@ -49,11 +49,11 @@ const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , up
     DialogModalStore.getState().setDialogMessage('Are you sure you want to delete this task?');
     DialogModalStore.getState().setIsDialogOpen(true);
     DialogModalStore.getState().setOnConfirm(async () => {
-      const updateData = { deleted: true, id: task.id}   
+      const updateData = { deleted: true, id: task.id}  
+      setTasks((prevTasks) => prevTasks.filter(t => t.id !== task.id));
       const result = await taskService.editTask(updateData); 
       if (result) {
         toastStore.getState().setMessage('Task temporarily deleted (' + task.title + ")");
-        updateTasks();
       }
     });
   };
@@ -71,9 +71,20 @@ const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , up
             console.log("Cannot move left from the current status.");
             return;
     }
+    const previousTaskState = { ...task };
     const updateData = { status: newStatus, id: task.id}
+    const updatedTask = { ...task, status: newStatus };
+    setTasks((prevTasks) =>
+      prevTasks.map((t) => t.id === task.id ? updatedTask : t)
+    );
     const result = await taskService.editTask(updateData);
-    if (result) updateTasks();
+    if (!result.success) {
+      console.error("Error updating task on the server, reverting changes.");
+      setTasks((prevTasks) =>
+        prevTasks.map((t) => t.id === task.id ? previousTaskState : t)
+      );
+      toastStore.getState().setMessage("Failed to move task. Please try again.");
+    }
   };
 
   const handleMoveRight = async () => {
@@ -89,9 +100,20 @@ const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , up
             console.log("Cannot move right from the current status.");
             return;
     }
+    const previousTaskState = { ...task };
     const updateData = { status: newStatus, id: task.id}
+    const updatedTask = { ...task, status: newStatus };
+    setTasks((prevTasks) =>
+      prevTasks.map((t) => t.id === task.id ? updatedTask : t)
+    );
     const result = await taskService.editTask(updateData);
-    if (result) updateTasks();
+    if (!result.success) {
+      console.error("Error updating task on the server, reverting changes.");
+      setTasks((prevTasks) =>
+        prevTasks.map((t) => t.id === task.id ? previousTaskState : t)
+      );
+      toastStore.getState().setMessage("Failed to move task. Please try again.");
+    }
   };
 
   const handleDragStart = (e, taskId) => {

@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './UserCard.module.css';
+import profileIcon from '../../../../../assets/user.png';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * UserCard is a React component that displays a user's information as a clickable card. 
@@ -10,6 +12,10 @@ import styles from './UserCard.module.css';
 
 const UserCard = ({ user, onClick  }) => {
     const bannerClass = user.deleted ? `${styles.cardBanner} ${styles.cardBannerInactive}` : styles.cardBanner;
+    const navigate = useNavigate();
+    const onProfileClick = () => {
+        navigate(`/userProfile/${user.username}`);
+    }
 
     return (
         <div className={styles.userCard}  onClick={() => onClick(user)}>
@@ -23,6 +29,9 @@ const UserCard = ({ user, onClick  }) => {
                 <div className={styles.userRoleDiv}>
                    <p>{user.role}</p> 
                 </div>
+                <button className={styles.userProfileBTN} onClick={(e) => {e.stopPropagation(); onProfileClick()}}>
+                    <img src={profileIcon} alt="Profile" />
+                 </button>
             </div>
         </div>
     );

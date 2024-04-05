@@ -29,6 +29,7 @@ import { FaBars, FaMoon, FaSun, FaSignOutAlt } from 'react-icons/fa';
 
 
 const HomepageHeader = () => {
+  const loggedUser = sessionStorage.getItem('username');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,10 +57,10 @@ const HomepageHeader = () => {
         <button className={getNavItemClass('/home')} onClick={() => navigate('/home')}>Homepage</button>
       </nav>
       <div className={styles.rightAligned}>
-        <div className={styles.usernameDisplay} onClick={() => navigate('/userProfile')}>
+        <div className={styles.usernameDisplay} onClick={() => navigate(`/userProfile/${loggedUser}`)}>
           {username}
         </div>
-        <div className={styles.userPhoto} onClick={() => navigate('/userProfile')}>
+        <div className={styles.userPhoto} onClick={() => navigate(`/userProfile/${loggedUser}`)}>
           <img src={photoUrl} alt="User" className={styles.userImage} /> 
         </div>
         <div className={styles.menuBurger} onClick={() => setIsMenuOpen(!isMenuOpen)}>

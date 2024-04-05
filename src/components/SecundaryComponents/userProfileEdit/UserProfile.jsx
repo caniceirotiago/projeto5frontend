@@ -6,6 +6,8 @@ import styles from './userProfile.module.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+
 
 /**
  * UserProfile provides an interface for users to view and edit their profile information, including the ability to 
@@ -23,6 +25,8 @@ import { Zoom } from 'react-toastify';
  */
 
 const UserProfile = ({ onUpdateSuccess }) => {
+  const { username: profileUsername } = useParams();
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
 
   const [userProfile, setUserProfile] = useState({
     username: '',
@@ -50,14 +54,16 @@ const UserProfile = ({ onUpdateSuccess }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-          const data = await userService.fetchUserInfo(); 
+          const loggedInUsername = sessionStorage.getItem('username');
+          setIsOwnProfile(loggedInUsername === profileUsername);
+          const data = await userService.fetchUserInfo(profileUsername); 
           setUserProfile({
             username: data.username,
             phoneNumber: data.phoneNumber,
             email: data.email,
             firstName: data.firstName,
             lastName: data.lastName,
-            photoURL: data.photoURL || 'path/to/default/image.jpg',
+            photoURL: data.photoURL,
           });
         } catch (error) {
           console.error("Failed to fetch user data:", error);
@@ -65,7 +71,7 @@ const UserProfile = ({ onUpdateSuccess }) => {
  
     };
     fetchUserData();
-  }, [onUpdateSuccess]); 
+  }, [profileUsername, onUpdateSuccess]); 
 
 
 const onUpdateUserProfile = async (updatedProfile) => {
@@ -97,17 +103,20 @@ const onUpdateUserPassword = async (oldPassword, newPassword) => {
         <img src={userProfile.photoURL} alt="User" className={styles.userPhoto} />
         <h2 className={styles.username}>{userProfile.username}</h2>
       </section>
-
-      <div className={styles.formsContainer}>
-        {!showPasswordForm ? (
-          <ProfileForm userProfile={userProfile} onUpdateUserProfile={onUpdateUserProfile} />
-        ) : (
-          <PasswordForm onUpdateUserPassword={onUpdateUserPassword}/>
-        )}
-        <button  onClick={() => setShowPasswordForm(!showPasswordForm)} className={styles.toggleFormButton}>
-          {showPasswordForm ? "Edit Profile Information" : "Change Password"}
-        </button>
-      </div>
+      {isOwnProfile ? (
+        <>
+          {!showPasswordForm ? (
+            <ProfileForm userProfile={userProfile} onUpdateUserProfile={onUpdateUserProfile} />
+          ) : (
+            <PasswordForm onUpdateUserPassword={onUpdateUserPassword}/>
+          )}
+          <button onClick={() => setShowPasswordForm(!showPasswordForm)} className={styles.toggleFormButton}>
+            {showPasswordForm ? "Edit Profile Information" : "Change Password"}
+          </button>
+        </>
+      ) : (
+        <ProfileForm userProfile={userProfile} readOnly={true} isOwnProfile/>
+      )}
     </div>
   );
 };
