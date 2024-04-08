@@ -143,7 +143,7 @@ const TasksRow = React.memo(() => {
     const handleAddTask = async (taskData) => {
         const result = await taskService.addTask(taskData);
         if (result.success) {
-            setTasks((prevTasks) => [...prevTasks, taskData]);
+            fetchTasks();
             closeAddTaskModal();
             toastStore.getState().setMessage("Task added successfully (" + taskData.title + ")");
         } else {
