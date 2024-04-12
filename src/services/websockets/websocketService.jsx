@@ -1,7 +1,5 @@
-// src/services/websocket/websocketService.js
 import statisticsStore from '../../stores/statisticsStore';
 
-// src/services/websocket/websocketService.js
 export function handleWebSocketMessage(data) {
     const stats = JSON.parse(data);
     console.log('Received WebSocket message:', stats);

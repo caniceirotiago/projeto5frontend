@@ -20,6 +20,7 @@ import DashboardPage from './pages/DashboardPage';
 import ConfirmationPage from './pages/ConfirmRegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordForm from './components/Auth/ResetPasswordForm';
+import ChatModal from './components/Modal/ChatModal';
 
 /**
  * App Component
@@ -73,6 +74,7 @@ function App() {
       <DialogModal/>
       <ErrorMessageFormModal/>
       <ToastContainer limit={1} newestOnTop transition={Flip}/>
+      <ChatModal/>
       <Router>
         <Routes>
             <Route path="/" element={<LoginPage />} />

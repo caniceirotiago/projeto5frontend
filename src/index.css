@@ -34,6 +34,7 @@ body.theme-light {
    --form-background: #dcc6bc;
    --text-color: rgb(0, 0, 0, 1);
    --text-color2: rgb(255, 255, 255, 1);
+   --text-color3: rgb(0, 0, 0, 1);
    --no_functionColor: rgba(87, 87, 87, 0.33);
    --deleted_banner: rgb(177, 0, 0, 0.9);
    --menu-color: #dcc6bc;
@@ -59,6 +60,7 @@ body.theme-dark {
    --form-background: #242424;
    --text-color: #E0E0E0;
    --text-color2: #FFFFFF;
+   --text-color3: rgb(0, 0, 0, 1);
    --no_functionColor: rgba(131, 131, 131, 0.33);
    --deleted_banner: #D32F2F;
    --menu-color: #1E1E1E;

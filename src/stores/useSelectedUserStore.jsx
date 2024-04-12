@@ -13,7 +13,7 @@ const useSelectedUserStore = create((set) => ({
   selectedUser: null,
   isModalVisible: false,
   shouldUpdateUsersList: false,
-  setSelectedUser: (user) => set({ selectedUser: user }),
+  setSelectedUser: (user) =>  set({ selectedUser: user }),
   setIsModalVisible: (isVisible) => set({ isModalVisible: isVisible }),
   clearSelectedUser: () => set({ selectedUser: null, isModalVisible: false }),
   triggerUsersListUpdate: () => set((state) => ({ shouldUpdateUsersList: !state.shouldUpdateUsersList })),

@@ -67,7 +67,7 @@ const HomepageAside = () => {
                 <FaRunning className={styles.icon} />
                 <span className={showText ? styles.menuText : styles.menuTextHidden}>Sprint Selector</span>
             </div>
-            <AccessControl roles={["scrumMaster", "productOwner"]}>
+            <AccessControl roles={["scrumMaster", "productOwner", "developer"]}>
                 <Link to="/users" className={styles.menuItem}>
                     <FaUsers className={styles.icon} />
                     <span className={showText ? styles.menuText : styles.menuTextHidden}>Users</span>

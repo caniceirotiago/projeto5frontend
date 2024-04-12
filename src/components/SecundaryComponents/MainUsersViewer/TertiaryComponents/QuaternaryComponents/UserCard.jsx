@@ -2,6 +2,8 @@ import React from 'react';
 import styles from './UserCard.module.css';
 import profileIcon from '../../../../../assets/user.png';
 import { useNavigate } from 'react-router-dom';
+import  useChatModalStore  from '../../../../../stores/useChatModalStore.jsx';
+import { FaComments } from 'react-icons/fa'; // Importe o ícone de chat
 
 /**
  * UserCard is a React component that displays a user's information as a clickable card. 
@@ -16,6 +18,11 @@ const UserCard = ({ user, onClick  }) => {
     const onProfileClick = () => {
         navigate(`/userProfile/${user.username}`);
     }
+    const { openChatModal } = useChatModalStore();
+    const handleOpenChat = (e) => {
+        e.stopPropagation(); // Impede que o evento de clique no card seja disparado
+        openChatModal(user); // Abre o modal de chat com o usuário selecionado
+    };
 
     return (
         <div className={styles.userCard}  onClick={() => onClick(user)}>
@@ -29,9 +36,14 @@ const UserCard = ({ user, onClick  }) => {
                 <div className={styles.userRoleDiv}>
                    <p>{user.role}</p> 
                 </div>
-                <button className={styles.userProfileBTN} onClick={(e) => {e.stopPropagation(); onProfileClick()}}>
-                    <img src={profileIcon} alt="Profile" />
-                 </button>
+                <div className={styles.actionButtons}>
+                    <button className={styles.profileButton} onClick={onProfileClick}>
+                        <img src={profileIcon} alt="Profile" />
+                    </button>
+                    <button className={styles.chatButton} onClick={handleOpenChat}>
+                    <FaComments /> {/* Usando o ícone de chat */}
+                </button>
+                </div>
             </div>
         </div>
     );
