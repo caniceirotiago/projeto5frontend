@@ -5,7 +5,10 @@ import useAuthStore from '../../stores/authStore';
 import styles from './HomepageHeader.module.css'; 
 import logo from '../../assets/logo.png'; 
 import { useLocation } from 'react-router-dom';
-import { FaBars, FaMoon, FaSun, FaSignOutAlt } from 'react-icons/fa';
+import { FaBars, FaMoon, FaSun, FaSignOutAlt, FaBell } from 'react-icons/fa';
+import notificationStore from '../../stores/useNotificationStore';
+import {notificationService} from '../../services/notificationService';
+import useChatModalStore from '../../stores/useChatModalStore';
 
 /**
  * HomepageHeader Component
@@ -31,22 +34,49 @@ import { FaBars, FaMoon, FaSun, FaSignOutAlt } from 'react-icons/fa';
 const HomepageHeader = () => {
   const loggedUser = sessionStorage.getItem('username');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isNotificationListOpen, setIsNotificationListOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useThemeStore();
+  const { notificationList, setNotificationList } = notificationStore();
   const { logout, userBasicInfo } = useAuthStore(state => ({
     logout: state.logout,
     userBasicInfo: state.userBasicInfo
   }));
+  const { openChatModal } = useChatModalStore();
+
+  const fetchNotifications = async () => {
+    const notifications = await notificationService.getUserNotifications();
+    console.log(notifications);
+    setNotificationList(notifications);
+  }
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
 
   useEffect(() => {
   }, [userBasicInfo]);
+ 
+
+
   
   const isActive = (path) => {return location.pathname === path;};
   const getNavItemClass = (path) => isActive(path) ? `${styles.navItem} ${styles.active}` : styles.navItem;
 
   const username = userBasicInfo?.name || "Username";
   const photoUrl = userBasicInfo?.photoUrl || "path/to/default/photo.png"; 
+
+  const handleNotificationClick = (type, userId) => {
+    
+    if (type === 'message') {
+      const user = { username: userId };
+      openChatModal(user);
+    }
+    setIsNotificationListOpen(false);
+  };
+
 
   return (
     <header className={styles.header}>
@@ -63,6 +93,21 @@ const HomepageHeader = () => {
         <div className={styles.userPhoto} onClick={() => navigate(`/userProfile/${loggedUser}`)}>
           <img src={photoUrl} alt="User" className={styles.userImage} /> 
         </div>
+        <div className={styles.notificationBell} onClick = {() => setIsNotificationListOpen(!isNotificationListOpen)}>
+          <FaBell />
+        </div>
+        {isNotificationListOpen && (
+          <div className={styles.dropdownContent}>
+            {notificationList.map((notification, index) => (
+              <div key={index} className={styles.notificationItem}   onClick={() => handleNotificationClick(notification.type, notification.content)}>
+                {notification.type} 
+                 from
+                {notification.content}
+              </div>
+            ))}
+            
+          </div>
+        )}
         <div className={styles.menuBurger} onClick={() => setIsMenuOpen(!isMenuOpen)}>
            <FaBars />
         </div>

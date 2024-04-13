@@ -20,8 +20,8 @@ const UserCard = ({ user, onClick  }) => {
     }
     const { openChatModal } = useChatModalStore();
     const handleOpenChat = (e) => {
-        e.stopPropagation(); // Impede que o evento de clique no card seja disparado
-        openChatModal(user); // Abre o modal de chat com o usuário selecionado
+        e.stopPropagation(); 
+        openChatModal(user); 
     };
 
     return (
