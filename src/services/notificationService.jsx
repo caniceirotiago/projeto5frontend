@@ -30,6 +30,22 @@ const notificationService = {
             return [];
         }
     },
+    markMessageNotificationsAsRead: async (userId) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/markAsRead/${userId}`, {
+                method: "PUT",
+                headers: getAuthHeaders(),
+            });
+      
+            if (response.ok) {
+                console.log("Message notifications marked as read for user:", userId);
+            } else {
+                console.error("Failed to mark message notifications as read:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Network error when trying to mark message notifications as read:", error);
+        }
+    },
 
 
 };

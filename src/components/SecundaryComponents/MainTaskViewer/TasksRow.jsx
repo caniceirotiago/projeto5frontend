@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styles from './TaskRow.module.css'; 
 import Column from './TertiaryComponents/Column';
 import Task from './TertiaryComponents/Task';
@@ -9,6 +9,7 @@ import ViewAndEditTaskModal from '../../Modal/ViewAndEditTaskModal';
 import searchTermStore from '../../../stores/searchTermMainTasksStore';
 import toastStore from '../../../stores/toastMessageStore';
 import  useFiltersStore  from '../../../stores/filterStore';
+import {useTasksWebSocket} from '../../../services/websockets/useTasksWebsocket';
 
 /**
  * TasksRow is a component that organizes and displays tasks in rows based on their status (TO DO, DOING, DONE). 
@@ -84,6 +85,21 @@ const TasksRow = React.memo(() => {
     useEffect(() => {
         fetchTasks();
     }, [filters]);
+
+    const updateTaskWS = useCallback((task) => {
+        setTasks((prevTasks) => prevTasks.map(t => t.id === task.id ? task : t));
+    }, [setTasks]);
+    const newTaskWS = useCallback((task) => {
+        setTasks((prevTasks) => [...prevTasks, task]);
+    }, [setTasks]);
+    const deleteTaskWS = useCallback((task) => {
+        console.log("deleting task", task);
+        setTasks((prevTasks) => prevTasks.filter(t => t.id !== task.id));
+    }, [setTasks]);
+
+
+    const wsUrl = `ws://localhost:8080/projeto5backend/taskws/${sessionStorage.getItem("token")}`; 
+    useTasksWebSocket(wsUrl, true, updateTaskWS, newTaskWS, deleteTaskWS);
     
     const handleTaskClick = (task) => {
         setClickedTask(task);
@@ -173,6 +189,7 @@ const TasksRow = React.memo(() => {
     if (!fetchCompleted) {
         return null;
     }
+
     
     return (    
         <div className={styles.tasksRowContainer}>

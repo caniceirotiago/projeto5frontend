@@ -20,6 +20,7 @@ export const useNotificationWebSocket = (url, shouldConnect, onMessage) => {
         ws.current.onmessage = (e) => {
             try {
                 const message = JSON.parse(e.data);
+                console.log('WebSocket Notification Message:', message);
      
                 if(message.type === 'receivedNotification')onMessage(message.data);
             
@@ -42,7 +43,6 @@ export const useNotificationWebSocket = (url, shouldConnect, onMessage) => {
             ws.current.send(JSON.stringify(message));
         } else {
             console.error("WebSocket Notification is not open.");
-            closeChatModal();
 
         }
     };

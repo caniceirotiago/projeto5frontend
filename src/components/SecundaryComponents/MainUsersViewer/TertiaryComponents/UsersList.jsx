@@ -54,7 +54,8 @@ const UsersList = () => {
     }, [ updateTrigger ]);
 
     const handleUserClick = (user) => {
-        setSelectedUser(user.username);
+        console.log("Selected user:", user);
+        setSelectedUser(user);
         setIsModalVisible(true);
     };
 

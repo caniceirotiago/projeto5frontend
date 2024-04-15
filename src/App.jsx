@@ -11,7 +11,7 @@ import DeletedTasksManagerPage from './pages/DeletedTasksManagerPage';
 import CategoriesManagerPage from './pages/CategoriesManagerPage';
 import MainLayout from './pages/layout/MainLayout';
 import { ToastContainer, toast } from 'react-toastify';
-import useNotificationStore from './stores/toastMessageStore'; 
+import useToastStore from './stores/toastMessageStore'; 
 import { Flip } from 'react-toastify';
 import DialogModal from './components/Modal/DialogModal';
 import DialogBoxStore from './stores/DialogModalStore';
@@ -21,6 +21,8 @@ import ConfirmationPage from './pages/ConfirmRegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordForm from './components/Auth/ResetPasswordForm';
 import ChatModal from './components/Modal/ChatModal';
+import {useNotificationWebSocket} from './services/websockets/useNotificationWebSocket';
+import useNotificationStore from './stores/useNotificationStore';
 
 /**
  * App Component
@@ -40,8 +42,11 @@ import ChatModal from './components/Modal/ChatModal';
 
 function App() {
   const { theme } = useThemeStore();
-  const { message, setMessage } = useNotificationStore();
+  const { message, setMessage } = useToastStore();
   const { dialogMessage, setIsDialogOpen } = DialogBoxStore();
+
+
+
   useEffect(() => {
     document.body.className = '';
     document.body.classList.add(`theme-${theme}`);

@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import HomepageAside from '../../components/Asides/HomepageAside';
 import HomepageHeader from '../../components/Headers/HomepageHeader';
 import HomepageFooter from '../../components/Footers/HomepageFooter';
 import styles from './MainLayout.module.css';
 import useLayoutStore from '../../stores/layoutStore';
 import useAuthStore from '../../stores/authStore';
+import {useNotificationWebSocket} from '../../services/websockets/useNotificationWebSocket';
+import useNotificationStore from '../../stores/useNotificationStore';
+
+
 
 /**
  * MainLayout Component
@@ -38,13 +42,13 @@ import useAuthStore from '../../stores/authStore';
 
 const MainLayout = ({ children }) => {
     const { isAsideExpanded } = useLayoutStore();
-    const { fetchUserBasicInfo, token } = useAuthStore();
-    useEffect(() => {
-        const storedToken = sessionStorage.getItem('token');
-        if (storedToken && !token) {
-            fetchUserBasicInfo();
-        }
-    }, [ token, fetchUserBasicInfo]);
+    const onNotification = useCallback((notification) => {
+        console.log("Received notification: ", notification);
+        useNotificationStore.getState().addNotification(notification.content, notification);
+      }, []);
+     const wsUrl = `ws://localhost:8080/projeto5backend/notification/${sessionStorage.getItem('token')}`; 
+      useNotificationWebSocket(wsUrl, true, onNotification);
+
     
     return (
         <div className={styles.main}>

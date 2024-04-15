@@ -135,8 +135,11 @@
 #userPhotolink {
   margin: 0px 15px;
 }
+.notificationSection {
+  align-items: center;
 
-.menuBurger, .notificationBell {
+}
+.menuBurger {
   cursor: pointer;
   font-size: 24px;
   display: flex;
@@ -144,6 +147,31 @@
   justify-content: center;
   padding: 5px;
   margin-left: 15px;
+}
+.notificationBell {
+  position: relative; 
+  display: flex;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 5px;
+  margin-left: 15px;
+  align-items: center;
+  justify-content: center;
+}  
+.notificationNumber {
+  position: absolute; 
+  top: 10px; 
+  right: 11px; 
+  background-color: #ff0000;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 9px;
+  padding: 0px 0px; 
+  min-width: 10px; 
+  height: 10px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dropdownContent {

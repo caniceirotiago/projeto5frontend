@@ -9,6 +9,8 @@ import { FaBars, FaMoon, FaSun, FaSignOutAlt, FaBell } from 'react-icons/fa';
 import notificationStore from '../../stores/useNotificationStore';
 import {notificationService} from '../../services/notificationService';
 import useChatModalStore from '../../stores/useChatModalStore';
+import {useNotificationWebSocket} from '../../services/websockets/useNotificationWebSocket';
+
 
 /**
  * HomepageHeader Component
@@ -38,28 +40,46 @@ const HomepageHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useThemeStore();
-  const { notificationList, setNotificationList } = notificationStore();
-  const { logout, userBasicInfo } = useAuthStore(state => ({
+  const { notificationMap, setNotificationMap } = notificationStore();
+  const totalNotifications = Array.from(notificationMap.values()).reduce((acc, list) => acc + list.length, 0);
+  const { logout, userBasicInfo, fetchUserBasicInfo, token } = useAuthStore(state => ({
     logout: state.logout,
-    userBasicInfo: state.userBasicInfo
+    userBasicInfo: state.userBasicInfo,
+    fetchUserBasicInfo: state.fetchUserBasicInfo,
+    token: state.token
   }));
   const { openChatModal } = useChatModalStore();
+  
 
   const fetchNotifications = async () => {
     const notifications = await notificationService.getUserNotifications();
-    console.log(notifications);
-    setNotificationList(notifications);
+    const notificationEntries = Object.entries(notifications).map(([user, notifs]) => [user, notifs]);
+    setNotificationMap(new Map(notificationEntries));
   }
 
-  useEffect(() => {
+    useEffect(() => {
+        const storedToken = sessionStorage.getItem('token');
+        if (storedToken && !token) {
+           fetchUserBasicInfo();
+        }
+        fetchNotifications();
+    }, [ token, ]);
+
+    const renderNotifications = () => {
+      const entries = [];
+      notificationMap.forEach((notifs, user) => {
+          entries.push(
+              <div key={user} className={styles.notificationItem} onClick={() => handleNotificationClick('message', user)}>
+                  {user} - {notifs.length} new messages
+              </div>
+          );
+      });
+      return entries;
+  };
+  const markMessageNotificationsAsRead = async (userId) => {
+    await notificationService.markMessageNotificationsAsRead(userId);
     fetchNotifications();
-  }, []);
-
-
-  useEffect(() => {
-  }, [userBasicInfo]);
- 
-
+  };
 
   
   const isActive = (path) => {return location.pathname === path;};
@@ -73,6 +93,7 @@ const HomepageHeader = () => {
     if (type === 'message') {
       const user = { username: userId };
       openChatModal(user);
+      markMessageNotificationsAsRead(userId);
     }
     setIsNotificationListOpen(false);
   };
@@ -93,21 +114,17 @@ const HomepageHeader = () => {
         <div className={styles.userPhoto} onClick={() => navigate(`/userProfile/${loggedUser}`)}>
           <img src={photoUrl} alt="User" className={styles.userImage} /> 
         </div>
-        <div className={styles.notificationBell} onClick = {() => setIsNotificationListOpen(!isNotificationListOpen)}>
-          <FaBell />
-        </div>
-        {isNotificationListOpen && (
-          <div className={styles.dropdownContent}>
-            {notificationList.map((notification, index) => (
-              <div key={index} className={styles.notificationItem}   onClick={() => handleNotificationClick(notification.type, notification.content)}>
-                {notification.type} 
-                 from
-                {notification.content}
-              </div>
-            ))}
-            
+        <div className={styles.notificationSection}>
+          <div className={styles.notificationBell} onClick = {() => setIsNotificationListOpen(!isNotificationListOpen)}>
+            <FaBell />
+            {totalNotifications === 0 ? null : <div className={styles.notificationNumber}>{totalNotifications}</div>}
           </div>
-        )}
+          {isNotificationListOpen && (
+            <div className={styles.dropdownContent}>
+              {renderNotifications()}
+            </div>
+          )}
+        </div>
         <div className={styles.menuBurger} onClick={() => setIsMenuOpen(!isMenuOpen)}>
            <FaBars />
         </div>
