@@ -7,7 +7,9 @@ import Image from "../../assets/user-login.png";
 import ErrorMessageModalStore from '../../stores/ErrorMessageModalStore';
 import DialogModal from '../Modal/DialogModal';
 import DialogModalStore from '../../stores/DialogModalStore';
-
+import  useTranslationStore  from '../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../translations';
 
 /**
  * RegisterForm Component
@@ -31,6 +33,8 @@ import DialogModalStore from '../../stores/DialogModalStore';
  */
 
 const RegisterForm = ( ) => {
+   const locale = useTranslationStore((state) => state.locale);
+
    const isAdmin  = sessionStorage.getItem('role') === 'productOwner' ? true : false;
    const [user, setUser] = useState({
       username: '',
@@ -93,114 +97,119 @@ const RegisterForm = ( ) => {
  };
 
   return (
-  <main className={styles.mainContent}>
-   <DialogModal />
-  <form className={styles.registrationForm} onSubmit={handleSubmit}>
-    <div className={styles.banner}>
-       <img name="img_user" src={Image} alt="IMG" className={styles.loginIcon} />
-       <p id="member-registration-banner">Member Registration</p>
-    </div>
-    <div className={styles.content}>
-    {isAdmin && (
-            <>
-              <label className={styles.label} htmlFor="role-field">Role</label>
-              <select name="role" id="role-field" onChange={handleChange}>
-                  <option value="developer">Developer</option>
-                  <option value="scrumMaster">Srum Master</option>
-                  <option value="productOwner">Product Owner</option>
-              </select>
-            </>
-          )}
-       <p></p>
-       <label className={styles.label} id="username-label" htmlFor="username-field">Username</label>
-       <input
-          className={styles.input}
-          type="text"
-          name="username"
-          value={user.username}
-          onChange={handleChange}
-          id="username-field"
-          maxLength="25"
-          placeholder="Enter your username"
-       />
-       <label className={styles.label} id="password-label" htmlFor="password-field">Password</label>
-       <input
-          className={styles.input}
-          type="password"
-          name="password"
-          value={user.password}
-          onChange={handleChange}
-          id="password-field"
-          maxLength="25"
-          placeholder="Enter your password"
-       />
-       <label className={styles.label} id="password-label2" htmlFor="password2-field">Repeat Password</label>
-       <input
-          className={styles.input}
-          type="password"
-          name="confirmPassword"
-          value={user.confirmPassword}
-          onChange={handleChange}
-          id="password2-field"
-          maxLength="25"
-          placeholder="Enter your password"
-       />
-       <label className={styles.label} id="phone-label" htmlFor="phone-field">Phone</label>
-       <input 
-        className={styles.input}
-         type="tel" 
-         name="phoneNumber" 
-         value={user.phoneNumber}
-         onChange={handleChange}
-         id="phone-field" 
-         maxLength="35" 
-         placeholder="Enter your phone" />
-       <label className={styles.label} id="email-label" htmlFor="email-field">Email</label>
-       <input
-        className={styles.input} 
-         type="email"
-         name="email"
-         value={user.email}
-         onChange={handleChange}
-         id="email-field" 
-         maxLength="35" 
-         placeholder="Enter your email" />
-       <label className={styles.label} id="first-name-label" htmlFor="firstname-field">First Name</label>
-       <input
-          className={styles.input}
-          type="text"
-          name="firstName"
-          value={user.firstName}
-          onChange={handleChange}
-          id="firstname-field"
-          maxLength="35"
-          placeholder="Enter your First Name"
-       />
-       <label  className={styles.label} id="last-name-label" htmlFor="lastname-field">Last Name</label>
-       <input
-          className={styles.input}
-          type="text"
-          name="lastName"
-          value={user.lastName}
-          onChange={handleChange}
-          id="lastname-field"
-          maxLength="35"
-          placeholder="Enter your Last Name"
-       />
-       <label className={styles.label} id="URL" htmlFor="photo-field">Photography</label>
-       <input
-        className={styles.input}
-         type="text"
-         name="photoURL" 
-         value={user.photoURL}
-         onChange={handleChange}
-         id="photo-field" 
-         maxLength="400" 
-         placeholder="Enter your Photo URL" />
-       <input type="submit" id="registration" value="Registration" />
-    </div>
- </form>
-   </main>
+   <IntlProvider locale={locale} messages={languages[locale]}>
+      <main className={styles.mainContent}>
+         <DialogModal />
+         <form className={styles.registrationForm} onSubmit={handleSubmit}>
+            <div className={styles.banner}>
+               <img name="img_user" src={Image} alt="IMG" className={styles.loginIcon} />
+               <p id="member-registration-banner"><FormattedMessage id="memberRegistration">Member Registration</FormattedMessage></p>
+            </div>
+            <div className={styles.content}>
+            {isAdmin && (
+                     <>
+                     <label className={styles.label} htmlFor="role-field"><FormattedMessage id="role">Role</FormattedMessage></label>
+                     <select name="role" id="role-field" onChange={handleChange}>
+                           <option value="developer">Developer</option>
+                           <option value="scrumMaster">Srum Master</option>
+                           <option value="productOwner">Product Owner</option>
+                     </select>
+                     </>
+                  )}
+               <p></p>
+               <label className={styles.label} id="username-label" htmlFor="username-field">Username</label>
+               <FormattedMessage id="usernamePlaceholder">{(value) => (<input
+                  className={styles.input}
+                  type="text"
+                  name="username"
+                  value={user.username}
+                  onChange={handleChange}
+                  id="username-field"
+                  maxLength="25"
+                  placeholder={value}
+               />)}</FormattedMessage>
+               <label className={styles.label} id="password-label" htmlFor="password-field">Password</label>
+               <FormattedMessage id="passwordPlaceholder">{(value) => (<input
+                  className={styles.input}
+                  type="password"
+                  name="password"
+                  value={user.password}
+                  onChange={handleChange}
+                  id="password-field"
+                  maxLength="25"
+                  placeholder={value}
+               />)}</FormattedMessage>
+               <label className={styles.label} id="password-label2" htmlFor="password2-field">Repeat Password</label>
+               <FormattedMessage id="passwordPlaceholder">{(value) => (<input
+                  className={styles.input}
+                  type="password"
+                  name="confirmPassword"
+                  value={user.confirmPassword}
+                  onChange={handleChange}
+                  id="password2-field"
+                  maxLength="25"
+                  placeholder={value}
+               />)}</FormattedMessage>
+               <label className={styles.label} id="phone-label" htmlFor="phone-field"><FormattedMessage id="phone">Phone</FormattedMessage></label>
+               <FormattedMessage id="phonePlaceholder">{(value) => (<input 
+               className={styles.input}
+                  type="tel" 
+                  name="phoneNumber" 
+                  value={user.phoneNumber}
+                  onChange={handleChange}
+                  id="phone-field" 
+                  maxLength="35" 
+                  placeholder={value} 
+                  />)}</FormattedMessage>
+               <label className={styles.label} id="email-label" htmlFor="email-field"><FormattedMessage id="email">Email</FormattedMessage></label>
+               <FormattedMessage id="emailPlaceholder">{(value) => (<input
+               className={styles.input} 
+                  type="email"
+                  name="email"
+                  value={user.email}
+                  onChange={handleChange}
+                  id="email-field" 
+                  maxLength="35" 
+                  placeholder={value} 
+                  />)}</FormattedMessage>
+               <label className={styles.label} id="first-name-label" htmlFor="firstname-field"><FormattedMessage id="firstName">First Name</FormattedMessage></label>
+               <FormattedMessage id="firstNamePlaceholder">{(value) => (<input
+                  className={styles.input}
+                  type="text"
+                  name="firstName"
+                  value={user.firstName}
+                  onChange={handleChange}
+                  id="firstname-field"
+                  maxLength="35"
+                  placeholder={value}
+               />)}</FormattedMessage>
+               <label  className={styles.label} id="last-name-label" htmlFor="lastname-field"><FormattedMessage id="lastName">Last Name</FormattedMessage></label>
+               <FormattedMessage id="lastNamePlaceholder">{(value) => (<input
+                  className={styles.input}
+                  type="text"
+                  name="lastName"
+                  value={user.lastName}
+                  onChange={handleChange}
+                  id="lastname-field"
+                  maxLength="35"
+                  placeholder={value}
+               />)}</FormattedMessage>
+               <label className={styles.label} id="URL" htmlFor="photo-field"><FormattedMessage id="photoURL">Photo URL</FormattedMessage></label>
+               <FormattedMessage id="photoURLPlaceholder">{(value) => (<input
+                  className={styles.input}
+                  type="text"
+                  name="photoURL" 
+                  value={user.photoURL}
+                  onChange={handleChange}
+                  id="photo-field" 
+                  maxLength="400" 
+                  placeholder={value}
+                  />)}</FormattedMessage>
+               <FormattedMessage id="registration">{(value) => (<input type="submit" id="registration" value={value}/>)}</FormattedMessage>
+            </div>
+         </form>
+      </main>
+   </IntlProvider>
     
   );
 };

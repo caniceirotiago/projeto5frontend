@@ -6,8 +6,13 @@ import useChatModalStore from '../../stores/useChatModalStore';
 import {messageService} from '../../services/messageService';
 import { parseISO, format } from 'date-fns';
 import {useChatWebSocket} from '../../services/websockets/useChatWebSocket';
+import  useTranslationStore  from '../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../translations';
 
 const ChatModal = () => {
+    const locale = useTranslationStore((state) => state.locale);
+
     const { isChatModalOpen, selectedChatUser, closeChatModal } = useChatModalStore();
     const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState('');
@@ -51,10 +56,7 @@ const ChatModal = () => {
             return newMessages;
         });
     }, []);
-    
-    
-
-    
+      
     
     const { sendMessage } = useChatWebSocket(wsUrl, isChatModalOpen, handleMessage, closeChatModal, updateMessages);
 
@@ -72,7 +74,7 @@ const ChatModal = () => {
                         text: msg.content,
                         date: msg.sentAt,
                         title: msg.senderUsername,
-                        status: msg.read ? 'read' : 'sent'
+                        status: msg.read ? 'read' : 'sent',
                     })));
                     if(messagesToUpdate.length > 0){
                     
@@ -131,33 +133,35 @@ const ChatModal = () => {
     if (!isChatModalOpen) return null;
 
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
-                <button className={styles.closeButton} onClick={closeChatModal}>&times;</button>
-                <h2>Chat with {selectedChatUser.username}</h2>
-                <div className={styles.messagesContainer}>
-                    {messages.map((msg, index) => (
-                        <MessageBox key={index} {...msg} />
-                    ))}
-                    <div ref={messagesEndRef} />  
-                </div>
-                <div className={styles.inputArea}>
-                <input
-                    type="text"
-                    placeholder="Type here..."
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    className={styles.input}
-                    maxLength={1000}
-                />
-                <Button
-                    className={styles.button}
-                    text='Send'
-                    onClick={handleSendMessage}
-                />
+        <IntlProvider locale={locale} messages={languages[locale]}>
+            <div className={styles.modalOverlay}>
+                <div className={styles.modalContent}>
+                    <button className={styles.closeButton} onClick={closeChatModal}>&times;</button>
+                    <h2><FormattedMessage id="chatWith">Chat with</FormattedMessage> {selectedChatUser.username}</h2>
+                    <div className={styles.messagesContainer}>
+                        {messages.map((msg, index) => (
+                            <MessageBox key={index} {...msg} />
+                        ))}
+                        <div ref={messagesEndRef} />  
+                    </div>
+                    <div className={styles.inputArea}>
+                    <FormattedMessage id="typeMessagePlaceholder">{(placeholder) => (<input
+                        type="text"
+                        placeholder={placeholder}
+                        value={inputText}
+                        onChange={(e) => setInputText(e.target.value)}
+                        className={styles.input}
+                        maxLength={1000}
+                    />)}</FormattedMessage>
+                    <FormattedMessage id="sendMsgBtn">{(text) => (<Button
+                        className={styles.button}
+                        text={text}
+                        onClick={handleSendMessage}
+                    />)}</FormattedMessage>
+                    </div>
                 </div>
             </div>
-        </div>
+        </IntlProvider>
     );
 };
 

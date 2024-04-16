@@ -4,6 +4,9 @@ import StatisticsBar from './StatisticsBar';
 import FiltersComponent from './FiltersComponent';
 import searchTermStore from '../../../stores/searchTermMainTasksStore';
 import AccessControl from "../../Auth/AcessControl.jsx"
+import  useTranslationStore  from '../../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../../translations';
 
 /**
  * HorizontalSection serves as a composite UI section within a task management interface, integrating 
@@ -14,22 +17,26 @@ import AccessControl from "../../Auth/AcessControl.jsx"
  */
 
 const HorizontalSection = React.memo(() => {
+    const locale = useTranslationStore((state) => state.locale);
+
     const {searchTerm , setSearchTerm } = searchTermStore();
 
     return (
-        <div className={styles.horizontalSection}>
-            <StatisticsBar />
-            <input
-                type="text"
-                placeholder="Search tasks by title and description..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className={styles.searchInput} 
-            />
-            <AccessControl roles={['productOwner', 'scrumMaster']}>
-                <FiltersComponent />
-            </AccessControl>
-        </div>
+        <IntlProvider locale={locale} messages={languages[locale]}>
+            <div className={styles.horizontalSection}>
+                <StatisticsBar />
+                <FormattedMessage id="searchTasksPlaceholder">{(searchPlaceholder) => (<input
+                    type="text"
+                    placeholder={searchPlaceholder}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className={styles.searchInput} 
+                />)}</FormattedMessage>
+                <AccessControl roles={['productOwner', 'scrumMaster']}>
+                    <FiltersComponent />
+                </AccessControl>
+            </div>
+        </IntlProvider>
     );
 });
 

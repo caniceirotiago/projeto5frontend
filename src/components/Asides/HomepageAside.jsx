@@ -5,6 +5,10 @@ import useLayoutStore from '../../stores/layoutStore';
 import { FaArrowLeft, FaArrowRight, FaPlus, FaProjectDiagram, FaTasks, FaRunning, FaUsers, FaClipboardList, FaTags, FaChartLine } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import AccessControl from '../Auth/AcessControl';
+import { IntlProvider, FormattedMessage } from "react-intl";
+import  useTranslationsStore  from '../../stores/useTranslationsStore';
+import languages from '../../translations';
+
 
 /**
  * HomepageAside Component
@@ -38,7 +42,7 @@ import AccessControl from '../Auth/AcessControl';
 const HomepageAside = () => {
     const { isAsideExpanded, toggleAside } = useLayoutStore();
     const [showText, setShowText] = useState(false);
-
+    const locale = useTranslationsStore((state) => state.locale);
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowText(isAsideExpanded);
@@ -47,48 +51,49 @@ const HomepageAside = () => {
     }, [isAsideExpanded]);
 
     return (
-        <aside className={isAsideExpanded ? styles.asideExpanded : styles.asideCollapsed}>
-            <button onClick={toggleAside} className={styles.toggleButton}>
-                {isAsideExpanded ? <FaArrowLeft /> : <FaArrowRight />}
-            </button>
-            <div className={styles.menuItem}>
-                <FaPlus className={styles.icon} />
-                <span className={showText ? styles.menuText : styles.menuTextHidden}>Create Project</span>
-            </div>
-            <div className={styles.menuItem}>
-                <FaProjectDiagram className={styles.icon} />
-                <span className={showText ? styles.menuText : styles.menuTextHidden}>Select Project</span>
-            </div>
-            <div className={styles.menuItem}>
-                <FaTasks className={styles.icon} />
-                <span className={showText ? styles.menuText : styles.menuTextHidden}>Backlog Manager</span>
-            </div>
-            <div className={styles.menuItem}>
-                <FaRunning className={styles.icon} />
-                <span className={showText ? styles.menuText : styles.menuTextHidden}>Sprint Selector</span>
-            </div>
-            <AccessControl roles={["scrumMaster", "productOwner", "developer"]}>
-                <Link to="/users" className={styles.menuItem}>
-                    <FaUsers className={styles.icon} />
-                    <span className={showText ? styles.menuText : styles.menuTextHidden}>Users</span>
-                </Link>
-                <Link to="/tasks" className={styles.menuItem}>
-                    <FaClipboardList className={styles.icon} />
-                    <span className={showText ? styles.menuText : styles.menuTextHidden}>Deleted Tasks</span>
-                </Link>
-            </AccessControl>  
-            <AccessControl roles={["productOwner"]}> 
-                <Link to="/categories" className={styles.menuItem}>
-                    <FaTags className={styles.icon} />
-                    <span className={showText ? styles.menuText : styles.menuTextHidden}>Categories</span>
-                </Link>
-                <Link to="/dashboard" className={styles.menuItem}>
-                    <FaChartLine className={styles.icon} />
-                    <span className={showText ? styles.menuText : styles.menuTextHidden}>Dashboard</span>
-                </Link>
-            </AccessControl> 
-            
-        </aside>
+        <IntlProvider locale={locale} messages={languages[locale]}>
+            <aside className={isAsideExpanded ? styles.asideExpanded : styles.asideCollapsed}>
+                <button onClick={toggleAside} className={styles.toggleButton}>
+                    {isAsideExpanded ? <FaArrowLeft /> : <FaArrowRight />}
+                </button>
+                <div className={styles.menuItem}>
+                    <FaPlus className={styles.icon} />
+                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="createProject">Create Project</FormattedMessage></span>
+                </div>
+                <div className={styles.menuItem}>
+                    <FaProjectDiagram className={styles.icon} />
+                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="selectProject">Select Project</FormattedMessage></span>
+                </div>
+                <div className={styles.menuItem}>
+                    <FaTasks className={styles.icon} />
+                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="backlogManager">Backlog Manager</FormattedMessage></span>
+                </div>
+                <div className={styles.menuItem}>
+                    <FaRunning className={styles.icon} />
+                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="sprintSelector">Sprint Selector</FormattedMessage></span>
+                </div>
+                <AccessControl roles={["scrumMaster", "productOwner", "developer"]}>
+                    <Link to="/users" className={styles.menuItem}>
+                        <FaUsers className={styles.icon} />
+                        <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="users">Users</FormattedMessage></span>
+                    </Link>
+                    <Link to="/tasks" className={styles.menuItem}>
+                        <FaClipboardList className={styles.icon} />
+                        <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="deletedTasks"> Deleted Tasks</FormattedMessage></span>
+                    </Link>
+                </AccessControl>  
+                <AccessControl roles={["productOwner"]}> 
+                    <Link to="/categories" className={styles.menuItem}>
+                        <FaTags className={styles.icon} />
+                        <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="categories">Categories</FormattedMessage></span>
+                    </Link>
+                    <Link to="/dashboard" className={styles.menuItem}>
+                        <FaChartLine className={styles.icon} />
+                        <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="categories">Dashboard</FormattedMessage></span>
+                    </Link>
+                </AccessControl> 
+            </aside>
+        </IntlProvider>
     );
 };
 

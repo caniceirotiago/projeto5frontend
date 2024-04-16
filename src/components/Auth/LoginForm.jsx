@@ -3,6 +3,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../../stores/authStore'; 
 import styles from './ForgotPasswordForm.module.css';
 import Image from "../../assets/user-login.png";
+import  useTranslationStore  from '../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../translations';
 
 /**
  * LoginForm Component
@@ -24,6 +27,8 @@ import Image from "../../assets/user-login.png";
 
 
 const LoginForm = () => {
+    const locale = useTranslationStore((state) => state.locale);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -45,24 +50,26 @@ const LoginForm = () => {
     };
 
     return (
-        <div className={styles.mainContent} >
-                <form id="loginForm" onSubmit={handleLogin} className={styles.form}>
-            <div className={styles.banner}>
-                <img src={Image} alt="IMG" className={styles.loginIcon}/>
-                <p className={styles.memberLoginBanner}>Member Login</p>
-            </div>
-            <div className={styles.content}>
-                <label htmlFor="username" className={styles.label}>Username</label>
-                <input className={styles.input} type="text" name="username" id="username" maxLength="25" placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                <label htmlFor="password" className={styles.label}>Password</label>
-                <input className={styles.input} type="password" name="password" id="password" maxLength="25" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                {error && <div className={styles.errorMessage}>{error}</div>} 
-                <input className={styles.submit} type="submit" id="login" value="Login" />
-            </div>
-        </form>
-        <div className={styles.signup}>Don't have an account? <Link to="/register">Sign up</Link></div>
-        <div className={styles.forgotPassword}><Link to="/forgot-password">Forgot the password?</Link></div>
-      </div>
+        <IntlProvider locale={locale} messages={languages[locale]}>
+            <div className={styles.mainContent} >
+                    <form id="loginForm" onSubmit={handleLogin} className={styles.form}>
+                <div className={styles.banner}>
+                    <img src={Image} alt="IMG" className={styles.loginIcon}/>
+                    <p className={styles.memberLoginBanner}><FormattedMessage id="memberLogin">Member Login</FormattedMessage></p>
+                </div>
+                <div className={styles.content}>
+                    <label htmlFor="username" className={styles.label}><FormattedMessage id="username">Username</FormattedMessage></label>
+                    <input className={styles.input} type="text" name="username" id="username" maxLength="25" placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <label htmlFor="password" className={styles.label}><FormattedMessage id="password">Password</FormattedMessage></label>
+                    <input className={styles.input} type="password" name="password" id="password" maxLength="25" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    {error && <div className={styles.errorMessage}>{error}</div>} 
+                    <input className={styles.submit} type="submit" id="login" value="Login" />
+                </div>
+            </form>
+            <div className={styles.signup}><FormattedMessage id="dontHaveAnAccount">Don't have an account?</FormattedMessage><Link to="/register"><FormattedMessage id="signUp">Sign up</FormattedMessage></Link></div>
+            <div className={styles.forgotPassword}><Link to="/forgot-password"><FormattedMessage id="forgotThePassword">Forgot the password?</FormattedMessage></Link></div>
+        </div>
+      </IntlProvider>
     );
 };
 

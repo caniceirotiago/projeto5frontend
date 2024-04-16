@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import style from './ErrorMessageFormModal.module.css';
 import ErrorMessageModalStore from '../../stores/ErrorMessageModalStore';
 
+
 /**
  * ErrorMessageFormModal Component
  * Renders a modal dialog box to display error messages.
@@ -26,6 +27,7 @@ import ErrorMessageModalStore from '../../stores/ErrorMessageModalStore';
  */
 
 const ErrorMessageFormModal  = () => {
+
     const { dialogMessage, isDialogOpen , clearDialog, dialogTitle} = ErrorMessageModalStore();
     
     useEffect(() => {

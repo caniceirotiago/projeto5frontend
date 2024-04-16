@@ -3,6 +3,9 @@ import styles from './AddTaskModal.module.css';
 import useCategoryStore from '../../stores/categoryStore';
 import { validateTitle, validateDescription, validateStartDate, validateEndDate, validateEndDateAfterStartDate } from '../../util/taskFieldsValidation';
 import { taskService } from '../../services/taskService';
+import  useTranslationStore  from '../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../translations';
 
 /**
  * TaskModal Component
@@ -33,6 +36,8 @@ import { taskService } from '../../services/taskService';
  */
 
 const TaskModal = ({ isOpen, onClose, onSubmit , task, mode }) => {
+  const locale = useTranslationStore((state) => state.locale);
+
   const [formData, setFormData] = useState({
     title: '',
     category_type: '',
@@ -128,37 +133,39 @@ const TaskModal = ({ isOpen, onClose, onSubmit , task, mode }) => {
 
   if (!isOpen) return null;
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <button  onClick={onClose} className={styles.closeButton}>X</button>
-        <h2 className={styles.h2}>View Task </h2>
-        <h4>User: {formData.username_author}</h4>
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <input className={styles.input} type="text" name="title" placeholder="Task Title" required value={formData.title} onChange={handleChange} maxLength={50} disabled={!isEditing}/>
-          <select className={styles.select} name="category_type" required value={formData.category_type} onChange={handleChange} disabled={!isEditing}>
-              {categories.map((category) => (
-                  <option key={category.id} value={category.type}>
-                      {category.type}
-                  </option>
-              ))}
-          </select>
-          <textarea className={styles.textarea} name="description" placeholder="Task Description" required value={formData.description} onChange={handleChange} maxLength={400} disabled={!isEditing}></textarea>
-          <input className={styles.input} type="date" name="startDate" value={formData.startDate} onChange={handleChange} disabled={!isEditing}/>
-          <input className={styles.input} type="date" name="endDate" min={formData.startDate} value={formData.endDate} onChange={handleChange} disabled={!isEditing}/>
-          <select className={styles.select} name="priority" required value={formData.priority} onChange={handleChange} disabled={!isEditing}>
-            <option key={1} value={1}>Low Priority</option>
-            <option key={2} value={2}>Medium Priority</option>
-            <option key={3} value={3}>High Priority</option>
-          </select>
-          {canEdit &&  
-            (<>{mode !== "deleted" && 
-              (<>{!isEditing ? (<button name="edit" type="button" onClick={onEditClick} className={styles.editButton}> Edit</button>
-                        ) : (
-                  <button name="save" type="button"className={styles.saveButton} onClick={handleSubmit}>Save </button>)}</>
-          )}</>)}
-        </form>
+    <IntlProvider locale={locale} messages={languages[locale]}>
+      <div className={styles.modalOverlay}>
+        <div className={styles.modalContent}>
+          <button  onClick={onClose} className={styles.closeButton}>X</button>
+          <h2 className={styles.h2}><FormattedMessage id="viewTask">View Task</FormattedMessage></h2>
+          <h4>User: {formData.username_author}</h4>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <input className={styles.input} type="text" name="title" placeholder="Task Title" required value={formData.title} onChange={handleChange} maxLength={50} disabled={!isEditing}/>
+            <select className={styles.select} name="category_type" required value={formData.category_type} onChange={handleChange} disabled={!isEditing}>
+                {categories.map((category) => (
+                    <option key={category.id} value={category.type}>
+                        {category.type}
+                    </option>
+                ))}
+            </select>
+            <textarea className={styles.textarea} name="description" placeholder="Task Description" required value={formData.description} onChange={handleChange} maxLength={400} disabled={!isEditing}></textarea>
+            <input className={styles.input} type="date" name="startDate" value={formData.startDate} onChange={handleChange} disabled={!isEditing}/>
+            <input className={styles.input} type="date" name="endDate" min={formData.startDate} value={formData.endDate} onChange={handleChange} disabled={!isEditing}/>
+            <select className={styles.select} name="priority" required value={formData.priority} onChange={handleChange} disabled={!isEditing}>
+              <option key={1} value={1}><FormattedMessage id="lowPriority">Low Priority</FormattedMessage></option>
+              <option key={2} value={2}><FormattedMessage id="mediumPriority">Medium Priority</FormattedMessage></option>
+              <option key={3} value={3}><FormattedMessage id="highPriority">High Priority</FormattedMessage></option>
+            </select>
+            {canEdit &&  
+              (<>{mode !== "deleted" && 
+                (<>{!isEditing ? (<button name="edit" type="button" onClick={onEditClick} className={styles.editButton}> Edit</button>
+                          ) : (
+                    <button name="save" type="button"className={styles.saveButton} onClick={handleSubmit}>Save </button>)}</>
+            )}</>)}
+          </form>
+        </div>
       </div>
-    </div>
+    </IntlProvider>
   );
 };
 

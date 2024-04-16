@@ -5,6 +5,10 @@ import userService from '../../../../services/userService';
 import useSelectedUserStore from '../../../../stores/useSelectedUserStore';
 import { useNavigate } from 'react-router-dom';
 import AccessControl from '../../../Auth/AcessControl';
+import  useTranslationStore  from '../../../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../../../translations';
+
 
 /**
  * UsersList is a React component that fetches and displays a list of user profiles, excluding certain system 
@@ -22,6 +26,8 @@ import AccessControl from '../../../Auth/AcessControl';
  */
 
 const UsersList = () => {
+    const locale = useTranslationStore((state) => state.locale);
+
     const [users, setUsers] = useState([]);
     const usernameOwn = sessionStorage.getItem('username');
     const { setSelectedUser, setIsModalVisible } = useSelectedUserStore();
@@ -64,26 +70,28 @@ const UsersList = () => {
     };
         
     return (
-        <div className={styles.usersListContainer}>
-            <div className={styles.usersListBanner}>
-                <input
-                    type="text"
-                    placeholder="Search user by username..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className={styles.searchInput} 
-                />
-                <h2 className={styles.title}>Users List</h2>
-                <AccessControl roles={["productOwner"]}>
-                    <button className={styles.addUserButton} onClick={handleAddUser}>Add User</button>
-                </AccessControl>
+        <IntlProvider locale={locale} messages={languages[locale]}>
+            <div className={styles.usersListContainer}>
+                <div className={styles.usersListBanner}>
+                    <input
+                        type="text"
+                        placeholder="Search user by username..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className={styles.searchInput} 
+                    />
+                    <h2 className={styles.title}><FormattedMessage id="usersList">Users List</FormattedMessage></h2>
+                    <AccessControl roles={["productOwner"]}>
+                        <button className={styles.addUserButton} onClick={handleAddUser}><FormattedMessage id="addUser">Add User</FormattedMessage></button>
+                    </AccessControl>
+                </div>
+                <div className={styles.userList}>
+                    {users.filter(user => user.username.toLowerCase().includes(searchTerm.toLowerCase())).map((user, index) => (
+                        <UserCard key={index} user={user} onClick={() => handleUserClick(user)} />
+                    ))}
+                </div>
             </div>
-            <div className={styles.userList}>
-                {users.filter(user => user.username.toLowerCase().includes(searchTerm.toLowerCase())).map((user, index) => (
-                    <UserCard key={index} user={user} onClick={() => handleUserClick(user)} />
-                ))}
-            </div>
-        </div>
+        </IntlProvider>
     );
 };
 

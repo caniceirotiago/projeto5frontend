@@ -37,6 +37,28 @@ const statisticsService = {
             console.error("Network error when trying to load dashboard data:", error);
         }
     },
+    getIndividualUserStatistics: async (username) => {
+        console.log("username: " + username);
+        try {
+            const response = await fetch(`${API_BASE_URL}/individualstats/${username}`, {
+               method: "GET",
+               headers: getAuthHeaders(),
+            });
+      
+            if (response.ok) {
+                const userStatistics = await response.json(); 
+                console.log("userStatistics: ", userStatistics);
+                return userStatistics;
+            } else if (response.status === 403 || response.status === 400 || response.status === 401) {
+                console.error("Access denied. Redirecting to login page.");
+                window.location.href = "/";
+            } else {
+                console.error("Failed to load user statistics:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Network error when trying to load user statistics:", error);
+        }
+    }
 
 };
 

@@ -3,6 +3,9 @@ import useFiltersStore from '../../../stores/filterStore';
 import userService from '../../../services/userService';
 import { categoryService } from '../../../services/categoryService';
 import style from './FiltersComponent.module.css';
+import  useTranslationStore  from '../../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../../translations';
 
 /**
  * FiltersComponent provides a UI for filtering tasks by user and category. It fetches and displays lists of users and 
@@ -16,6 +19,8 @@ import style from './FiltersComponent.module.css';
  */
 
 const FiltersComponent = () => {
+  const locale = useTranslationStore((state) => state.locale);
+
   const { filters, setFilter, setUsersWithTasks, setCategoriesWithTasks } = useFiltersStore(state => ({
     filters: state.filters,
     setFilter: state.setFilter,
@@ -53,21 +58,23 @@ const FiltersComponent = () => {
   }
 
   return (
-    <div className={style.filtersContainer}>
-      <select value={filters.username} onChange={(e) => setFilter('username', e.target.value)}>
-        <option key="default" value="">All Users</option>
-        {usersWithTasks.map((user, index) => (
-            <option key={index} value={user.username}>{user.username}</option>
-        ))}
-      </select>
-      <select value={filters.category} onChange={(e) => setFilter('category', e.target.value)}>
-        <option key="default" value="">All Categories</option>
-        {categoriesWithTasks.map((category) => (
-            <option key={category.id} value={category.type}>{category.type}</option>
-        ))}
-      </select>
-      <button onClick={handleClearFilters} className={style.clearFilters}>Clear Filters</button>
-    </div>
+    <IntlProvider locale={locale} messages={languages[locale]}>
+      <div className={style.filtersContainer}>
+        <select value={filters.username} onChange={(e) => setFilter('username', e.target.value)}>
+          <option key="default" value=""><FormattedMessage id="allUsers">All Users</FormattedMessage></option>
+          {usersWithTasks.map((user, index) => (
+              <option key={index} value={user.username}>{user.username}</option>
+          ))}
+        </select>
+        <select value={filters.category} onChange={(e) => setFilter('category', e.target.value)}>
+          <option key="default" value=""><FormattedMessage id="allCategories">All Categories</FormattedMessage></option>
+          {categoriesWithTasks.map((category) => (
+              <option key={category.id} value={category.type}>{category.type}</option>
+          ))}
+        </select>
+        <button onClick={handleClearFilters} className={style.clearFilters}><FormattedMessage id="clearFilters">Clear Filters</FormattedMessage></button>
+      </div>
+    </IntlProvider>
   );
 };
 

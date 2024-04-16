@@ -194,13 +194,13 @@ const TasksRow = React.memo(() => {
     return (    
         <div className={styles.tasksRowContainer}>
             <div className={styles.tasksRow}>
-                <Column title="TO DO" status="100" taskCount={todoCount} updateTasks={fetchTasks} onAddTaskClick={openAddTaskModal} setTasks={setTasks}>
+                <Column title="TO DO" id="todoColumn" status="100" taskCount={todoCount} updateTasks={fetchTasks} onAddTaskClick={openAddTaskModal} setTasks={setTasks}>
                     {taskColumns.todo}
                 </Column>
-                <Column title="DOING" status="200" taskCount={doingCount} updateTasks={fetchTasks} setTasks={setTasks}>
+                <Column title="DOING" id="doingColumn" status="200" taskCount={doingCount} updateTasks={fetchTasks} setTasks={setTasks}>
                     {taskColumns.doing}
                 </Column>
-                <Column title="DONE" status="300" taskCount={doneCount} updateTasks={fetchTasks} setTasks={setTasks}>
+                <Column title="DONE" id="doneColumn" status="300" taskCount={doneCount} updateTasks={fetchTasks} setTasks={setTasks}>
                     {taskColumns.done}
                 </Column>                
                     {isAddTaskModalOpen && <AddTaskModal isOpen={isAddTaskModalOpen} onClose={closeAddTaskModal} updateTasks={fetchTasks} onSubmit={handleAddTask} />}

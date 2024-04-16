@@ -8,6 +8,9 @@ import AccessControl from '../Auth/AcessControl';
 import toastStore from '../../stores/toastMessageStore';
 import DialogModalStore from '../../stores/DialogModalStore';
 import ErrorMessageModalStore from '../../stores/ErrorMessageModalStore';
+import  useTranslationStore  from '../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../translations';
 
 /**
  * UserDetailsModal Component
@@ -48,6 +51,8 @@ import ErrorMessageModalStore from '../../stores/ErrorMessageModalStore';
  */
 
 const UserDetailsModal = ({ onClose }) => {
+    const locale = useTranslationStore((state) => state.locale);
+
     const { selectedUser, clearSelectedUser } = useSelectedUserStore();
     const [errors, setErrors] = useState({});
     const [originalData, setOriginalData] = useState({}); 
@@ -175,105 +180,107 @@ const UserDetailsModal = ({ onClose }) => {
     };
 
     return (
-        <div className={style.modal}>
-            <div className={style.modalContent}>
-                <span className="close" onClick={() => { clearSelectedUser(); onClose(); }} hidden={true} >&times;</span>
-                <form className={style.form} onSubmit={handleSubmit}>
-                    <div className={style.userPhotoContainer}>
-                        <img
-                            src={formData.photoURL}
-                            alt="User"
-                            className={style.userPhoto} 
-                        />
-                    </div>
-                    <label className={style.label} htmlFor="username">Username:</label>
-                    <input 
-                        className={style.input} 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        value={formData.username} 
-                        onChange={handleChange} disabled />
-                    <label className={style.label} htmlFor="email">Email:</label>
-                    <input 
-                        className={style.input} 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        value={formData.email} 
-                        onChange={handleChange} 
-                        disabled={!isProductOwner}/>
-                    <label className={style.label} htmlFor="phoneNumber">Phone:</label>
-                    <input 
-                        className={style.input} 
-                        type="text" 
-                        id="phoneNumber" 
-                        name="phoneNumber" 
-                        value={formData.phoneNumber} 
-                        onChange={handleChange} 
-                        disabled={!isProductOwner}/>                   
-                    <label className={style.label} htmlFor="firstName">First Name:</label>
-                    <input 
-                        className={style.input} 
-                        type="text" 
-                        id="firstName" 
-                        name="firstName" 
-                        value={formData.firstName} 
-                        onChange={handleChange} 
-                        disabled={!isProductOwner}/>                   
-                    <label className={style.label} htmlFor="lastName">Last Name:</label>
-                    <input 
-                        className={style.input} 
-                        type="text" 
-                        id="lastName" 
-                        name="lastName" 
-                        value={formData.lastName} 
-                        onChange={handleChange} 
-                        disabled={!isProductOwner}/>                   
-                    <label className={style.label} htmlFor="photoURL">Photo URL:</label>
-                    <input 
-                        className={style.input} 
-                        type="text" 
-                        id="photoURL" 
-                        name="photoURL" 
-                        value={formData.photoURL} 
-                        onChange={handleChange} 
-                        disabled={!isProductOwner}/>                   
-                    <label className={style.label} htmlFor="deleted">Active:</label>
-                    <select 
-                        className={style.select} 
-                        id="deleted" 
-                        name="deleted" 
-                        value={formData.deleted} 
-                        onChange={handleChange} 
-                        disabled={!isProductOwner}>
-                        <option value={true}>Inactive</option>
-                        <option value={false}>Active</option>
-                    </select>
-                    <label className={style.label} htmlFor="role">Role:</label>
-                    <select 
-                        className={style.select} 
-                        id="role" 
-                        name="role" 
-                        value={formData.role} 
-                        onChange={handleChange} 
-                        disabled={!isProductOwner}>
-                        <option value={"developer"}>Developer</option>
-                        <option value={"scrumMaster"}>Scrum Master</option>
-                        <option value={"productOwner"}>Product Owner</option>
-                    </select>
+        <IntlProvider locale={locale} messages={languages[locale]}>
+            <div className={style.modal}>
+                <div className={style.modalContent}>
+                    <span className="close" onClick={() => { clearSelectedUser(); onClose(); }} hidden={true} >&times;</span>
+                    <form className={style.form} onSubmit={handleSubmit}>
+                        <div className={style.userPhotoContainer}>
+                            <img
+                                src={formData.photoURL}
+                                alt="User"
+                                className={style.userPhoto} 
+                            />
+                        </div>
+                        <label className={style.label} htmlFor="username">Username:</label>
+                        <input 
+                            className={style.input} 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            value={formData.username} 
+                            onChange={handleChange} disabled />
+                        <label className={style.label} htmlFor="email">Email:</label>
+                        <input 
+                            className={style.input} 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            value={formData.email} 
+                            onChange={handleChange} 
+                            disabled={!isProductOwner}/>
+                        <label className={style.label} htmlFor="phoneNumber"><FormattedMessage id="phone">Phone:</FormattedMessage></label>
+                        <input 
+                            className={style.input} 
+                            type="text" 
+                            id="phoneNumber" 
+                            name="phoneNumber" 
+                            value={formData.phoneNumber} 
+                            onChange={handleChange} 
+                            disabled={!isProductOwner}/>                   
+                        <label className={style.label} htmlFor="firstName"><FormattedMessage id="firstName">First Name:</FormattedMessage></label>
+                        <input 
+                            className={style.input} 
+                            type="text" 
+                            id="firstName" 
+                            name="firstName" 
+                            value={formData.firstName} 
+                            onChange={handleChange} 
+                            disabled={!isProductOwner}/>                   
+                        <label className={style.label} htmlFor="lastName"><FormattedMessage id="lastName">Last Name:</FormattedMessage></label>
+                        <input 
+                            className={style.input} 
+                            type="text" 
+                            id="lastName" 
+                            name="lastName" 
+                            value={formData.lastName} 
+                            onChange={handleChange} 
+                            disabled={!isProductOwner}/>                   
+                        <label className={style.label} htmlFor="photoURL"><FormattedMessage id="photoURL">Photo URL:</FormattedMessage></label>
+                        <input 
+                            className={style.input} 
+                            type="text" 
+                            id="photoURL" 
+                            name="photoURL" 
+                            value={formData.photoURL} 
+                            onChange={handleChange} 
+                            disabled={!isProductOwner}/>                   
+                        <label className={style.label} htmlFor="deleted"><FormattedMessage id="userStatus">User Status:</FormattedMessage></label>
+                        <select 
+                            className={style.select} 
+                            id="deleted" 
+                            name="deleted" 
+                            value={formData.deleted} 
+                            onChange={handleChange} 
+                            disabled={!isProductOwner}>
+                            <option value={true}><FormattedMessage id="inactive">Inactive</FormattedMessage></option>
+                            <option value={false}><FormattedMessage id="active">Active</FormattedMessage></option>
+                        </select>
+                        <label className={style.label} htmlFor="role"><FormattedMessage id="role">Role:</FormattedMessage></label>
+                        <select 
+                            className={style.select} 
+                            id="role" 
+                            name="role" 
+                            value={formData.role} 
+                            onChange={handleChange} 
+                            disabled={!isProductOwner}>
+                            <option value={"developer"}>Developer</option>
+                            <option value={"scrumMaster"}>Scrum Master</option>
+                            <option value={"productOwner"}>Product Owner</option>
+                        </select>
+                        <AccessControl roles={["productOwner"]}>
+                            <button className={style.button} type="submit"><FormattedMessage id="saveChanges">Save Changes</FormattedMessage></button>
+                        </AccessControl>
+                    </form>
                     <AccessControl roles={["productOwner"]}>
-                         <button className={style.button} type="submit">Save Changes</button>
+                        <div className={style.btnDiv}>
+                            <button className={style.button} onClick={deleteAllTasksOfUser}><FormattedMessage id="deleteAllTasks">Delete All Tasks</FormattedMessage></button>
+                            <button className={style.button} onClick={deleteUserPermanently}><FormattedMessage id="deleteUserPermanetly">Delete User Permanently</FormattedMessage></button>
+                        </div>  
                     </AccessControl>
-                </form>
-                <AccessControl roles={["productOwner"]}>
-                    <div className={style.btnDiv}>
-                        <button className={style.button} onClick={deleteAllTasksOfUser}>Delete All Tasks</button>
-                        <button className={style.button} onClick={deleteUserPermanently}>Delete User Permanently</button>
-                    </div>  
-                </AccessControl>
+                </div>
             </div>
-        </div>
+        </IntlProvider>
     );
 };
 

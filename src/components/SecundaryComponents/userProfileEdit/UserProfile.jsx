@@ -7,6 +7,12 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import UserProfileStatistics from './TertiaryComponents/UserProfileStatistics'
+import {statisticsService} from "../../../services/statisticsService"
+import  useTranslationStore  from '../../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../../translations';
+
 
 
 /**
@@ -25,9 +31,17 @@ import { useParams } from 'react-router-dom';
  */
 
 const UserProfile = ({ onUpdateSuccess }) => {
+  const locale = useTranslationStore((state) => state.locale);
+
+  console.log("UserProfile rendered");
+  const [tasks, setTasks] = useState({
+    todoTasks: undefined,
+    doingTasks: undefined,
+    doneTasks: undefined
+  });
+  
   const { username: profileUsername } = useParams();
   const [isOwnProfile, setIsOwnProfile] = useState(false);
-
   const [userProfile, setUserProfile] = useState({
     username: '',
     phoneNumber: '',
@@ -65,15 +79,29 @@ const UserProfile = ({ onUpdateSuccess }) => {
             lastName: data.lastName,
             photoURL: data.photoURL,
           });
+          fetchUserTasks();
         } catch (error) {
           console.error("Failed to fetch user data:", error);
         }
  
     };
     fetchUserData();
-  }, [profileUsername, onUpdateSuccess]); 
+    
+  }, [profileUsername]); 
 
-
+  const fetchUserTasks = async () => {
+    try {
+        const response = await statisticsService.getIndividualUserStatistics(profileUsername);
+        console.log("response: ", response);
+        setTasks({
+          todoTasks: response.todoTasks,
+          doingTasks: response.doingTasks,
+          doneTasks: response.doneTasks
+        });
+    } catch (error) {
+        console.error("Error fetching user tasks: ", error);
+    }
+}
 const onUpdateUserProfile = async (updatedProfile) => {
   try {
     const { username, ...profileData } = updatedProfile;
@@ -96,28 +124,33 @@ const onUpdateUserPassword = async (oldPassword, newPassword) => {
   }
 };
 
+
+
   return (
-    <div className={styles.profileContainer}>
-      <ToastContainer limit={1} newestOnTop transition={Zoom}/>
-      <section className={styles.userHeader}>
-        <img src={userProfile.photoURL} alt="User" className={styles.userPhoto} />
-        <h2 className={styles.username}>{userProfile.username}</h2>
-      </section>
-      {isOwnProfile ? (
-        <>
-          {!showPasswordForm ? (
-            <ProfileForm userProfile={userProfile} onUpdateUserProfile={onUpdateUserProfile} />
-          ) : (
-            <PasswordForm onUpdateUserPassword={onUpdateUserPassword}/>
-          )}
-          <button onClick={() => setShowPasswordForm(!showPasswordForm)} className={styles.toggleFormButton}>
-            {showPasswordForm ? "Edit Profile Information" : "Change Password"}
-          </button>
-        </>
-      ) : (
-        <ProfileForm userProfile={userProfile} readOnly={true} isOwnProfile/>
-      )}
-    </div>
+    <IntlProvider locale={locale} messages={languages[locale]}>
+      <div className={styles.profileContainer}>
+        <ToastContainer limit={1} newestOnTop transition={Zoom}/>
+        <section className={styles.userHeader}>
+          <img src={userProfile.photoURL} alt="User" className={styles.userPhoto} />
+          <h2 className={styles.username}>{userProfile.username}</h2>
+          <UserProfileStatistics tasks={tasks}/>
+        </section>
+        {isOwnProfile ? (
+          <>
+            {!showPasswordForm ? (
+              <ProfileForm userProfile={userProfile} onUpdateUserProfile={onUpdateUserProfile} />
+            ) : (
+              <PasswordForm onUpdateUserPassword={onUpdateUserPassword}/>
+            )}
+            <button onClick={() => setShowPasswordForm(!showPasswordForm)} className={styles.toggleFormButton}>
+              {showPasswordForm ? <FormattedMessage id="editProfileInformation">Edit Profile Information</FormattedMessage> : <FormattedMessage id="changePassword">Change Password</FormattedMessage>}
+            </button>
+          </>
+        ) : (
+          <ProfileForm userProfile={userProfile} readOnly={true} isOwnProfile/>
+        )}
+      </div>
+    </IntlProvider>
   );
 };
 

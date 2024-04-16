@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import DialogBoxStore from '../../stores/DialogModalStore';
 import style from './DialogModal.module.css';
+import  useTranslationStore  from '../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../translations';
 
 /**
  * DialogModal Component
@@ -19,6 +22,8 @@ import style from './DialogModal.module.css';
  */
 
 const DialogModal = () => {
+    const locale = useTranslationStore((state) => state.locale);
+
     const { dialogMessage, isDialogOpen , onConfirm , clearDialog,} = DialogBoxStore();
     
     useEffect(() => {
@@ -33,16 +38,18 @@ const DialogModal = () => {
 
     if (!isDialogOpen) return null;
     return (
-        <div className={style.modal}>
-            <div className={style.modalContent}>
-                <span className={style.close} >&times;</span>
-                <h2>{dialogMessage}</h2>
-                <div className={style.modalButtons}>
-                    <button onClick={handleClose}>Cancel</button>
-                    <button onClick={handleConfirmation}>Yes</button>
+        <IntlProvider locale={locale} messages={languages[locale]}>
+            <div className={style.modal}>
+                <div className={style.modalContent}>
+                    <span className={style.close} >&times;</span>
+                    <h2>{dialogMessage}</h2>
+                    <div className={style.modalButtons}>
+                        <button onClick={handleClose}><FormattedMessage id="cancel">Cancel</FormattedMessage></button>
+                        <button onClick={handleConfirmation}><FormattedMessage id="yes">Yes</FormattedMessage></button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </IntlProvider>
     );
 }
 export default DialogModal;

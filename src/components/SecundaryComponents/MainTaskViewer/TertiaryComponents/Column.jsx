@@ -1,6 +1,10 @@
 import React from 'react';
 import styles from './Column.module.css'; 
 import { taskService } from '../../../../services/taskService';
+import  useTranslationStore  from '../../../../stores/useTranslationsStore';
+import { IntlProvider , FormattedMessage} from 'react-intl';
+import languages from '../../../../translations';
+
 
 /**
  * Column represents a draggable and droppable column in a task management UI, designed to display tasks 
@@ -21,7 +25,9 @@ import { taskService } from '../../../../services/taskService';
  */
 
 
-const Column = React.memo(({ title, children, taskCount, status, updateTasks, onAddTaskClick, setTasks }) => {
+const Column = React.memo(({ title, id, children, taskCount, status, updateTasks, onAddTaskClick, setTasks }) => {
+    const locale = useTranslationStore((state) => state.locale);
+
     const handleDragOver = (e) => {
         e.preventDefault(); 
     };
@@ -56,10 +62,11 @@ const Column = React.memo(({ title, children, taskCount, status, updateTasks, on
       
             
     return (
+      <IntlProvider locale={locale} messages={languages[locale]}>
         <div className={styles.column}>
             <div className={styles.header}>
                 <div className={styles.counterInvisible}></div> 
-                <h4>{title}</h4>
+                <h4><FormattedMessage id={id}></FormattedMessage></h4>
                 <div className={styles.counter}>
                     <div className={styles.counterCircle}>
                     <span key={taskCount}>{taskCount}</span>
@@ -74,10 +81,11 @@ const Column = React.memo(({ title, children, taskCount, status, updateTasks, on
             </ul>
             {status === "100" && (
                 <button className={styles.addButton} onClick={onAddTaskClick}>
-                    Add Task
+                    <FormattedMessage id="addTask">Add Task</FormattedMessage>
                 </button>
             )}
         </div>
+      </IntlProvider>
     );
 });
 
