@@ -4,6 +4,8 @@ import { taskService } from '../../../../services/taskService';
 import  useTranslationStore  from '../../../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../../../translations';
+import { Droppable } from 'react-beautiful-dnd';
+
 
 
 /**
@@ -28,63 +30,36 @@ import languages from '../../../../translations';
 const Column = React.memo(({ title, id, children, taskCount, status, updateTasks, onAddTaskClick, setTasks }) => {
     const locale = useTranslationStore((state) => state.locale);
 
-    const handleDragOver = (e) => {
-        e.preventDefault(); 
-    };
-    const handleDrop = async (e) => {
-        e.preventDefault();
-        const taskId = e.dataTransfer.getData('application/reactflow');
-        const columnStatus = parseInt(e.currentTarget.getAttribute('status'));
-        const updateData = { status: columnStatus, id: parseInt(taskId)};
-      
-        setTasks(prevTasks => prevTasks.map(task => {
-          if (task.id === parseInt(taskId)) {
-            return { ...task, status: columnStatus };
-          }
-          return task;
-        }));
-      
-        try {
-          const result = await taskService.editTask(updateData);
-          if (!result.success) {
-            setTasks(prevTasks => prevTasks.map(task => {
-              if (task.id === parseInt(taskId)) {
-                return { ...task, status: parseInt(task.originalStatus) };
-              }
-              return task;
-            }));
-            console.error('Error updating task status on the server.');
-          }
-        } catch (error) {
-          console.error('Exception when updating task status:', error);
-        }
-      };
+
       
             
     return (
       <IntlProvider locale={locale} messages={languages[locale]}>
-        <div className={styles.column}>
-            <div className={styles.header}>
-                <div className={styles.counterInvisible}></div> 
-                <h4><FormattedMessage id={id}></FormattedMessage></h4>
-                <div className={styles.counter}>
-                    <div className={styles.counterCircle}>
-                    <span key={taskCount}>{taskCount}</span>
+        <Droppable droppableId={String(status)}>
+            {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.droppableProps} className={styles.column}>
+                <div className={styles.header}>
+                    <div className={styles.counterInvisible}></div> 
+                    <h4><FormattedMessage id={id}></FormattedMessage></h4>
+                    <div className={styles.counter}>
+                        <div className={styles.counterCircle}>
+                        <span key={taskCount}>{taskCount}</span>
+                        </div>
                     </div>
                 </div>
+                <ul className={styles.scrollableUl}
+                    status={status}>
+                    {children}
+                </ul>
+                {provided.placeholder}
+                {status === "100" && (
+                    <button className={styles.addButton} onClick={onAddTaskClick}>
+                        <FormattedMessage id="addTask">Add Task</FormattedMessage>
+                    </button>
+                )} 
             </div>
-            <ul className={styles.scrollableUl}
-                status={status}
-                onDragOver={(e) => handleDragOver(e)}
-                onDrop={(e) => handleDrop(e)}>
-                {children}
-            </ul>
-            {status === "100" && (
-                <button className={styles.addButton} onClick={onAddTaskClick}>
-                    <FormattedMessage id="addTask">Add Task</FormattedMessage>
-                </button>
-            )}
-        </div>
+          )}
+        </Droppable>
       </IntlProvider>
     );
 });

@@ -10,6 +10,10 @@ import searchTermStore from '../../../stores/searchTermMainTasksStore';
 import toastStore from '../../../stores/toastMessageStore';
 import  useFiltersStore  from '../../../stores/filterStore';
 import {useTasksWebSocket} from '../../../services/websockets/useTasksWebsocket';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import useDomainStore from '../../../stores/domainStore';
+
+
 
 /**
  * TasksRow is a component that organizes and displays tasks in rows based on their status (TO DO, DOING, DONE). 
@@ -47,6 +51,7 @@ const TasksRow = React.memo(() => {
     const [tasks, setTasks] = useState([]);
     const { filters } = useFiltersStore(); 
     const [fetchCompleted, setFetchCompleted] = useState(false); 
+    const {domain} = useDomainStore();
 
     /**
      * Fetches tasks based on applied filters and updates the component state with the results. The function
@@ -98,7 +103,7 @@ const TasksRow = React.memo(() => {
     }, [setTasks]);
 
 
-    const wsUrl = `ws://localhost:8080/projeto5backend/taskws/${sessionStorage.getItem("token")}`; 
+    const wsUrl = `ws://${domain}/taskws/${sessionStorage.getItem("token")}`; 
     useTasksWebSocket(wsUrl, true, updateTaskWS, newTaskWS, deleteTaskWS);
     
     const handleTaskClick = (task) => {
@@ -140,21 +145,35 @@ const TasksRow = React.memo(() => {
                 console.error(`Unknown task status: ${task.status}`);
                 return columns;
         }
-        if (!columns[statusKey]) columns[statusKey] = [];
+        if (!columns[statusKey]) {
+            columns[statusKey] = [];
+        }
         columns[statusKey].push(
-            <Task
-                setTasks={setTasks}
-                key={task.id}
-                task={task}
-                column={statusKey}
-                updateTasks={fetchTasks}
-                handleTaskClick={handleTaskClick}
-                mode={"normal"}
-                username={task.username_author}
-            />
+            <Draggable draggableId={String(task.id)} index={columns[statusKey].length} key={`draggable-${task.id}`}>
+                {(provided, snapshot) => (
+                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        <Task
+                            key={task.id}
+                            setTasks={setTasks}
+                            task={task}
+                            column={statusKey}
+                            updateTasks={fetchTasks}
+                            handleTaskClick={handleTaskClick}
+                            mode={"normal"}
+                            username={task.username_author}
+                        />
+                    </div>
+                )}
+            </Draggable>
         );
         return columns;
-    }, { todo: [], doing: [], done: [] }) : { todo: [], doing: [], done: [] };
+    }, { todo: [], doing: [], done: [] }) 
+    : { todo: [], doing: [], done: [] };
+
+
+
+
+
 
     const handleAddTask = async (taskData) => {
         const result = await taskService.addTask(taskData);
@@ -186,28 +205,66 @@ const TasksRow = React.memo(() => {
         updateCounts(todoCount, doingCount, doneCount);
     }, [tasks,updateCounts, fetchCompleted, todoCount, doingCount, doneCount]);
 
+    const handleOnDragEnd = async (result) => {
+        const { source, destination } = result;
+        if (!destination) return;
+        
+        const taskId = parseInt(result.draggableId);
+        const columnStatus = parseInt(result.destination.droppableId);
+        const updateData = { status: columnStatus, id: parseInt(taskId)};
+      
+        setTasks(prevTasks => prevTasks.map(task => {
+          if (task.id === parseInt(taskId)) {
+            return { ...task, status: columnStatus };
+          }
+          return task;
+        }));
+      
+        try {
+          const result = await taskService.editTask(updateData);
+          if (!result.success) {
+            setTasks(prevTasks => prevTasks.map(task => {
+              if (task.id === parseInt(taskId)) {
+                return { ...task, status: parseInt(task.originalStatus) };
+              }
+              return task;
+            }));
+            console.error('Error updating task status on the server.');
+          }
+        } catch (error) {
+          console.error('Exception when updating task status:', error);
+        }
+        
+    };
+    
+    
+    
+
+
     if (!fetchCompleted) {
         return null;
     }
 
     
     return (    
-        <div className={styles.tasksRowContainer}>
-            <div className={styles.tasksRow}>
-                <Column title="TO DO" id="todoColumn" status="100" taskCount={todoCount} updateTasks={fetchTasks} onAddTaskClick={openAddTaskModal} setTasks={setTasks}>
-                    {taskColumns.todo}
-                </Column>
-                <Column title="DOING" id="doingColumn" status="200" taskCount={doingCount} updateTasks={fetchTasks} setTasks={setTasks}>
-                    {taskColumns.doing}
-                </Column>
-                <Column title="DONE" id="doneColumn" status="300" taskCount={doneCount} updateTasks={fetchTasks} setTasks={setTasks}>
-                    {taskColumns.done}
-                </Column>                
-                    {isAddTaskModalOpen && <AddTaskModal isOpen={isAddTaskModalOpen} onClose={closeAddTaskModal} updateTasks={fetchTasks} onSubmit={handleAddTask} />}
-                    {isViewTaskModalOpen && <ViewAndEditTaskModal  isOpen={isViewTaskModalOpen} onClose={closeViewTaskModal} task={(clickedTask)} mode={"normal"} 
-                    onSubmit={(taskData) => handleUpdateTask(taskData)}/>}
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+            <div className={styles.tasksRowContainer}>
+                <div className={styles.tasksRow}>
+                    <Column title="TO DO" id="todoColumn" status="100" taskCount={todoCount} updateTasks={fetchTasks} onAddTaskClick={openAddTaskModal} setTasks={setTasks}>
+                        {taskColumns.todo}
+                    </Column>
+                    <Column title="DOING" id="doingColumn" status="200" taskCount={doingCount} updateTasks={fetchTasks} setTasks={setTasks}>
+                        {taskColumns.doing}
+                    </Column>
+                    <Column title="DONE" id="doneColumn" status="300" taskCount={doneCount} updateTasks={fetchTasks} setTasks={setTasks}>
+                        {taskColumns.done}
+                    </Column>                
+                        {isAddTaskModalOpen && <AddTaskModal isOpen={isAddTaskModalOpen} onClose={closeAddTaskModal} updateTasks={fetchTasks} onSubmit={handleAddTask} />}
+                        {isViewTaskModalOpen && <ViewAndEditTaskModal  isOpen={isViewTaskModalOpen} onClose={closeViewTaskModal} task={(clickedTask)} mode={"normal"} 
+                        onSubmit={(taskData) => handleUpdateTask(taskData)} setTasks={setTasks}/>}
+                </div>
             </div>
-        </div>
+        </DragDropContext>
     );
 });
 export default TasksRow;

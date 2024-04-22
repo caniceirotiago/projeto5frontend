@@ -11,6 +11,7 @@ import  useTranslationStore  from '../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../translations';
 
+
 /**
  * RegisterForm Component
  * 
@@ -34,7 +35,7 @@ import languages from '../../translations';
 
 const RegisterForm = ( ) => {
    const locale = useTranslationStore((state) => state.locale);
-
+   const [loading, setLoading] = useState(false);
    const isAdmin  = sessionStorage.getItem('role') === 'productOwner' ? true : false;
    const [user, setUser] = useState({
       username: '',
@@ -60,6 +61,7 @@ const RegisterForm = ( ) => {
 
   const handleSubmit = async (e) => {
    e.preventDefault();
+   
    const { confirmPassword, ...userData } = user;
 
    const newErrors = {
@@ -75,16 +77,32 @@ const RegisterForm = ( ) => {
 
    if (isValid) {
       try {
-         await authService.register(userData); 
-         DialogModalStore.getState().setDialogMessage('Confirmation Email Sent');
-         DialogModalStore.getState().setIsDialogOpen(true);
-         DialogModalStore.getState().setOnConfirm(async () => {
-            if(!isAdmin)navigate('/'); 
-         else navigate('/users');
-         });
-         
+         setLoading(true);
+         console.log(loading);
+         const response = await authService.register(userData);
+        if (response.status !== 204) {
+              setLoading(false);
+            const responseBody = await response.json();
+            DialogModalStore.getState().setDialogMessage(responseBody.errorMessage);
+            DialogModalStore.getState().setIsDialogOpen(true);
+            DialogModalStore.getState().setAlertType(true);
+            DialogModalStore.getState().setOnConfirm(async () => {
+            });
+        }
+        else{
+            DialogModalStore.getState().setDialogMessage('Confirmation Email Sent');
+            DialogModalStore.getState().setIsDialogOpen(true);
+            DialogModalStore.getState().setAlertType(true);
+            DialogModalStore.getState().setOnConfirm(async () => {
+               console.log(loading);
+               setLoading(false);
+               if(!isAdmin)navigate('/'); 
+            else navigate('/users');
+            });
+         }
        } catch (error) {
          console.error('Error:', error.message);
+         setLoading(false);
        }
    } else {
       const errorMessages = Object.entries(newErrors)
@@ -100,6 +118,7 @@ const RegisterForm = ( ) => {
    <IntlProvider locale={locale} messages={languages[locale]}>
       <main className={styles.mainContent}>
          <DialogModal />
+         {loading && <div className="spinner"></div>}
          <form className={styles.registrationForm} onSubmit={handleSubmit}>
             <div className={styles.banner}>
                <img name="img_user" src={Image} alt="IMG" className={styles.loginIcon} />
@@ -206,6 +225,7 @@ const RegisterForm = ( ) => {
                   placeholder={value}
                   />)}</FormattedMessage>
                <FormattedMessage id="registration">{(value) => (<input type="submit" id="registration" value={value}/>)}</FormattedMessage>
+               <button className={styles.backButton} onClick={() => navigate('/')}><FormattedMessage id="back">Back</FormattedMessage></button>
             </div>
          </form>
       </main>

@@ -24,7 +24,7 @@ import languages from '../../translations';
 const DialogModal = () => {
     const locale = useTranslationStore((state) => state.locale);
 
-    const { dialogMessage, isDialogOpen , onConfirm , clearDialog,} = DialogBoxStore();
+    const { dialogMessage, isDialogOpen , onConfirm , clearDialog , isAlertType} = DialogBoxStore();
     
     useEffect(() => {
     }   , [isDialogOpen]);
@@ -44,8 +44,15 @@ const DialogModal = () => {
                     <span className={style.close} >&times;</span>
                     <h2>{dialogMessage}</h2>
                     <div className={style.modalButtons}>
-                        <button onClick={handleClose}><FormattedMessage id="cancel">Cancel</FormattedMessage></button>
-                        <button onClick={handleConfirmation}><FormattedMessage id="yes">Yes</FormattedMessage></button>
+                        {!isAlertType ?
+                            <>
+                              <button onClick={handleClose}><FormattedMessage id="cancel">Cancel</FormattedMessage></button>
+                              <button onClick={handleConfirmation}><FormattedMessage id="yes">Yes</FormattedMessage></button>
+                            </>
+                            :
+                            <button onClick={handleConfirmation}>OK</button>
+                        }              
+                        
                     </div>
                 </div>
             </div>

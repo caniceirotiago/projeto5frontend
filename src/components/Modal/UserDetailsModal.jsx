@@ -50,10 +50,10 @@ import languages from '../../translations';
  * @param {function} onClose Function to close the modal.
  */
 
-const UserDetailsModal = ({ onClose }) => {
+const UserDetailsModal = ( onClose ) => {
     const locale = useTranslationStore((state) => state.locale);
 
-    const { selectedUser, clearSelectedUser } = useSelectedUserStore();
+    const { selectedUser, clearSelectedUser, isModalVisible} = useSelectedUserStore();
     const [errors, setErrors] = useState({});
     const [originalData, setOriginalData] = useState({}); 
     const [userRole, setUserRole] = useState('');
@@ -75,7 +75,7 @@ const UserDetailsModal = ({ onClose }) => {
         const fetchUserInfo = async () => {
             if(selectedUser.username) {
                 try {
-                    const userInfo = await userService.fetchUserInfoByUsername( selectedUser.username);
+                    const userInfo = await userService.fetchUserInfo( selectedUser.username);
                     setOriginalData(userInfo);
                     setFormData({
                         username: userInfo.username || '',
@@ -110,7 +110,6 @@ const UserDetailsModal = ({ onClose }) => {
         Object.keys(formData).forEach(key => {
             if(formData[key] !== originalData[key]) {
                 updatedFields[key] = formData[key];
-                if (key === 'email') validationErrors.email = validateEmail(updatedFields[key]);
                 if (key === 'phoneNumber') validationErrors.phone = validatePhone(updatedFields[key]);
                 if (key === 'firstName' || key === 'lastName') validationErrors.name = validateName(formData.firstName, formData.lastName);
                 if (key === 'photoURL') validationErrors.photoURL = validatePhotoURL(updatedFields[key]);
@@ -131,9 +130,15 @@ const UserDetailsModal = ({ onClose }) => {
         }      
         if (selectedUser.username && Object.keys(updatedFields).length > 0) {
             try {         
-                await userService.updateUserByUsername(selectedUser.username, updatedFields);
-                toastStore.getState().setMessage("User data updated successfully");
-                useSelectedUserStore.getState().triggerUsersListUpdate(); 
+                const response = await userService.updateUserByUsername(selectedUser.username, updatedFields);
+                if(response.status === 204) {
+                    toastStore.getState().setMessage("User data updated successfully");
+                    useSelectedUserStore.getState().triggerUsersListUpdate(); 
+                }
+                else {
+                    toastStore.getState().setMessage("Error updating user data. Please try again.");
+                }
+                
             } catch (error) {
                 console.error("Error updating user data:", error);
                 toastStore.getState().setMessage("Error updating user data. Please try again.");
@@ -167,10 +172,15 @@ const UserDetailsModal = ({ onClose }) => {
         DialogModalStore.getState().setOnConfirm(async () => {
             if(selectedUser.username) {
                     try {
-                        await userService.deleteUserPermanently(selectedUser.username);  
-                        await useSelectedUserStore.getState().triggerUsersListUpdate();               
-                        toastStore.getState().setMessage("User deleted successfully");     
-                        onClose(); 
+                        const response = await userService.deleteUserPermanently(selectedUser.username); 
+                        console.log(response);
+                        if(response.status === 204) {
+                            await useSelectedUserStore.getState().triggerUsersListUpdate();               
+                            toastStore.getState().setMessage("User deleted successfully");     
+                        }
+                        else {
+                            toastStore.getState().setMessage("Error deleting user. Please try again.");
+                        }
                     } catch (error) {
                         console.error("Error deleting user", error);
                         toastStore.getState().setMessage("Error deleting user. Please try again."); 
@@ -179,11 +189,13 @@ const UserDetailsModal = ({ onClose }) => {
           });        
     };
 
+    if(!isModalVisible) return
+
     return (
         <IntlProvider locale={locale} messages={languages[locale]}>
             <div className={style.modal}>
                 <div className={style.modalContent}>
-                    <span className="close" onClick={() => { clearSelectedUser(); onClose(); }} hidden={true} >&times;</span>
+                    <span className={style.close} onClick={() => { clearSelectedUser()}} hidden={true} >&times;</span>
                     <form className={style.form} onSubmit={handleSubmit}>
                         <div className={style.userPhotoContainer}>
                             <img
@@ -208,7 +220,7 @@ const UserDetailsModal = ({ onClose }) => {
                             name="email" 
                             value={formData.email} 
                             onChange={handleChange} 
-                            disabled={!isProductOwner}/>
+                            disabled/>
                         <label className={style.label} htmlFor="phoneNumber"><FormattedMessage id="phone">Phone:</FormattedMessage></label>
                         <input 
                             className={style.input} 

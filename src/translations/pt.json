@@ -75,6 +75,11 @@
     "newPassword": "Nova Palavra-Passe",
     "confirmPassword": "Confirmação da Palavra-Passe",
     "newMessages": "Novas Mensagens",
-    "noNewNotifications": "Sem Novas Notificações"
-
+    "noNewNotifications": "Sem Novas Notificações",
+    "taskBoard": "Painel de Tarefas",
+    "didntReceiveConfirmationEmail": "Não recebeu o e-mail de confirmação?",
+    "resendEmail": "Reenviar E-mail",
+    "resendConfirmationEmail": "Reenviar E-mail de Confirmação",
+    "askForNewConfirmation" : "Pedir Novo E-mail de Confirmação",
+    "back": "Voltar"
 }

@@ -1,5 +1,5 @@
-// src/services/categoryService.jsx
-const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/category";
+import useDomainStore from "../stores/domainStore";
+const API_BASE_URL = "http://" + useDomainStore.getState().domain + "/rest/category";
 
 /**
  * categoryService

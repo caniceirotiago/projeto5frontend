@@ -75,5 +75,11 @@
     "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
     "newMessages": "New Messages",
-    "noNewNotifications": "No new notifications"
+    "noNewNotifications": "No new notifications",
+    "taskBoard": "Task Board",
+    "didntReceiveConfirmationEmail": "Didn't receive the confirmation email?",
+    "resendEmail": "Resend email",
+    "resendConfirmationEmail": "Resend Confirmation Email",
+    "askForNewConfirmation" : "Ask for a new confirmation email",
+    "back": "Back"
 }

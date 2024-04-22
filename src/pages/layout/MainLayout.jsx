@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import HomepageAside from '../../components/Asides/HomepageAside';
 import HomepageHeader from '../../components/Headers/HomepageHeader';
 import HomepageFooter from '../../components/Footers/HomepageFooter';
@@ -7,6 +7,8 @@ import useLayoutStore from '../../stores/layoutStore';
 import useAuthStore from '../../stores/authStore';
 import {useNotificationWebSocket} from '../../services/websockets/useNotificationWebSocket';
 import useNotificationStore from '../../stores/useNotificationStore';
+import useDeviceStore from '../../stores/useDeviceStore.jsx'
+import HomepageMobileFooter from '../../components/Footers/HomepageMobileFooter.jsx'
 
 
 
@@ -41,25 +43,39 @@ import useNotificationStore from '../../stores/useNotificationStore';
 
 
 const MainLayout = ({ children }) => {
+    const { dimensions, setDimensions, isTouch, deviceType, setDeviceType } = useDeviceStore(); 
     const { isAsideExpanded } = useLayoutStore();
     const onNotification = useCallback((notification) => {
         console.log("Received notification: ", notification);
         useNotificationStore.getState().addNotification(notification.content, notification);
       }, []);
      const wsUrl = `ws://localhost:8080/projeto5backend/notification/${sessionStorage.getItem('token')}`; 
-      useNotificationWebSocket(wsUrl, true, onNotification);
+    useNotificationWebSocket(wsUrl, true, onNotification);
 
-    
+    useEffect(() => {
+    const handleResize = () => {
+        setDimensions(window.innerWidth, window.innerHeight);
+        setDeviceType(window.innerWidth < 768 ? 'mobile' : 'desktop'); 
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();  
+
+    return () => window.removeEventListener('resize', handleResize);
+    }, [setDimensions, setDeviceType]);
+
+
+
     return (
         <div className={styles.main}>
         <HomepageHeader />
             <div className={styles.board}>
-                {<HomepageAside />}
+                {dimensions.width >= 768 && <HomepageAside />}
                 <div className={`${styles.rightContainer} ${isAsideExpanded ? '' : styles.expandedRightContainer}`}>
                     {children}
                 </div>               
             </div>
-        <HomepageFooter />
+            {dimensions.width >= 768 ? <HomepageFooter /> : <HomepageMobileFooter />}
         </div>
     );
 };

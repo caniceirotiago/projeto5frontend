@@ -1,0 +1,46 @@
+/* src/components/TasksStatistics/TasksStatistics.module.css */
+.container {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--quaternary-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.header {
+    color: var(--quinary-color);
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.chartContainer {
+    width: 100%; /* Responsive width */
+    height: 300px; /* Fixed height for the chart */
+}
+
+/* Styling for the Recharts components can be added here if specific overrides are needed */
+.recharts-text {
+    fill: var(--text-color); /* Ensures text color matches the theme */
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.recharts-legend-item {
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .header {
+        font-size: 18px; /* Smaller font size for smaller devices */
+    }
+
+    .chartContainer {
+        height: 200px; /* Smaller chart for smaller devices */
+    }
+}

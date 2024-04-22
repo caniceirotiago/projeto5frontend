@@ -23,6 +23,7 @@ export const useChatWebSocket = (url, shouldConnect, onMessage, closeChatModal, 
      
                 if(message.type === 'receivedMessage')onMessage(message.data);
                 if(message.type === 'markedAsReadMessages'){
+                    console.log("Messages marked as read:", message.data);
                     updateMessages(message.data);
                 }
                 

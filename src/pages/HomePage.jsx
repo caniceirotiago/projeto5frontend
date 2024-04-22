@@ -4,6 +4,7 @@ import useCategoryStore from '../stores/categoryStore';
 import { categoryService } from '../services/categoryService';
 import TaskViewer from '../components/SecundaryComponents/MainTaskViewer/TaskViewer';
 import styles from './layout/MainLayout.module.css';
+import userService from '../services/userService';
 
 /**
  * HomePage Component
@@ -26,16 +27,17 @@ import styles from './layout/MainLayout.module.css';
 const HomePage = () => {
   const setCategories = useCategoryStore((state) => state.setCategories);
 
+
+
   useEffect(() => {
     const fetchCategories = async () => {
       const categories = await categoryService.getAllCategories();
       if (categories) {
         setCategories(categories);
       }
-    };
+    }; 
     fetchCategories();
   }, [setCategories]); 
-
   return (
     <div className={styles.rightContainer}>
         <TaskViewer />

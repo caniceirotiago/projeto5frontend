@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../../stores/authStore'; 
-import styles from './ForgotPasswordForm.module.css';
+import styles from './LoginForm.module.css';
 import Image from "../../assets/user-login.png";
 import  useTranslationStore  from '../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../translations';
+import {authService} from '../../services/authService';
+import DialogModalStore from '../../stores/DialogModalStore';
+import userService from '../../services/userService';
 
 /**
  * LoginForm Component
@@ -32,22 +35,40 @@ const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const { login, error } = useAuthStore(state => ({ login: state.login, error: state.error }));
-
+    const { token, setToken } = useAuthStore();
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            await login(username, password);
-            const token = useAuthStore.getState().token;
-            if (token) {
-                navigate('/home');
-            } else {
-                console.error('Login failed: No token received');
+            const response = await authService.login(username, password);
+            const responseBody = await response.json();
+            const token = responseBody.token;
+            if(token !== undefined && token !== null){
+                sessionStorage.setItem('token', token);
+                setToken(token); 
+                handleSussefulLogin();
+            }
+            else {
+                DialogModalStore.getState().setDialogMessage(responseBody.errorMessage);
+                DialogModalStore.getState().setIsDialogOpen(true);
+                DialogModalStore.getState().setAlertType(true);
+                DialogModalStore.getState().setOnConfirm(async () => {
+                });
             }
         } catch (error) {
             console.error('Login failed:', error);
         }
     };
+    const handleSussefulLogin = async () => {
+        const user = await userService.fetchUserBasicInfo(sessionStorage.getItem('token'));
+        console.log(user);
+        if(user){
+            sessionStorage.setItem('username', user.username);
+            sessionStorage.setItem('name', user.name);
+            sessionStorage.setItem('photoUrl', user.photoUrl);
+            sessionStorage.setItem('role', user.role);
+            navigate('/home');          
+        }
+    }
 
     return (
         <IntlProvider locale={locale} messages={languages[locale]}>
@@ -62,12 +83,22 @@ const LoginForm = () => {
                     <input className={styles.input} type="text" name="username" id="username" maxLength="25" placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} />
                     <label htmlFor="password" className={styles.label}><FormattedMessage id="password">Password</FormattedMessage></label>
                     <input className={styles.input} type="password" name="password" id="password" maxLength="25" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    {error && <div className={styles.errorMessage}>{error}</div>} 
                     <input className={styles.submit} type="submit" id="login" value="Login" />
                 </div>
             </form>
-            <div className={styles.signup}><FormattedMessage id="dontHaveAnAccount">Don't have an account?</FormattedMessage><Link to="/register"><FormattedMessage id="signUp">Sign up</FormattedMessage></Link></div>
-            <div className={styles.forgotPassword}><Link to="/forgot-password"><FormattedMessage id="forgotThePassword">Forgot the password?</FormattedMessage></Link></div>
+            <div className={styles.otherOptions}>
+                <div className={styles.signup}><FormattedMessage id="dontHaveAnAccount">Don't have an account?</FormattedMessage><Link to="/register"><FormattedMessage id="signUp">Sign up</FormattedMessage></Link></div>
+                <div className={styles.forgotPassword}><Link to="/forgot-password"><FormattedMessage id="forgotThePassword">Forgot the password?</FormattedMessage></Link></div>
+                <div className={styles.resendConfirmation}>
+                    <FormattedMessage id="didntReceiveConfirmationEmail">
+                        <span>Didn't receive the confirmation email? </span>
+                    </FormattedMessage>
+                    <Link to="/resend-email">
+                        <FormattedMessage id="resendEmail">Resend Email</FormattedMessage>
+                    </Link>
+                </div>
+            </div>
+
         </div>
       </IntlProvider>
     );

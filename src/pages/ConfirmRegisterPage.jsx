@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import userService from '../services/userService'; 
 import DialogModalStore from '../stores/DialogModalStore';
+import { Dialog } from '@mui/material';
 
 const ConfirmationPage = () => {
     const navigate = useNavigate();
@@ -21,15 +22,27 @@ const ConfirmationPage = () => {
 
         const performConfirmation = async () => {
             try {
-                await userService.confirmAccount(token); 
-                DialogModalStore.getState().setDialogMessage('Acount Confirmed!');
-                DialogModalStore.getState().setIsDialogOpen(true);
-                DialogModalStore.getState().setOnConfirm(async () => {
-                    navigate('/');
+                const response = await userService.confirmAccount(token); 
+                console.log('Response:', response.status);
+                if(response.status === 204) {
+                    DialogModalStore.getState().setDialogMessage('Acount Confirmed!');
+                    DialogModalStore.getState().setIsDialogOpen(true);
+                    DialogModalStore.getState().setAlertType(true);
+                    DialogModalStore.getState().setOnConfirm(async () => {
+                        navigate('/');
                 });
+                }else{
+                    DialogModalStore.getState().setDialogMessage('Error Confirming Account!');
+                    DialogModalStore.getState().setIsDialogOpen(true);
+                    DialogModalStore.getState().setAlertType(true);
+                    DialogModalStore.getState().setOnConfirm(async () => {
+                        navigate('/');
+                    });
+                }
+              
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error trying to confirm your account. Try again.');
+                alert('Error confirming account');
             }
         };
 
@@ -38,7 +51,7 @@ const ConfirmationPage = () => {
 
     return (
         <div className="confirmationPage">
-            <div>Confirming your Account...</div> 
+            <div></div> 
         </div>
     );
 };

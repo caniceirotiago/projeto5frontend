@@ -1,0 +1,49 @@
+/* src/components/QuaternaryComponents/CategoriesStatistics.module.css */
+.container {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--quaternary-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.header {
+    color: var(--quinary-color);
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+}
+
+.listItem {
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: var(--form-background);
+    border-left: 5px solid var(--primary-color);
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.listItem:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .header {
+        font-size: 18px; 
+    }
+
+    .listItem {
+        font-size: 14px; 
+    }
+}

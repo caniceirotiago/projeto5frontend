@@ -4,6 +4,7 @@ import userService from '../../services/userService';
 import  useTranslationStore  from '../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../translations';
+import DialogModalStore from '../../stores/DialogModalStore';
 
 const ResetPasswordForm = () => {
     const locale = useTranslationStore((state) => state.locale);
@@ -18,16 +19,38 @@ const ResetPasswordForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
-            alert('Passwords should be the same.');
+            DialogModalStore.getState().setDialogMessage('Passwords do not match');
+            DialogModalStore.getState().setIsDialogOpen(true);
+            DialogModalStore.getState().setAlertType(true);
+            DialogModalStore.getState().setOnConfirm(async () => {
+            });
+
             return;
         }
         try {
-            await userService.resetPassword(token, password);
-            alert('Password changed successfully!');
-            navigate('/'); 
+            console.log('token :', token);
+            const response = await userService.resetPassword(token, password);
+            console.log('response :', response);
+            if (response.status === 204) {
+                DialogModalStore.getState().setDialogMessage('Password Changed Successfully');
+                DialogModalStore.getState().setIsDialogOpen(true);
+                DialogModalStore.getState().setAlertType(true);
+                DialogModalStore.getState().setOnConfirm(async () => {
+                    navigate('/');
+                });
+                return;
+            }
+            const responseBody = await response.json();
+            console.log('responseBody :', responseBody);
+            
+            DialogModalStore.getState().setDialogMessage('Not able to change password, contact support.');
+            DialogModalStore.getState().setIsDialogOpen(true);
+            DialogModalStore.getState().setAlertType(true);
+            DialogModalStore.getState().setOnConfirm(async () => {
+                navigate('/');
+            });
         } catch (error) {
-            console.error('Error', error);
-            alert('Fail to change the password.');
+            console.error('Error :', error);
         }
     };
 
@@ -37,11 +60,11 @@ const ResetPasswordForm = () => {
                 <h2><FormattedMessage id="changePassword">Change Password</FormattedMessage></h2>
                 <label>
                     <FormattedMessage id="newPassword"> New Password:</FormattedMessage>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={4}/>
                 </label>
                 <label>
                 <FormattedMessage id="confirmPassword">Confirm Password:</FormattedMessage>
-                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required minLength={4}/>
                 </label>
                 <button type="submit"><FormattedMessage id="changePassword">Change Password</FormattedMessage></button>
             </form>

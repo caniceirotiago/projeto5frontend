@@ -12,8 +12,8 @@ export function validatePassword(password, confirmPassword) {
     return "";
 }
 export function validatePhone(phone) {
-    if (phone.length < 7 || phone.length > 20) {
-      return "Phone number must be between 7 and 20 characters.";
+    if (phone.length < 7 || phone.length > 15) {
+      return "Phone number must be between 7 and 15 characters.";
     }
     if (phone[0] === '+') {
       for (let i = 1; i < phone.length; i++) {

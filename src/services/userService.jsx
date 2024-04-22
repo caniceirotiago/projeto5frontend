@@ -1,6 +1,5 @@
-// src/services/userService.jsx
-const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/users";
-
+import useDomainStore from "../stores/domainStore";
+const API_BASE_URL = "http://" + useDomainStore.getState().domain + "/rest/users";
 /**
  * userService
  * Provides an interface to interact with the user-related backend services. It encapsulates
@@ -88,13 +87,7 @@ const userService = {
                 headers: getAuthHeaders(),
                 body: JSON.stringify(updatedUser),
             });
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to update user info: ${errorText}`);
-            }
-    
-            return await response.json(); 
+            return response; 
         } catch (error) {
             console.error("Error updating user info:", error.message);
             throw error;
@@ -110,14 +103,7 @@ const userService = {
                     newPassword: newPassword, 
                 }),
             });
-
-            if (!response.ok) {
-        
-                const errorText = await response.text();
-                throw new Error(`Failed to update password: ${errorText}`);
-            }
-            const result = await response.json();
-            return result; 
+            return response;
         } catch (error) {
             console.error("Error updating password:", error.message);
             throw error;
@@ -141,25 +127,6 @@ const userService = {
             throw error;
         }
     },
-    fetchUserInfoByUsername: async (username) => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/userinfo/${username}`, {
-                method: "GET",
-                headers: getAuthHeaders(),
-            });
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to fetch user info: ${errorText}`);
-            }
-    
-            const userInfo = await response.json();
-            return userInfo;
-        } catch (error) {
-            console.error("Error fetching user info by username:", error.message);
-            throw error;
-        }
-    },
     updateUserByUsername: async ( username, updatedUser) => {
         try {
             const response = await fetch(`${API_BASE_URL}/otheruser`, {
@@ -171,13 +138,8 @@ const userService = {
                 },
                 body: JSON.stringify(updatedUser),
             });
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to update user data: ${errorText}`);
-            }
-    
-            return await response.json(); 
+ 
+            return response; 
         } catch (error) {
             console.error("Error updating user data:", error.message);
             throw error;
@@ -192,13 +154,7 @@ const userService = {
                     "userToDeleteUsername": username,
                 },
             });
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to delete user permanently: ${errorText}`);
-            }
-    
-            return await response.json();
+            return response;
         } catch (error) {
             console.error("Error deleting user permanently:", error.message);
             throw error;
@@ -207,18 +163,12 @@ const userService = {
     confirmAccount: async (token) => {
         try {
             const response = await fetch(`${API_BASE_URL}/confirm?token=${token}`, {               
-                method: "POST", // Ou POST, dependendo de como você configurou seu backend
+                method: "POST", 
                 headers: { "Content-Type": "application/json" },
             });
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Falha na confirmação da conta: ${errorText}`);
-            }
-    
-            return await response.json(); // Ou qualquer outra ação que você deseja realizar após a confirmação ser bem-sucedida
+            return response; 
         } catch (error) {
-            console.error("Erro na confirmação da conta:", error.message);
+            console.error("Error confirming account:", error.message);
             throw error;
         }
     },
@@ -231,10 +181,8 @@ const userService = {
                 },
                 body: JSON.stringify({ email }),
             });
-            if (!response.ok) {
-                throw new Error('Falha na solicitação de redefinição de senha');
-            }
-            return await response.json();
+            
+            return response;
         } catch (error) {
             console.error("Erro na solicitação de redefinição de senha:", error);
             throw error;
@@ -250,15 +198,28 @@ const userService = {
                 },
                 body: JSON.stringify({ token, newPassword }),
             });
-            if (!response.ok) {
-                throw new Error('Falha na redefinição de senha');
-            }
-            return await response.json();
+            return response;
         } catch (error) {
             console.error("Erro na redefinição de senha:", error);
             throw error;
         }
     },
+    requestNewConfirmationEmail: async (email) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/request-confirmation-email`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+            
+            return response;
+        } catch (error) {
+            console.error("Erro ao solicitar novo e-mail de confirmação:", error);
+            throw error;
+        }
+    }
     
 };
 

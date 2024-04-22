@@ -1,5 +1,5 @@
-// src/services/taskService.jsx
-const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/tasks";
+import useDomainStore from "../stores/domainStore";
+const API_BASE_URL = "http://" + useDomainStore.getState().domain + "/rest/tasks";
 
 /**
  * taskService
@@ -151,10 +151,11 @@ const taskService = {
         }
       },
       editTask: async (taskData) => {
+        console.log("taskData", taskData);
 
         try {
           const response = await fetch(`${API_BASE_URL}/${taskData.id}`, {
-            method: "PATCH",
+            method: "POST",
             headers: getAuthHeaders(),
             body: JSON.stringify(taskData)
           });

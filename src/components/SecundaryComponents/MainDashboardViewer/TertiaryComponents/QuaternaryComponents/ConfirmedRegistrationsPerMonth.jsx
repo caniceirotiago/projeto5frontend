@@ -1,6 +1,7 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import statisticsStore from '../../../../../stores/statisticsStore'; 
+import style from './ConfirmedRegistrationsPerMonth.module.css'
 
 const ConfirmedRegistrationsPerMonth = () => {
     const data = statisticsStore(state => state.usersPerMonth);
@@ -17,26 +18,25 @@ const ConfirmedRegistrationsPerMonth = () => {
         return {
             month: month.toLocaleString('default', { month: 'short', year: 'numeric' }), 
             users: data[monthKey] || 0 
-            
         };
     }).reverse(); 
 
     return (
-        <div>
+        <div className={style.graphic}>
             <h3>Monthly User Registration Statistics</h3>
-            <BarChart
-                width={600}
-                height={300}
-                data={last12Months}
-                margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="users" fill="#8884d8" name="Users Confirmed" />
-            </BarChart>
+            <ResponsiveContainer width="100%"  height={200}>
+                <LineChart
+                    data={last12Months}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis allowDecimals={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="users" stroke="#8884d8" activeDot={{ r: 8 }} />
+                </LineChart>
+            </ResponsiveContainer>
         </div>
     );
 };

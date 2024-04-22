@@ -8,12 +8,6 @@
   flex-direction: column;
 }
 
-
-
-.signup {
-  margin-top: 10px;
-  color: white;
-}
 .banner {
     background-color: rgba(231, 237, 242, 0.2); 
     padding: 15px;
@@ -99,5 +93,38 @@
   .errorMessage {
     color: red;
     font-size: 0.8rem;
+    
   }
+
+  .otherOptions {
+    background-color: rgba(255, 255, 255, 0.3);
+    width: 300px;
+    padding: 0px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    animation: slide-in 0.5s ease-out;
+    transition: transform 0.2s ease; 
+    margin-top: 40px; 
+    color : var(--text-color);
+    text-align: center;
+  }
+  
+  .otherOptions > div {
+    margin-bottom: 10px; 
+  }
+  
+  .otherOptions a {
+    color: var(--todo-color); 
+    text-decoration: none; 
+    transition: color 0.3s; 
+  }
+  
+  .otherOptions a:hover {
+    color: var(--text-color); 
+  }
+  
+  .otherOptions span {
+    color : var(--text-color);
+  }
+  
   

@@ -15,8 +15,9 @@ import { FaComments } from 'react-icons/fa'; // Importe o ícone de chat
 const UserCard = ({ user, onClick  }) => {
     const bannerClass = user.deleted ? `${styles.cardBanner} ${styles.cardBannerInactive}` : styles.cardBanner;
     const navigate = useNavigate();
-    const onProfileClick = () => {
+    const onProfileClick = (e) => {
         navigate(`/userProfile/${user.username}`);
+        e.stopPropagation(); 
     }
     const { openChatModal } = useChatModalStore();
     const handleOpenChat = (e) => {
@@ -41,8 +42,8 @@ const UserCard = ({ user, onClick  }) => {
                         <img src={profileIcon} alt="Profile" />
                     </button>
                     <button className={styles.chatButton} onClick={handleOpenChat}>
-                    <FaComments /> {/* Usando o ícone de chat */}
-                </button>
+                    <FaComments /> 
+                    </button>
                 </div>
             </div>
         </div>

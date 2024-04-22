@@ -9,6 +9,8 @@ import {useChatWebSocket} from '../../services/websockets/useChatWebSocket';
 import  useTranslationStore  from '../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../translations';
+import useDomainStore from "../../stores/domainStore";
+
 
 const ChatModal = () => {
     const locale = useTranslationStore((state) => state.locale);
@@ -19,7 +21,7 @@ const ChatModal = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     
-    const wsUrl = `ws://localhost:8080/projeto5backend/chat/${sessionStorage.getItem('token')}`; 
+    
 
     const handleMessage = useCallback((message) => {
         console.log("Received message: ", message);
@@ -56,16 +58,13 @@ const ChatModal = () => {
             return newMessages;
         });
     }, []);
-      
-    
-    const { sendMessage } = useChatWebSocket(wsUrl, isChatModalOpen, handleMessage, closeChatModal, updateMessages);
 
     useEffect(() => {
         if (isChatModalOpen && selectedChatUser) {
             setLoading(true);
             messageService.getMessagesBetweenUsers(sessionStorage.getItem('username'), selectedChatUser.username)
                 .then(fetchedMessages => {
-                    const messagesToUpdate = fetchedMessages.filter(msg => !msg.read);
+                    const messagesToUpdate = fetchedMessages.filter(msg => !msg.read && msg.receiverUsername === sessionStorage.getItem('username'));
                     
                     setMessages(fetchedMessages.map(msg => ({
                         ...msg,
@@ -88,8 +87,22 @@ const ChatModal = () => {
                     setLoading(false);
                 });
         }
-    }, [selectedChatUser, isChatModalOpen]);
+    }, [ isChatModalOpen]);
+    
+    const [wsUrl, setWsUrl] = useState(null);
 
+    useEffect(() => {
+        console.log("Selected Chat User:", selectedChatUser);
+        if (selectedChatUser && selectedChatUser.username) {
+            const newWsUrl = `ws://${useDomainStore.getState().domain}/chat/${sessionStorage.getItem('token')}/${selectedChatUser.username}`;
+            setWsUrl(newWsUrl);
+        }
+    }, [selectedChatUser]);
+    
+    const { sendMessage } = useChatWebSocket(wsUrl, isChatModalOpen && wsUrl, handleMessage, closeChatModal, updateMessages);
+    
+    
+    
     const messagesEndRef = useRef(null); 
 
     const scrollToBottom = () => {
@@ -120,6 +133,7 @@ const ChatModal = () => {
         }
     };
     const handleMarkAsRead = (messagesToUpdate) => {
+        console.log("Marking messages as read:", messagesToUpdate);
         const messagesIds = messagesToUpdate.map(msg => msg.id);
         const dataToSend = {
             type: 'markAsRead',

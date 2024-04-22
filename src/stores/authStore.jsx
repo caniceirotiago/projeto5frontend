@@ -24,19 +24,14 @@ import  userService  from '../services/userService';
 
 const useAuthStore = create((set,get) => ({
     token: null,
+    userBasicInfo: null,
 
-    login: async (username, password) => {
-        try {
-            const data = await authService.login(username, password);
-            set({ token: data.token });
-            sessionStorage.setItem('token', data.token); 
-            await get().fetchUserBasicInfo(data.token);
-            console.log(username);
-        } catch (error) {
-            console.error("Error during login:", error.message);
-            set({ error: 'Login failed. Please check your credentials and try again.', isLoading: false });
-        }
+    setToken: (token) => {
+        set(() => ({
+          token: token,                
+        }));
     },
+
     logout: async () => {
         set(() => ({
           token: null,                
@@ -57,6 +52,9 @@ const useAuthStore = create((set,get) => ({
             console.log(userBasicInfo);
             sessionStorage.setItem("role", userBasicInfo.role);
             sessionStorage.setItem("username", userBasicInfo.username);
+            sessionStorage.setItem("name", userBasicInfo.name);
+            sessionStorage.setItem("photoUrl", userBasicInfo.photoUrl);
+            
             
             set({ userBasicInfo });
         } catch (error) {

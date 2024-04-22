@@ -6,11 +6,9 @@
     justify-content: center;
     min-height: calc(100vh - 2px);
     flex-direction: column;
+    margin-top: 50px;
   }
-.signup {
-  margin-top: 10px;
-  color: white;
-}
+
 .banner {
     background-color: rgba(231, 237, 242, 0.2); 
     padding: 15px;

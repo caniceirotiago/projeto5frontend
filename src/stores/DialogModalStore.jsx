@@ -1,4 +1,3 @@
-// src/stores/layoutStore.js
 import {create} from 'zustand';
 
 /**
@@ -25,10 +24,12 @@ const DialogBoxStore = create((set, get) => ({
   dialogMessage: '',
   userConfirmed: false,
   onConfirm: null,
+  isAlertType: false,
     setIsDialogOpen: (isOpen) => set({ isDialogOpen: isOpen }),
     setDialogMessage: (message) => set({ dialogMessage: message }),
     setOnConfirm: (callback) => set(() => ({ onConfirm: callback })), 
-    clearDialog: () => set({ isDialogOpen: false, dialogMessage: '', userConfirmed: false }),
+    setAlertType: (isAlert) => set({isAlertType: isAlert}),
+    clearDialog: () => set({ isDialogOpen: false, dialogMessage: '', userConfirmed: false, isAlertType: false}),
 }));
 
 export default DialogBoxStore;

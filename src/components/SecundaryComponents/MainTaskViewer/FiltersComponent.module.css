@@ -56,3 +56,8 @@
   color: var(--text-color2); 
   transform: scale(1.03); 
 }
+@media (max-width: 768px) {
+  button.clearFilters, .filtersContainer select {
+    max-width: 90px;
+  }
+} 

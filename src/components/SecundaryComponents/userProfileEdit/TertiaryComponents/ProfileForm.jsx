@@ -76,7 +76,7 @@ const ProfileForm = ({ userProfile, onUpdateUserProfile , isOwnProfile}) => {
             value={profile.email}
             onChange={handleInputChange}
             placeholder="Enter your email"
-            disabled={!isEditing}
+            disabled={true}
           />
         </div>
 

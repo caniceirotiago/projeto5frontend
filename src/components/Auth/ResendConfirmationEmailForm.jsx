@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import userService from '../../services/userService';
-import styles from './ForgotPasswordForm.module.css';
+import styles from './LoginForm.module.css';
 import useTranslationStore from '../../stores/useTranslationsStore';
 import {IntlProvider, FormattedMessage} from "react-intl";
 import languages from '../../translations';
 import DialogModalStore from '../../stores/DialogModalStore';
-import { useNavigate } from 'react-router-dom';
 
 
-const ForgotPasswordForm = () => {
+const ResendConfirmationEmailForm = () => {
     const locale = useTranslationStore((state) => state.locale);
     const navigate = useNavigate();
-
     const [email, setEmail] = useState('');
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await userService.requestPasswordReset(email);
+            const response = await userService.requestNewConfirmationEmail(email);
             if (response.status === 204) {
-                DialogModalStore.getState().setDialogMessage('Recover password Email Sent');
+                DialogModalStore.getState().setDialogMessage('Confirmation Email Sent');
                 DialogModalStore.getState().setIsDialogOpen(true);
                 DialogModalStore.getState().setAlertType(true);
                 DialogModalStore.getState().setOnConfirm(async () => {
@@ -30,11 +27,10 @@ const ForgotPasswordForm = () => {
             }
             const responseBody = await response.json();
             console.log('responseBody :', responseBody);
-            if(responseBody.errorMessage === "You already requested a password reset, please check your email, wait" +
-            " 30 minutes and try again, or contact the administrator"){
-                DialogModalStore.getState().setDialogMessage('You already requested a password reset, please check your email, wait30 minutes and try again, or contact the administrator');
+            if(responseBody.errorMessage === "You can't request a new confirmation email now, please wait 1 minute"){
+                DialogModalStore.getState().setDialogMessage('You can not request a new confirmation email now, please wait 1 minute');
             }
-            else DialogModalStore.getState().setDialogMessage('Not able to send email, contact support.');
+            else DialogModalStore.getState().setDialogMessage('Not able to send confirmation email, contact support.');
             DialogModalStore.getState().setIsDialogOpen(true);
             DialogModalStore.getState().setAlertType(true);
             DialogModalStore.getState().setOnConfirm(async () => {
@@ -51,16 +47,16 @@ const ForgotPasswordForm = () => {
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.banner}>
                         <img src={Image} alt="IMG" className={styles.loginIcon}/>
-                        <p className={styles.memberLoginBanner}><FormattedMessage id="recoverPassword">Recover Password</FormattedMessage></p>
+                        <p className={styles.memberLoginBanner}><FormattedMessage id="resendConfirmationEmail">Resend Confirmation Email</FormattedMessage></p>
                     </div>
                     <label htmlFor="email">Email</label>
-                    <input className={styles.input} type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    <button className={styles.button} type="submit"><FormattedMessage id="askForNewPassword">Ask for new password</FormattedMessage></button>
-                    <button className={styles.button} onClick={() => navigate('/')}><FormattedMessage id="backToLogin">Back to login</FormattedMessage></button>
+                    <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <button type="submit"><FormattedMessage id="askForNewConfirmation">Ask for Confirmation</FormattedMessage></button>
                 </form>
+                <div><Link to="/"><FormattedMessage id="backToLogin">Back to login</FormattedMessage></Link></div>
             </div>
         </IntlProvider>
     );
 };
 
-export default ForgotPasswordForm;
+export default ResendConfirmationEmailForm;

@@ -8,8 +8,8 @@
  * response, including handling errors by throwing exceptions with meaningful messages.
  */
 
-
-const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/users";
+import useDomainStore from "../stores/domainStore";
+const API_BASE_URL = "http://" + useDomainStore.getState().domain + "/rest/users";
 
 const login = async (username, password) => {
   let userLogin = { username, password };
@@ -22,13 +22,7 @@ const login = async (username, password) => {
       },
       body: JSON.stringify(userLogin),
     });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Login failed');
-    }
-    const data = await response.json();
-    return data;
+    return response;
   } catch (error) {
     throw error;
   }
@@ -43,13 +37,7 @@ const register = async (userData) => {
       },
       body: JSON.stringify(userData),
     });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Registration failed');
-    }
-
-    return await response.json();
+    return response;
   } catch (error) {
     throw error; 
   }

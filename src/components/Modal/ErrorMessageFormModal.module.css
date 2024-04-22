@@ -59,3 +59,9 @@
 .modalButtons button:nth-child(2):hover {
     background-color: #66bb6a;
 }
+@media (max-width: 768px) {
+    .modalContent {
+      width: 73%;
+    }
+  }
+  

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import statisticsStore from '../../../../../stores/statisticsStore'; 
 import { subWeeks, format } from 'date-fns';
 
@@ -25,19 +25,21 @@ const TasksCompletedPerWeek = () => {
     return (
         <div>
             <h3>Weekly Task Completion Statistics</h3>
-            <BarChart
-                width={600}
-                height={300}
-                data={last52Weeks}
-                margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="week" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="tasks" fill="#82ca9d" name="Tasks Completed" />
-            </BarChart>
+            <ResponsiveContainer width="100%" height={200}>
+                <BarChart
+                    width={600}
+                    height={300}
+                    data={last52Weeks}
+                    margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="week" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="tasks" fill="#82ca9d" name="Tasks Completed" />
+                </BarChart>
+            </ResponsiveContainer>
         </div>
     );
 };

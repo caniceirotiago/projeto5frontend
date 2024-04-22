@@ -102,3 +102,22 @@ body.theme-dark {
 .Toastify__close-button {
    display: none;
 }
+
+/* Spinner */
+@keyframes spin {
+   0% { transform: rotate(0deg); }
+   100% { transform: rotate(360deg); }
+ }
+ 
+ .spinner {
+   border: 8px solid var(--background-color); 
+   border-top: 8px solid var(--todo-color); 
+   border-radius: 50%;
+   width: 50px;
+   height: 50px;
+   animation: spin 2s linear infinite;
+   position: fixed;
+   z-index: 1000;
+   transform: translate(-50%, -50%);
+ }
+ 

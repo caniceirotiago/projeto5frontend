@@ -1,0 +1,21 @@
+.statisticsContainer {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--quaternary-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: var(--text-color);
+    margin-bottom: 20px;
+    grid-column: span 1;
+}
+
+.statisticHeader {
+    color: var(--quinary-color);
+    margin-bottom: 15px;
+}
+
+.statisticData {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 5px 0;
+}

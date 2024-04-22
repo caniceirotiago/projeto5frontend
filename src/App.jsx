@@ -23,6 +23,9 @@ import ResetPasswordForm from './components/Auth/ResetPasswordForm';
 import ChatModal from './components/Modal/ChatModal';
 import {useNotificationWebSocket} from './services/websockets/useNotificationWebSocket';
 import useNotificationStore from './stores/useNotificationStore';
+import ResendEmailPage from './pages/ResendEmailPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+
 
 /**
  * App Component
@@ -92,8 +95,8 @@ function App() {
             <Route path="/dashboard" element={<ProtectedRoute><MainLayout><DashboardPage /></MainLayout></ProtectedRoute>} />
             <Route path="/confirm" element={<ConfirmationPage />} />
             <Route path="forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordForm />} />
-
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/resend-email" element={<ResendEmailPage />} />
         </Routes>
       </Router>
     </>

@@ -1,5 +1,5 @@
-// src/services/messageService.js
-const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/messages";
+import useDomainStore from "../stores/domainStore";
+const API_BASE_URL = "http://" + useDomainStore.getState().domain + "/rest/messages";
 
 const getAuthHeaders = () => {
     const token = sessionStorage.getItem('token');

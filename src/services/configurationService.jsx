@@ -1,5 +1,5 @@
-// src/services/configurationService.jsx
-const API_BASE_URL = "http://localhost:8080/projeto5backend/rest/config";
+import useDomainStore from "../stores/domainStore";
+const API_BASE_URL = "http://" + useDomainStore.getState().domain + "/rest/config";
 
 const getAuthHeaders = () => {
     const token = sessionStorage.getItem('token');

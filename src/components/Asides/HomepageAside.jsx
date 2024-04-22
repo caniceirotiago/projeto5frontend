@@ -2,7 +2,7 @@
 import React, { useEffect , useState} from 'react';
 import styles from './HomepageAside.module.css';
 import useLayoutStore from '../../stores/layoutStore';
-import { FaArrowLeft, FaArrowRight, FaPlus, FaProjectDiagram, FaTasks, FaRunning, FaUsers, FaClipboardList, FaTags, FaChartLine } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaPlus, FaProjectDiagram, FaTasks, FaRunning, FaUsers, FaClipboardList, FaTags, FaChartLine,  } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import AccessControl from '../Auth/AcessControl';
 import { IntlProvider, FormattedMessage } from "react-intl";
@@ -56,22 +56,10 @@ const HomepageAside = () => {
                 <button onClick={toggleAside} className={styles.toggleButton}>
                     {isAsideExpanded ? <FaArrowLeft /> : <FaArrowRight />}
                 </button>
-                <div className={styles.menuItem}>
-                    <FaPlus className={styles.icon} />
-                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="createProject">Create Project</FormattedMessage></span>
-                </div>
-                <div className={styles.menuItem}>
-                    <FaProjectDiagram className={styles.icon} />
-                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="selectProject">Select Project</FormattedMessage></span>
-                </div>
-                <div className={styles.menuItem}>
+                <Link to="/home" className={styles.menuItem}>
                     <FaTasks className={styles.icon} />
-                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="backlogManager">Backlog Manager</FormattedMessage></span>
-                </div>
-                <div className={styles.menuItem}>
-                    <FaRunning className={styles.icon} />
-                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="sprintSelector">Sprint Selector</FormattedMessage></span>
-                </div>
+                    <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="taskBoard">Task Board</FormattedMessage></span>
+                </Link>         
                 <AccessControl roles={["scrumMaster", "productOwner", "developer"]}>
                     <Link to="/users" className={styles.menuItem}>
                         <FaUsers className={styles.icon} />
@@ -89,7 +77,7 @@ const HomepageAside = () => {
                     </Link>
                     <Link to="/dashboard" className={styles.menuItem}>
                         <FaChartLine className={styles.icon} />
-                        <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="categories">Dashboard</FormattedMessage></span>
+                        <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="dashboard">Dashboard</FormattedMessage></span>
                     </Link>
                 </AccessControl> 
             </aside>

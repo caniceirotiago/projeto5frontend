@@ -13,7 +13,7 @@ import {useNotificationWebSocket} from '../../services/websockets/useNotificatio
 import useTranslationStore from '../../stores/useTranslationsStore';
 import {IntlProvider, FormattedMessage} from "react-intl";
 import languages from '../../translations';
-
+import useDeviceStore from '../../stores/useDeviceStore.jsx'
 
 
 /**
@@ -38,6 +38,7 @@ import languages from '../../translations';
 
 
 const HomepageHeader = () => {
+  const { dimensions, setDimensions, isTouch, deviceType, setDeviceType } = useDeviceStore(); 
   const loggedUser = sessionStorage.getItem('username');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationListOpen, setIsNotificationListOpen] = useState(false);
@@ -68,10 +69,6 @@ const HomepageHeader = () => {
   }
 
     useEffect(() => {
-        const storedToken = sessionStorage.getItem('token');
-        if (storedToken && !token) {
-           fetchUserBasicInfo();
-        }
         fetchNotifications();
     }, [ token, ]);
 
@@ -101,13 +98,8 @@ const HomepageHeader = () => {
     await notificationService.markMessageNotificationsAsRead(userId);
     fetchNotifications();
   };
-
-  
-  const isActive = (path) => {return location.pathname === path;};
-  const getNavItemClass = (path) => isActive(path) ? `${styles.navItem} ${styles.active}` : styles.navItem;
-
-  const username = userBasicInfo?.name || "Username";
-  const photoUrl = userBasicInfo?.photoUrl || "path/to/default/photo.png"; 
+  const username = sessionStorage.getItem("username");
+  const photoUrl = sessionStorage.getItem("photoUrl") ; 
 
   const handleNotificationClick = (type, userId) => {
     
@@ -126,13 +118,13 @@ const HomepageHeader = () => {
         <div className={styles.logoContainer} onClick={() => navigate('/home')}>
           <img src={logo} alt="Logo" className={styles.logo} />
         </div>
-        <nav className={styles.topnav}>
-          <div  className={getNavItemClass('/home')} onClick={() => navigate('/home')}><FormattedMessage id="homePagebtn">Homepage</FormattedMessage></div>
-        </nav>
+        
         <div className={styles.rightAligned}>
-          <div className={styles.usernameDisplay} onClick={() => navigate(`/userProfile/${loggedUser}`)}>
-            {username}
-          </div>
+          {dimensions.width >= 768 && 
+            <div className={styles.usernameDisplay} onClick={() => navigate(`/userProfile/${loggedUser}`)}>
+              {username}
+            </div>
+          }
           <div className={styles.userPhoto} onClick={() => navigate(`/userProfile/${loggedUser}`)}>
             <img src={photoUrl} alt="User" className={styles.userImage} /> 
           </div>

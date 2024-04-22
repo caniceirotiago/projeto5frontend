@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import styles from './Task.module.css';
 import TaskAction from './QuaternaryComponents/TaskAction';
 import { taskService } from '../../../../services/taskService';
 import toastStore from '../../../../stores/toastMessageStore'; 
 import DialogModalStore from '../../../../stores/DialogModalStore';
+import { Draggable } from 'react-beautiful-dnd';
+import useDeviceStore from '../../../../stores/useDeviceStore.jsx'
+
 
 /**
  * Task is a React component designed to display an individual task's details and allow interaction based on its status
@@ -31,7 +34,8 @@ import DialogModalStore from '../../../../stores/DialogModalStore';
  * - username: The username of the task's author, used for permission checks.
  */
 
-const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , updateDeletedTasks, username, setTasks}) => {
+const Task = forwardRef(({ task, column, updateTasks, handleTaskClick, mode , updateDeletedTasks, username, setTasks}, ref) => {
+  const { isTouch } = useDeviceStore(); 
   const [showActions, setShowActions] = useState(false); 
   const handleMouseEnter = () => setShowActions(true);
   const handleMouseLeave = () => setShowActions(false);
@@ -116,10 +120,6 @@ const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , up
     }
   };
 
-  const handleDragStart = (e, taskId) => {
-    e.dataTransfer.setData('application/reactflow', taskId.toString()); 
-    e.dataTransfer.effectAllowed = 'move';
-  };
 
   const handlePermDelete = async () => {
     DialogModalStore.getState().setDialogMessage('Are you sure you want to delete this task permanently?');
@@ -166,7 +166,7 @@ const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , up
       draggable={true} 
       onMouseEnter={handleMouseEnter} 
       onMouseLeave={handleMouseLeave} 
-      onDragStart={(e) => handleDragStart(e, task.id)}>
+      >
       <div className={bannerStyle}>
           <div className={styles.titleOnBanner}>
             <div className={styles.titleOnBannerCapsule}>
@@ -182,17 +182,21 @@ const Task = React.memo(({ task, column, updateTasks, handleTaskClick, mode , up
       </div>
       <div className={`${styles.priorityDiv} ${getPriorityClassName(task.priority)}`}></div>
       <div className={getPriorityClassName(task.priority)}></div>
-      <TaskAction 
-      column={column} 
-      isVisible={showActions} 
-      onDelete={handleDeleteTask} 
-      onMoveLeft={handleMoveLeft} 
-      onMoveRight={handleMoveRight}
-      onPermDelete={handlePermDelete}
-      onRecycle={handleRecycle}
-      mode={mode}
-      username={username}
-      canDelete={canDelete}/>  
+      {!isTouch && 
+        <TaskAction 
+          column={column} 
+          isVisible={showActions} 
+          onDelete={handleDeleteTask} 
+          onMoveLeft={handleMoveLeft} 
+          onMoveRight={handleMoveRight}
+          onPermDelete={handlePermDelete}
+          onRecycle={handleRecycle}
+          mode={mode}
+          username={username}
+          canDelete={canDelete}
+        />  
+      }
+      
     </li>
   );
 });

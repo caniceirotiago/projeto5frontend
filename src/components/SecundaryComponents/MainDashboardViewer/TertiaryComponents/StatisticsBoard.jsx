@@ -1,4 +1,4 @@
-// src/components/StatisticsBoard.jsx
+
 import React, { useEffect } from 'react';
 import UsersStatistics from './QuaternaryComponents/UsersStatistics'; 
 import TasksStatistics from './QuaternaryComponents/TasksStatistics';
@@ -9,9 +9,11 @@ import ConfirmedRegistrationsPerMonth from './QuaternaryComponents/ConfirmedRegi
 import TasksCompletedPerWeek from './QuaternaryComponents/TasksCompletedPerWeek';
 import { useWebSocket } from '../../../../services/websockets/useWebSocket';
 import { handleWebSocketMessage } from '../../../../services/websockets/websocketService';
+import style from './StatisticsBoard.module.css'
+import useDomainStore from "../../../../stores/domainStore";
 
 const StatisticsBoard = () => {
-  const wsUrl = 'ws://localhost:8080/projeto5backend/dashboard'; 
+  const wsUrl = 'ws:/' + useDomainStore.getState().domain + '/dashboard'; 
 
   useWebSocket(wsUrl, handleWebSocketMessage);
     const updateUserStatistics = statisticsStore((state) => state.updateUserStatistics);
@@ -33,13 +35,19 @@ const StatisticsBoard = () => {
         fetchUserStatistics();
       }, [updateUserStatistics]);
   return (
-    <div>
-      <h2>Statistics Board</h2>
-      <UsersStatistics /> 
-      <TasksStatistics />
-      <CategoriesStatistics />
-      <ConfirmedRegistrationsPerMonth />
-      <TasksCompletedPerWeek />
+    <div className={style.board}>
+      
+      <div className={style.usersSection}>
+        <UsersStatistics /> 
+        <ConfirmedRegistrationsPerMonth />
+      </div>
+      <div className={style.tasksSection}>
+        <TasksCompletedPerWeek />
+        <TasksStatistics />         
+      </div>
+      <div className={style.categoriesSection}>
+          <CategoriesStatistics />
+      </div>
     </div>
   );
 };

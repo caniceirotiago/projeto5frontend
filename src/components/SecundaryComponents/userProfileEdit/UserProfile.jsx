@@ -104,10 +104,13 @@ const UserProfile = ({ onUpdateSuccess }) => {
 }
 const onUpdateUserProfile = async (updatedProfile) => {
   try {
-    const { username, ...profileData } = updatedProfile;
+    const { username, email, ...profileData } = updatedProfile;
     const result = await userService.updateUser(profileData);
-    notify('Profile updated successfully');
-    onUpdateSuccess();
+    if(result.status === 204){
+      notify('Profile updated successfully');
+      onUpdateSuccess();
+    }
+    else notify('Failed to update profile. Please try again.');
   } catch (error) {
     console.error("Failed to update user profile:", error);
     notify('Failed to update profile. Please try again.');
@@ -115,10 +118,10 @@ const onUpdateUserProfile = async (updatedProfile) => {
 };
 const onUpdateUserPassword = async (oldPassword, newPassword) => {
   try {
-    await userService.updateUserPassword(oldPassword, newPassword);
-
-    notify('Password updated successfully');
-
+    const response = await userService.updateUserPassword(oldPassword, newPassword);
+    console.log("response: ", response);
+    if(response.status === 204) notify('Password updated successfully');
+    else notify('Failed to update password. Please try again.');
   } catch (error) {
     notify('Failed to update password. Please try again.');
   }

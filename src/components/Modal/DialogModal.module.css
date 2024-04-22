@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.1); 
-    z-index: 1000;
+    z-index: 9000;
 }
 
 .modalContent {
@@ -60,3 +60,8 @@
 .modalButtons button:nth-child(2):hover {
     background-color: #66bb6a;
 }
+@media (max-width: 768px) {
+    .modalContent {
+      width: 73%;
+    }
+  }

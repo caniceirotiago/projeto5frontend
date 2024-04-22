@@ -6,6 +6,10 @@ import { taskService } from '../../services/taskService';
 import  useTranslationStore  from '../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../translations';
+import DialogModalStore from '../../stores/DialogModalStore';
+import toastStore from '../../stores/toastMessageStore'; 
+
+
 
 /**
  * TaskModal Component
@@ -35,7 +39,7 @@ import languages from '../../translations';
  * - handleSubmit: Handles form submission for adding/editing a task.
  */
 
-const TaskModal = ({ isOpen, onClose, onSubmit , task, mode }) => {
+const TaskModal = ({ isOpen, onClose, onSubmit , task, mode, setTasks }) => {
   const locale = useTranslationStore((state) => state.locale);
 
   const [formData, setFormData] = useState({
@@ -95,6 +99,22 @@ const TaskModal = ({ isOpen, onClose, onSubmit , task, mode }) => {
   const onEditClick = (e) => {
         setIsEditing(true);
   } 
+  const handleDeleteTask = async () => {
+    console.log(task);
+    DialogModalStore.getState().setDialogMessage('Are you sure you want to delete this task?');
+    DialogModalStore.getState().setIsDialogOpen(true);
+    DialogModalStore.getState().setOnConfirm(async () => {
+      const updateData = { deleted: true, id: task}  
+      setTasks((prevTasks) => prevTasks.filter(t => t.id !== task));
+      const result = await taskService.editTask(updateData); 
+      if (result) {
+        toastStore.getState().setMessage('Task temporarily deleted (' + task + ")");
+        onClose();
+
+      }
+    });
+  };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -158,7 +178,8 @@ const TaskModal = ({ isOpen, onClose, onSubmit , task, mode }) => {
             </select>
             {canEdit &&  
               (<>{mode !== "deleted" && 
-                (<>{!isEditing ? (<button name="edit" type="button" onClick={onEditClick} className={styles.editButton}> Edit</button>
+                (<>{!isEditing ? (<><button name="edit" type="button" onClick={onEditClick} className={styles.editButton}> Edit</button>
+                <button name="delete" type="button" onClick={handleDeleteTask} className={styles.deleteButton}> Delete</button></>
                           ) : (
                     <button name="save" type="button"className={styles.saveButton} onClick={handleSubmit}>Save </button>)}</>
             )}</>)}
