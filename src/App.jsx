@@ -27,6 +27,7 @@ import ResendEmailPage from './pages/ResendEmailPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import { IntlProvider } from 'react-intl';
 import languages from './translations';
+import SettingsPage from './pages/SettingsPage';
 
 
 /**
@@ -96,6 +97,7 @@ function App() {
               <Route path="/tasks" element={<ProtectedRoute><MainLayout><DeletedTasksManagerPage /></MainLayout></ProtectedRoute>} />
               <Route path="/categories" element={<ProtectedRoute><MainLayout><CategoriesManagerPage /></MainLayout></ProtectedRoute>} />
               <Route path="/dashboard" element={<ProtectedRoute><MainLayout><DashboardPage /></MainLayout></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><MainLayout><SettingsPage /></MainLayout></ProtectedRoute>} />
               <Route path="/confirm" element={<ConfirmationPage />} />
               <Route path="forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />

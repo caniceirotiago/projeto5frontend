@@ -27,6 +27,7 @@ const StatisticsBoard = () => {
           if (data) {
             updateUserStatistics(data.usersStatistics); 
             updateTasksStatistics(data.tasksStatistics);
+            console.log(data.categoryStatistics.categories);
             updateCategoriesStatistics(data.categoryStatistics.categories); 
 
           }

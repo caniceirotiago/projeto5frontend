@@ -23,7 +23,7 @@ const statisticsStore = create((set) => ({
   averageCompletionTime: 0,
   tasksPerWeek: new Map(),
   //Categories statistics
-  categories: [],
+  categories: new Map(),
   
   updateUserStatistics: ({totalUsers, confirmedUsers, unconfirmedUsers, averageTasksPerUser, usersPerMonth}) => {
     console.log('Updating user statistics:', { usersPerMonth });

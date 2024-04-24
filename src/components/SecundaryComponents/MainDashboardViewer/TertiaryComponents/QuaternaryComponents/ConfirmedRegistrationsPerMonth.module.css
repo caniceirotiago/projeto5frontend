@@ -1,4 +1,10 @@
 .graphic{
     grid-column: span 1;
-
+    display: flex;
+    flex-direction: column;
+}
+.graphicTitle{
+    font-size: 14px;
+    font-weight: bold;
+    align-self: center;
 }

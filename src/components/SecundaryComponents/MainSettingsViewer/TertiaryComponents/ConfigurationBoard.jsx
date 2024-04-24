@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import configService from '../../../../services/configurationService.jsx'; 
-import  toastStore  from '../../../../stores/toastMessageStore';
+import  toastStore  from '../../../../stores/toastMessageStore.jsx';
 
 const ConfigurationForm = () => {
   const [timeout, setTimeout] = useState('');

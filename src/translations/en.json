@@ -87,6 +87,7 @@
     "description": "Description",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "deleteConfirmation": "Are you sure you want to delete this message?"
+    "deleteConfirmation": "Are you sure you want to delete this message?",
+    "settings": "Settings"
 
 }

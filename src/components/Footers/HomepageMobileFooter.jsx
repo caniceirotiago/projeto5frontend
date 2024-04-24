@@ -1,7 +1,7 @@
 // HomepageIconFooter.jsx
 import React from 'react';
 import styles from './HomepageMobileFooter.module.css'; // Adapte os estilos conforme necessário
-import { FaUsers, FaClipboardList, FaTags, FaChartLine, FaTasks } from 'react-icons/fa';
+import { FaUsers, FaClipboardList, FaTags, FaChartLine, FaTasks, FaCog } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import AccessControl from '../Auth/AcessControl.jsx';
 
@@ -41,6 +41,9 @@ const HomepageIconFooter = () => {
                 </Link>
                 <Link to="/dashboard" className={styles.menuItem}>
                     <FaChartLine className={styles.icon} />
+                </Link>
+                <Link to="/settings" className={styles.menuItem}>
+                    <FaCog className={styles.icon} />
                 </Link>
             </AccessControl>
         </footer>

@@ -87,5 +87,7 @@
     "description": "Descrição",
     "startDate": "Data de Inicio",
     "endDate": "Data de Fim",
-    "deleteConfirmation": "Tem a certeza que deseja eliminar esta tarefa?"
+    "deleteConfirmation": "Tem a certeza que deseja eliminar esta tarefa?",
+    "settings": "Definições"
+
 }

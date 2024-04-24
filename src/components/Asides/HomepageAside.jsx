@@ -2,7 +2,7 @@
 import React, { useEffect , useState} from 'react';
 import styles from './HomepageAside.module.css';
 import useLayoutStore from '../../stores/layoutStore';
-import { FaArrowLeft, FaArrowRight, FaPlus, FaProjectDiagram, FaTasks, FaRunning, FaUsers, FaClipboardList, FaTags, FaChartLine,  } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaCog, FaProjectDiagram, FaTasks, FaRunning, FaUsers, FaClipboardList, FaTags, FaChartLine,  } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import AccessControl from '../Auth/AcessControl';
 import { IntlProvider, FormattedMessage } from "react-intl";
@@ -79,6 +79,12 @@ const HomepageAside = () => {
                         <FaChartLine className={styles.icon} />
                         <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="dashboard">Dashboard</FormattedMessage></span>
                     </Link>
+                    <Link to="/settings" className={styles.menuItem}>
+                        <FaCog className={styles.icon} />
+                        <span className={showText ? styles.menuText : styles.menuTextHidden}><FormattedMessage id="settings">Settings</FormattedMessage></span>
+                    </Link>
+
+                    
                 </AccessControl> 
             </aside>
         </IntlProvider>
