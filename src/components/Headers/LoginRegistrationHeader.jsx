@@ -21,6 +21,8 @@ const LoginRegistrationHeader = () => {
     <header className={styles.loginRegistrationHeader}>
       <img className={styles.logo} src={logoImg} alt="Logo" />
       <div className={styles.topRightFlags} id="langFlag">
+          {locale === "pt" && <span className={styles.flag} class="fi fi-pt"></span> }
+          {locale === "en" && <span className={styles.flag} class="fi fi-gb"></span> }
        <select onChange={handleSelectLanguage} defaultValue={locale}>
           {["en", "pt"].map(language => (<option
           key={language}>{language}</option>))}

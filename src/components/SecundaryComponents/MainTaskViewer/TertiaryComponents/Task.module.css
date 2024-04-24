@@ -1,5 +1,5 @@
 .taskItem {
-    border-radius: 10px;
+    border-radius: 5px;
     list-style-type: none; 
     background-color: var(--quinary-color);
     padding: 0px;

@@ -81,5 +81,12 @@
     "resendEmail": "Resend email",
     "resendConfirmationEmail": "Resend Confirmation Email",
     "askForNewConfirmation" : "Ask for a new confirmation email",
-    "back": "Back"
+    "back": "Back",
+    "title": "Title",
+    "Category": "Category",
+    "description": "Description",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "deleteConfirmation": "Are you sure you want to delete this message?"
+
 }

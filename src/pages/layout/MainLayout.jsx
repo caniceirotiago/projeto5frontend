@@ -4,13 +4,10 @@ import HomepageHeader from '../../components/Headers/HomepageHeader';
 import HomepageFooter from '../../components/Footers/HomepageFooter';
 import styles from './MainLayout.module.css';
 import useLayoutStore from '../../stores/layoutStore';
-import useAuthStore from '../../stores/authStore';
 import {useNotificationWebSocket} from '../../services/websockets/useNotificationWebSocket';
 import useNotificationStore from '../../stores/useNotificationStore';
 import useDeviceStore from '../../stores/useDeviceStore.jsx'
 import HomepageMobileFooter from '../../components/Footers/HomepageMobileFooter.jsx'
-
-
 
 /**
  * MainLayout Component

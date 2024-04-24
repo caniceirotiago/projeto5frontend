@@ -108,17 +108,7 @@ const taskService = {
                 headers: getAuthHeaders(),
                 body: JSON.stringify(taskData), 
             });
-    
-            if (response.ok) {
-                const newTask = await response.json(); 
-                return { success: true, task: newTask };
-            } else if ( response.status === 403 || response.status === 400 || response.status === 401) {
-                alert("You don't have permission to access this page. Please login again.");
-                window.location.href = "/";
-            } else {
-                console.error("Failed to add task:", response.statusText);
-                return { success: false, error: response.statusText };
-            }
+            return response;
         } catch (error) {
             console.error("Network error when trying to add task:", error);
             return { success: false, error: error.toString() };

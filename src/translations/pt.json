@@ -81,5 +81,11 @@
     "resendEmail": "Reenviar E-mail",
     "resendConfirmationEmail": "Reenviar E-mail de Confirmação",
     "askForNewConfirmation" : "Pedir Novo E-mail de Confirmação",
-    "back": "Voltar"
+    "back": "Voltar",
+    "title": "Título",
+    "Category": "Categoria",
+    "description": "Descrição",
+    "startDate": "Data de Inicio",
+    "endDate": "Data de Fim",
+    "deleteConfirmation": "Tem a certeza que deseja eliminar esta tarefa?"
 }

@@ -97,4 +97,11 @@
 .chatButton img, .profileButton img {
     width: 24px;  
     height: 24px;  
+}.notificationDot{
+    background-color: #d9534f;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-top: 5px;
 }

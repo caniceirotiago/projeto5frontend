@@ -6,6 +6,7 @@ import toastStore from '../../../../stores/toastMessageStore';
 import DialogModalStore from '../../../../stores/DialogModalStore';
 import useCategoryStore from '../../../../stores/categoryStore'; 
 
+
 /**
  * CategoriesManagerBoard is a component for managing categories. It allows for adding, editing, 
  * and deleting categories with immediate feedback and confirmation dialogs for critical actions. The state of categories 
@@ -42,8 +43,9 @@ const CategoriesManagerBoard = () => {
 
     const handleAddCategory = async () => {
         if (!newCategoryName.trim()) return;
-        const result = await categoryService.addCategory(newCategoryName);
-        if (result.success) {
+        const response = await categoryService.addCategory(newCategoryName);
+
+        if (response.status === 204) {
             setNewCategoryName('');
             loadCategories(); 
             toastStore.getState().setMessage('Category added');
@@ -71,7 +73,12 @@ const CategoriesManagerBoard = () => {
                 loadCategories(); 
                 toastStore.getState().setMessage('Category deleted');
             } else {
-                toastStore.getState().setMessage('You can not delete this category. It is being used by some tasks.');
+                DialogModalStore.getState().setDialogMessage('Error deleting category, there are tasks associated with this category.');
+                DialogModalStore.getState().setIsDialogOpen(true);
+                DialogModalStore.getState().setAlertType(true);
+                DialogModalStore.getState().setOnConfirm(() => {
+                    }   
+                );
             }
         });       
     };
@@ -91,6 +98,8 @@ const CategoriesManagerBoard = () => {
                         defaultValue={category.type} 
                         onBlur={(e) => handleEditCategory(category.type, e.target.value)}
                         className={styles.categoryInput}
+                        maxLength={20}
+                        minLength={2}
                     />
                     <button className={styles.deleteButton} onClick={() => handleDeleteCategory(category.type)}>
                         <img src={DeleteIcon} alt="Delete" />

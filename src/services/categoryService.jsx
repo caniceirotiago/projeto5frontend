@@ -65,13 +65,7 @@ const categoryService = {
                 headers: getAuthHeaders(),
             });
 
-            if (response.ok) {
-                const newCategory = await response.json();
-                return { success: true, data: newCategory };
-            } else {
-                const errorMessage = await response.text();
-                return { success: false, error: errorMessage };
-            }
+            return response
         } catch (error) {
             console.error("Error adding category:", error);
             return { success: false, error: error.toString() };

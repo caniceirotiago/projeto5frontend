@@ -14,17 +14,13 @@ import useDomainStore from "../../stores/domainStore";
 
 const ChatModal = () => {
     const locale = useTranslationStore((state) => state.locale);
-
     const { isChatModalOpen, selectedChatUser, closeChatModal } = useChatModalStore();
     const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    
-    
 
     const handleMessage = useCallback((message) => {
-        console.log("Received message: ", message);
         message = {
             ...message,
             position: message.receiverUsername === sessionStorage.getItem('username') ? 'left' : 'right',
@@ -60,6 +56,7 @@ const ChatModal = () => {
     }, []);
 
     useEffect(() => {
+
         if (isChatModalOpen && selectedChatUser) {
             setLoading(true);
             messageService.getMessagesBetweenUsers(sessionStorage.getItem('username'), selectedChatUser.username)
@@ -106,7 +103,7 @@ const ChatModal = () => {
     const messagesEndRef = useRef(null); 
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current?.scrollIntoView();
     };
 
     useEffect(() => {
@@ -140,7 +137,7 @@ const ChatModal = () => {
             data: messagesIds
         };
         sendMessage(dataToSend);
-        
+
     };
     
 

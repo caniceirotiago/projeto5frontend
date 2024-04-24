@@ -35,6 +35,30 @@
   flex-direction: column;
   align-items: flex-start;
 }
+.chatbtn {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #4CAF50;  
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.chatbtn:hover, .chatbtn:focus {
+  background-color: #45a049; /* Um tom mais escuro de verde ao passar o mouse ou focar */
+  transform: scale(1.05);
+  outline: none; /* Remove o contorno padrão em navegadores como Firefox */
+}
+
+.chatbtn:active {
+  background-color: #397d34; /* Um tom ainda mais escuro para quando o botão é clicado */
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  transform: scale(0.98); /* Efeito de "pressionado" */
+}
+
 
 
 .toggleFormButton {

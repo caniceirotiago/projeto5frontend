@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export const useTasksWebSocket = (url, shouldConnect, updateTask, newTask, deleteTask) => {
+export const useTasksWebSocket = (url, shouldConnect, updateTask, newTask, deleteTask, deleteTaskFromDeletedBoard, newTaskOnDeletedBoard) => {
     const ws = useRef(null);
 
     useEffect(() => {
@@ -19,10 +19,19 @@ export const useTasksWebSocket = (url, shouldConnect, updateTask, newTask, delet
 
         ws.current.onmessage = (e) => {
             try {
+                console.log('WebSocket Task Message:', e.data);
                 const message = JSON.parse(e.data);
                 if(message.type === 'updatedTask' && !message.data.deleted)updateTask(message.data);
                 else if(message.type === 'createTask')newTask(message.data);
-                else if(message.type === 'updatedTask'&& message.data.deleted)deleteTask(message.data);
+                else if(message.type === 'updatedTask'&& message.data.deleted){
+                    deleteTask(message.data);
+                    newTaskOnDeletedBoard(message.data);
+                }
+                else if(message.type === 'deletedTaskPermanentely')deleteTaskFromDeletedBoard(message.data);
+                else if(message.type === 'recycleTask'){
+                    deleteTaskFromDeletedBoard(message.data);
+                    newTask(message.data);
+                }
                 
             } catch (error) {
                 console.error('Error parsing message:', e.data, error);

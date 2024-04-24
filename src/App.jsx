@@ -25,6 +25,8 @@ import {useNotificationWebSocket} from './services/websockets/useNotificationWeb
 import useNotificationStore from './stores/useNotificationStore';
 import ResendEmailPage from './pages/ResendEmailPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import { IntlProvider } from 'react-intl';
+import languages from './translations';
 
 
 /**
@@ -47,6 +49,7 @@ function App() {
   const { theme } = useThemeStore();
   const { message, setMessage } = useToastStore();
   const { dialogMessage, setIsDialogOpen } = DialogBoxStore();
+  const { locale } = useNotificationStore();
 
 
 
@@ -78,27 +81,28 @@ function App() {
   }, [dialogMessage, setIsDialogOpen]);
     
   return (
-    <>
-      <DialogModal/>
-      <ErrorMessageFormModal/>
-      <ToastContainer limit={1} newestOnTop transition={Flip}/>
-      <ChatModal/>
-      <Router>
-        <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} /> 
-            <Route path="/home" element={<ProtectedRoute><MainLayout><HomePage /></MainLayout></ProtectedRoute>} />
-            <Route path="/userProfile/:username" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>}/>
-            <Route path="/users" element={<ProtectedRoute><MainLayout><UsersManagerPage /></MainLayout></ProtectedRoute>} />
-            <Route path="/tasks" element={<ProtectedRoute><MainLayout><DeletedTasksManagerPage /></MainLayout></ProtectedRoute>} />
-            <Route path="/categories" element={<ProtectedRoute><MainLayout><CategoriesManagerPage /></MainLayout></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute><MainLayout><DashboardPage /></MainLayout></ProtectedRoute>} />
-            <Route path="/confirm" element={<ConfirmationPage />} />
-            <Route path="forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/resend-email" element={<ResendEmailPage />} />
-        </Routes>
-      </Router>
+    <><IntlProvider locale={locale} messages={languages[locale]}>
+        <DialogModal/>
+        <ErrorMessageFormModal/>
+        <ToastContainer limit={1} newestOnTop transition={Flip}/>
+        <ChatModal/>
+        <Router>
+          <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} /> 
+              <Route path="/home" element={<ProtectedRoute><MainLayout><HomePage /></MainLayout></ProtectedRoute>} />
+              <Route path="/userProfile/:username" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>}/>
+              <Route path="/users" element={<ProtectedRoute><MainLayout><UsersManagerPage /></MainLayout></ProtectedRoute>} />
+              <Route path="/tasks" element={<ProtectedRoute><MainLayout><DeletedTasksManagerPage /></MainLayout></ProtectedRoute>} />
+              <Route path="/categories" element={<ProtectedRoute><MainLayout><CategoriesManagerPage /></MainLayout></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute><MainLayout><DashboardPage /></MainLayout></ProtectedRoute>} />
+              <Route path="/confirm" element={<ConfirmationPage />} />
+              <Route path="forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/resend-email" element={<ResendEmailPage />} />
+          </Routes>
+        </Router>
+    </IntlProvider>
     </>
 
   );

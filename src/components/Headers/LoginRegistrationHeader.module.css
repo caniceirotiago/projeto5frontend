@@ -42,4 +42,7 @@
     margin-left: 20px;
     cursor: pointer;
   }
-  
+.topRightFlags{
+  display: flex;
+  gap: 10px;
+}

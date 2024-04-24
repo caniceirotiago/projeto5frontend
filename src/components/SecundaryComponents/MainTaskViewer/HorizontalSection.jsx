@@ -37,7 +37,9 @@ const HorizontalSection = React.memo(() => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={styles.searchInput} 
                     />)}</FormattedMessage>
-                    {dimensions.width < 768 && <FaFilter onClick={() => showFilters === false ? setShowFilters(true): setShowFilters(false)} className={styles.filterIcon}/>}
+                    <AccessControl roles={['productOwner', 'scrumMaster']}>
+                     {dimensions.width < 768 && <FaFilter onClick={() => showFilters === false ? setShowFilters(true): setShowFilters(false)} className={styles.filterIcon}/>}
+                    </AccessControl>
                 </div>
                 <AccessControl roles={['productOwner', 'scrumMaster']}>
                     {dimensions.width >= 768 && <FiltersComponent className={styles.filtersComponent}/>}

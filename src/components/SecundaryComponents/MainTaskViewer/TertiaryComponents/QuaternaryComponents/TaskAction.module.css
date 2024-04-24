@@ -8,22 +8,27 @@
   }
   .actionsContainer.visible {
     opacity: 1;
-}
+  }
   
-  .moveBtn, .deleteBtn, .recycleBtn {
+  .moveBtn, .deleteBtn, .recycleBtn, .deleteBtnDeletedBoard, .recycleBtnDeletedBoard {
     cursor: pointer;
     border: none;
-    background-color: #f0f0f0;
+    background-color: var(--secundary-color);
     padding: 0px 10px;
     border-radius: 5px;
     transition: background-color 0.3s;
   }
+  .deleteBtnDeletedBoard, .recycleBtnDeletedBoard {
+    opacity: 1;
+  }
   
-  .moveBtn:hover, .deleteBtn:hover, .recycleBtn:hover{
+  .moveBtn:hover, .deleteBtn:hover, .recycleBtn:hover, .deleteBtnDeletedBoard:hover, .recycleBtnDeletedBoard:hover{
     background-color: #e0e0e0;
   }
   .deleteBtn img,
-  .recycleBtn img {
+  .recycleBtn img,
+  .deleteBtnDeletedBoard img,
+  .recycleBtnDeletedBoard img{
     width: 16px;
     height: 16px;
   }

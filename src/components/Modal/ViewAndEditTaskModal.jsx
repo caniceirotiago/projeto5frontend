@@ -100,7 +100,6 @@ const TaskModal = ({ isOpen, onClose, onSubmit , task, mode, setTasks }) => {
         setIsEditing(true);
   } 
   const handleDeleteTask = async () => {
-    console.log(task);
     DialogModalStore.getState().setDialogMessage('Are you sure you want to delete this task?');
     DialogModalStore.getState().setIsDialogOpen(true);
     DialogModalStore.getState().setOnConfirm(async () => {
@@ -160,7 +159,9 @@ const TaskModal = ({ isOpen, onClose, onSubmit , task, mode, setTasks }) => {
           <h2 className={styles.h2}><FormattedMessage id="viewTask">View Task</FormattedMessage></h2>
           <h4>User: {formData.username_author}</h4>
           <form className={styles.form} onSubmit={handleSubmit}>
+            <label><FormattedMessage id="title">Title</FormattedMessage></label>
             <input className={styles.input} type="text" name="title" placeholder="Task Title" required value={formData.title} onChange={handleChange} maxLength={50} disabled={!isEditing}/>
+            <label><FormattedMessage id="Category">Category</FormattedMessage></label>
             <select className={styles.select} name="category_type" required value={formData.category_type} onChange={handleChange} disabled={!isEditing}>
                 {categories.map((category) => (
                     <option key={category.id} value={category.type}>
@@ -168,8 +169,11 @@ const TaskModal = ({ isOpen, onClose, onSubmit , task, mode, setTasks }) => {
                     </option>
                 ))}
             </select>
+            <label><FormattedMessage id="description">Description</FormattedMessage></label>
             <textarea className={styles.textarea} name="description" placeholder="Task Description" required value={formData.description} onChange={handleChange} maxLength={400} disabled={!isEditing}></textarea>
+            <label><FormattedMessage id="startDate">Start Date</FormattedMessage></label>
             <input className={styles.input} type="date" name="startDate" value={formData.startDate} onChange={handleChange} disabled={!isEditing}/>
+            <label><FormattedMessage id="endDate">End Date</FormattedMessage></label>
             <input className={styles.input} type="date" name="endDate" min={formData.startDate} value={formData.endDate} onChange={handleChange} disabled={!isEditing}/>
             <select className={styles.select} name="priority" required value={formData.priority} onChange={handleChange} disabled={!isEditing}>
               <option key={1} value={1}><FormattedMessage id="lowPriority">Low Priority</FormattedMessage></option>

@@ -3,6 +3,9 @@ import { taskService } from '../../../../services/taskService.jsx';
 import Task from '../../MainTaskViewer/TertiaryComponents/Task.jsx'; 
 import styles from './DeletedTasksBoard.module.css'; 
 import ViewAndEditTaskModal from '../../../Modal/ViewAndEditTaskModal.jsx'; 
+import { useCallback } from 'react';
+import {useTasksWebSocket} from '../../../../services/websockets/useTasksWebsocket';
+import useDomainStore from '../../../../stores/domainStore';
 
 /**
  * DeletedTasksBoard is a React component that renders a list of deleted tasks, offering functionalities 
@@ -29,6 +32,7 @@ const DeletedTasksBoard = () => {
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
     const [clickedTask, setClickedTask] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
+    const {domain} = useDomainStore();
 
     useEffect(() => {
         const fetchDeletedTasks = async () => {
@@ -56,6 +60,22 @@ const DeletedTasksBoard = () => {
         setClickedTask(task);
         setIsViewTaskModalOpen(true);
     };
+    const updateTaskWS = useCallback((task) => {
+    }, []);
+    const newTaskWS = useCallback((task) => {
+    }, []);
+    const deleteTaskWS = useCallback((task) => {
+    }, []);
+    const deleteTaskFromDeletedBoard = useCallback((task) => {
+        setDeletedTasks((prevDeletedTasks) => prevDeletedTasks.filter(t => t.id !== task.id));
+    }, [setDeletedTasks]);
+    const newTaskOnDeletedBoard = useCallback((task) => {
+        setDeletedTasks((prevDeletedTasks) => [...prevDeletedTasks, task]);
+    }, [setDeletedTasks]);
+
+
+    const wsUrl = `ws://${domain}/taskws/${sessionStorage.getItem("token")}`; 
+    useTasksWebSocket(wsUrl, true, updateTaskWS, newTaskWS, deleteTaskWS,  deleteTaskFromDeletedBoard, newTaskOnDeletedBoard);
 
     return (
         <div className={styles.board}>

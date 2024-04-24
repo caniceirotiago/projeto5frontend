@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styles from './TaskRow.module.css'; 
 import Column from './TertiaryComponents/Column';
 import Task from './TertiaryComponents/Task';
@@ -12,7 +12,6 @@ import  useFiltersStore  from '../../../stores/filterStore';
 import {useTasksWebSocket} from '../../../services/websockets/useTasksWebsocket';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import useDomainStore from '../../../stores/domainStore';
-
 
 
 /**
@@ -93,18 +92,30 @@ const TasksRow = React.memo(() => {
 
     const updateTaskWS = useCallback((task) => {
         setTasks((prevTasks) => prevTasks.map(t => t.id === task.id ? task : t));
+        sortTasks();
     }, [setTasks]);
+    const filtersRef = useRef(filters);
+    filtersRef.current = filters;
     const newTaskWS = useCallback((task) => {
+        if ((filtersRef.current.username && task.username_author !== filtersRef.current.username) ||
+            (filtersRef.current.category && task.category_type !== filtersRef.current.category)) {
+            return;
+        }
         setTasks((prevTasks) => [...prevTasks, task]);
-    }, [setTasks]);
+        sortTasks();
+    }, [setTasks]); 
     const deleteTaskWS = useCallback((task) => {
         console.log("deleting task", task);
         setTasks((prevTasks) => prevTasks.filter(t => t.id !== task.id));
     }, [setTasks]);
+    const deleteTaskpermWS = useCallback((task) => {
+    }, [setTasks]);
+    const newTaskDeletedBoardWS = useCallback((task) => {
+    }, [setTasks]);
 
 
     const wsUrl = `ws://${domain}/taskws/${sessionStorage.getItem("token")}`; 
-    useTasksWebSocket(wsUrl, true, updateTaskWS, newTaskWS, deleteTaskWS);
+    useTasksWebSocket(wsUrl, true, updateTaskWS, newTaskWS, deleteTaskWS, deleteTaskpermWS, newTaskDeletedBoardWS);
     
     const handleTaskClick = (task) => {
         setClickedTask(task);
@@ -128,7 +139,7 @@ const TasksRow = React.memo(() => {
 
     const taskColumns = tasks !== undefined ? tasks
     .filter(task => task.title.toLowerCase().includes(searchTerm.toLowerCase()) 
-        || task.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        || task.description.toLowerCase().includes(searchTerm.toLowerCase())) 
     .reduce((columns, task) => {
         let statusKey;
         switch (task.status) {
@@ -170,30 +181,48 @@ const TasksRow = React.memo(() => {
     }, { todo: [], doing: [], done: [] }) 
     : { todo: [], doing: [], done: [] };
 
-
-
-
-
+    const sortTasks = () => {
+        setTasks((prevTasks) => prevTasks.sort((a, b) => {
+          if (a.priority !== b.priority) {
+            return b.priority - a.priority;
+          }
+          if (!a.startDate) return 1;
+          if (!b.startDate) return -1;
+          if (a.startDate !== b.startDate) {
+            return new Date(b.startDate) - new Date(a.startDate);
+          }
+          if (!a.endDate) return 1;
+          if (!b.endDate) return -1;
+          return new Date(b.endDate) - new Date(a.endDate);
+        }));
+      };
+      
 
     const handleAddTask = async (taskData) => {
-        const result = await taskService.addTask(taskData);
-        if (result.success) {
+        const response = await taskService.addTask(taskData);
+        console.log(response);
+        if(response.status === 204){
+            //We need to fetch the tasks again to update the state to the new task becouse is de data base that makes an id for the task
             fetchTasks();
             closeAddTaskModal();
             toastStore.getState().setMessage("Task added successfully (" + taskData.title + ")");
-        } else {
+        }else {
             toastStore.getState().setMessage("Error adding task. Please try again.");
         }
     };
     const handleUpdateTask = async (taskData) => {
         setTasks((prevTasks) => prevTasks.map(task => task.id === taskData.id ? taskData : task));
+        sortTasks();
         const result = await taskService.editTask(taskData);
+        console.log(result.success);
+        sortTasks(tasks);
         if (result.success) {
             closeViewTaskModal();
             toastStore.getState().setMessage("Task updated successfully (" + taskData.title + ")");
         } else {
             console.error("Erro ao atualizar tarefa:", result.error);
             toastStore.getState().setMessage("Error updating task. Please try again.");
+            sortTasks();
         }
     };
     const todoCount = taskColumns.todo.length;
@@ -204,6 +233,7 @@ const TasksRow = React.memo(() => {
         if (fetchCompleted)
         updateCounts(todoCount, doingCount, doneCount);
     }, [tasks,updateCounts, fetchCompleted, todoCount, doingCount, doneCount]);
+
 
     const handleOnDragEnd = async (result) => {
         const { source, destination } = result;
@@ -219,6 +249,7 @@ const TasksRow = React.memo(() => {
           }
           return task;
         }));
+        sortTasks();
       
         try {
           const result = await taskService.editTask(updateData);
@@ -230,21 +261,18 @@ const TasksRow = React.memo(() => {
               return task;
             }));
             console.error('Error updating task status on the server.');
+            sortTasks();
           }
         } catch (error) {
           console.error('Exception when updating task status:', error);
+          sortTasks();
         }
         
     };
-    
-    
-    
-
 
     if (!fetchCompleted) {
         return null;
     }
-
     
     return (    
         <DragDropContext onDragEnd={handleOnDragEnd}>

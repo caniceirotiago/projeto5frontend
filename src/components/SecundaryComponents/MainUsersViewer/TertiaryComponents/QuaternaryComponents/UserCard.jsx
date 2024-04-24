@@ -3,7 +3,9 @@ import styles from './UserCard.module.css';
 import profileIcon from '../../../../../assets/user.png';
 import { useNavigate } from 'react-router-dom';
 import  useChatModalStore  from '../../../../../stores/useChatModalStore.jsx';
-import { FaComments } from 'react-icons/fa'; // Importe o ícone de chat
+import { FaComments } from 'react-icons/fa'; 
+import NotificationStore from '../../../../../stores/useNotificationStore.jsx';
+import { notificationService } from '../../../../../services/notificationService';
 
 /**
  * UserCard is a React component that displays a user's information as a clickable card. 
@@ -13,6 +15,10 @@ import { FaComments } from 'react-icons/fa'; // Importe o ícone de chat
 
 
 const UserCard = ({ user, onClick  }) => {
+    const { setNotificationMap } = NotificationStore();
+    const {notificationMap} = NotificationStore();
+    const hasNotification = notificationMap.has(user.username);
+    console.log(hasNotification);
     const bannerClass = user.deleted ? `${styles.cardBanner} ${styles.cardBannerInactive}` : styles.cardBanner;
     const navigate = useNavigate();
     const onProfileClick = (e) => {
@@ -20,9 +26,18 @@ const UserCard = ({ user, onClick  }) => {
         e.stopPropagation(); 
     }
     const { openChatModal } = useChatModalStore();
-    const handleOpenChat = (e) => {
+    const handleOpenChat = async (e) => {
         e.stopPropagation(); 
         openChatModal(user); 
+        console.log(user);
+        try {
+            await notificationService.markMessageNotificationsAsRead(user.username);
+            const notifications = await notificationService.getUserNotifications();
+            const notificationEntries = Object.entries(notifications).map(([user, notifs]) => [user, notifs]);
+            setNotificationMap(new Map(notificationEntries));
+        } catch (error) {
+            console.error('Failed to mark notifications as read:', error);
+        }
     };
 
     return (
@@ -42,8 +57,9 @@ const UserCard = ({ user, onClick  }) => {
                         <img src={profileIcon} alt="Profile" />
                     </button>
                     <button className={styles.chatButton} onClick={handleOpenChat}>
-                    <FaComments /> 
+                      <FaComments /> 
                     </button>
+                     {hasNotification && <div className={styles.notificationDot}></div>}
                 </div>
             </div>
         </div>

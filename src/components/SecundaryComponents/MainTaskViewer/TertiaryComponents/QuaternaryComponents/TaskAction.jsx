@@ -3,6 +3,8 @@ import styles from './TaskAction.module.css';
 import deleteIcon from '../../../../../assets/trashCanIcon.png';
 import recycleIcon from '../../../../../assets/recycle.png';
 import AccessControl from '../../../../Auth/AcessControl';
+import useDeviceStore from '../../../../../stores/useDeviceStore.jsx'
+
 
 /**
  * TaskAction presents a set of interactive actions (buttons) for a task, including moving, deleting, and recycling,
@@ -34,7 +36,7 @@ import AccessControl from '../../../../Auth/AcessControl';
 const TaskAction = ({ column, isVisible, onDelete , onMoveLeft, onMoveRight, mode, onPermDelete, onRecycle, canDelete }) => {
   const isTodoColumn = column === 'todo';
   const isDoneColumn = column === 'done';
-  const actionsClass = isVisible ? `${styles.actionsContainer} ${styles.visible}` : styles.actionsContainer;
+  const actionsClass = isVisible || mode === "deleted" ? `${styles.actionsContainer} ${styles.visible}` : styles.actionsContainer;
 
   return (
     <div className={actionsClass}>
@@ -53,7 +55,7 @@ const TaskAction = ({ column, isVisible, onDelete , onMoveLeft, onMoveRight, mod
       )}
       {mode === "deleted" &&
        <AccessControl roles={["productOwner"]}>
-        <button className={styles.deleteBtn} onClick={(e) => {e.stopPropagation(); onPermDelete();}}>
+        <button className={styles.deleteBtnDeletedBoard} onClick={(e) => {e.stopPropagation(); onPermDelete();}}>
           <img src={deleteIcon} alt="Delete" />
         </button>
         </AccessControl>}

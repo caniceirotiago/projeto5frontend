@@ -36,10 +36,10 @@ const useAuthStore = create((set,get) => ({
         set(() => ({
           token: null,                
         }));
-        const result = await authService.logout();
-        if(result){
+        const response = await authService.logout();
+        if(response.status === 204){
             sessionStorage.clear(); 
-        window.location.href = '/'; 
+            window.location.href = '/'; 
         }
         else {
             console.error("Error during logout");

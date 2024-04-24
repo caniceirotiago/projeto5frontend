@@ -150,7 +150,7 @@ const UserDetailsModal = ( onClose ) => {
         }
     };
     const deleteAllTasksOfUser = async () => {
-        DialogModalStore.getState().setDialogMessage('Are you sure you want to delete this task?');
+        DialogModalStore.getState().setDialogMessage('Are you sure you want to delete all tasks from this user?');
         DialogModalStore.getState().setIsDialogOpen(true);
         DialogModalStore.getState().setOnConfirm(async () => {
             if( selectedUser.username) {
@@ -167,7 +167,7 @@ const UserDetailsModal = ( onClose ) => {
     };
 
     const deleteUserPermanently = async () => {
-        DialogModalStore.getState().setDialogMessage('Are you sure you want to delete this user forever?');
+        DialogModalStore.getState().setDialogMessage('Are you sure you want to delete this user forever? This action cannot be undone. Tasks and categories associated with this user will continue to exist. All messages and notifications will be deleted.');
         DialogModalStore.getState().setIsDialogOpen(true);
         DialogModalStore.getState().setOnConfirm(async () => {
             if(selectedUser.username) {

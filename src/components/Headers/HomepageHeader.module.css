@@ -376,4 +376,17 @@ background-color: var(--secondary-color);
 .dropdownContent div:last-child {
   border-bottom: none;
 }
+.languageSelection{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+  
+}
+.languageSelector{
+
+
+}
+
 

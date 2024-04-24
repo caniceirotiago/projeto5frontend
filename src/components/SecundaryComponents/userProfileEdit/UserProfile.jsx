@@ -12,6 +12,12 @@ import {statisticsService} from "../../../services/statisticsService"
 import  useTranslationStore  from '../../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../../translations';
+import ChatModal from '../../Modal/ChatModal.jsx';
+import NotificationStore from '../../../stores/useNotificationStore';
+
+import { notificationService } from '../../../services/notificationService';
+import useChatModalStore  from '../../../stores/useChatModalStore';
+
 
 
 
@@ -32,7 +38,8 @@ import languages from '../../../translations';
 
 const UserProfile = ({ onUpdateSuccess }) => {
   const locale = useTranslationStore((state) => state.locale);
-
+  const { openChatModal } = useChatModalStore();
+  const { setNotificationMap } = NotificationStore();
   console.log("UserProfile rendered");
   const [tasks, setTasks] = useState({
     todoTasks: undefined,
@@ -87,7 +94,7 @@ const UserProfile = ({ onUpdateSuccess }) => {
     };
     fetchUserData();
     
-  }, [profileUsername]); 
+  }, []); 
 
   const fetchUserTasks = async () => {
     try {
@@ -101,32 +108,53 @@ const UserProfile = ({ onUpdateSuccess }) => {
     } catch (error) {
         console.error("Error fetching user tasks: ", error);
     }
-}
-const onUpdateUserProfile = async (updatedProfile) => {
-  try {
-    const { username, email, ...profileData } = updatedProfile;
-    const result = await userService.updateUser(profileData);
-    if(result.status === 204){
-      notify('Profile updated successfully');
-      onUpdateSuccess();
+  }
+  useEffect(() => {
+    fetchUserTasks();
+  }, [profileUsername]);  
+  
+  const onUpdateUserProfile = async (updatedProfile) => {
+    try {
+      const { username, email, ...profileData } = updatedProfile;
+      const result = await userService.updateUser(profileData);
+      if(result.status === 204){
+        notify('Profile updated successfully');
+        onUpdateSuccess();
+      }
+      else notify('Failed to update profile. Please try again.');
+    } catch (error) {
+      console.error("Failed to update user profile:", error);
+      notify('Failed to update profile. Please try again.');
     }
-    else notify('Failed to update profile. Please try again.');
-  } catch (error) {
-    console.error("Failed to update user profile:", error);
-    notify('Failed to update profile. Please try again.');
-  }
-};
-const onUpdateUserPassword = async (oldPassword, newPassword) => {
-  try {
-    const response = await userService.updateUserPassword(oldPassword, newPassword);
-    console.log("response: ", response);
-    if(response.status === 204) notify('Password updated successfully');
-    else notify('Failed to update password. Please try again.');
-  } catch (error) {
-    notify('Failed to update password. Please try again.');
-  }
-};
+  };
 
+
+  const onUpdateUserPassword = async (oldPassword, newPassword) => {
+    try {
+      const response = await userService.updateUserPassword(oldPassword, newPassword);
+      console.log("response: ", response);
+      if(response.status === 204) notify('Password updated successfully');
+      else notify('Failed to update password. Please try again.');
+    } catch (error) {
+      notify('Failed to update password. Please try again.');
+    }
+  };
+
+
+  const handleOpenChat = async (e) => {
+    e.stopPropagation();
+    const user = { username: userProfile.username };
+    openChatModal(user); 
+    console.log(userProfile.username);
+    try {
+        await notificationService.markMessageNotificationsAsRead(userProfile.username);
+        const notifications = await notificationService.getUserNotifications();
+        const notificationEntries = Object.entries(notifications).map(([user, notifs]) => [user, notifs]);
+        setNotificationMap(new Map(notificationEntries));
+    } catch (error) {
+        console.error('Failed to mark notifications as read:', error);
+    }
+  };
 
 
   return (
@@ -138,6 +166,7 @@ const onUpdateUserPassword = async (oldPassword, newPassword) => {
           <h2 className={styles.username}>{userProfile.username}</h2>
           <UserProfileStatistics tasks={tasks}/>
         </section>
+
         {isOwnProfile ? (
           <>
             {!showPasswordForm ? (
@@ -149,9 +178,11 @@ const onUpdateUserPassword = async (oldPassword, newPassword) => {
               {showPasswordForm ? <FormattedMessage id="editProfileInformation">Edit Profile Information</FormattedMessage> : <FormattedMessage id="changePassword">Change Password</FormattedMessage>}
             </button>
           </>
-        ) : (
-          <ProfileForm userProfile={userProfile} readOnly={true} isOwnProfile/>
-        )}
+          ) : (<>
+            <ProfileForm userProfile={userProfile} readOnly={true} isOwnProfile/>
+            <button onClick={(e) => handleOpenChat(e)} className={styles.chatbtn}></button>
+            </>
+          )}
       </div>
     </IntlProvider>
   );

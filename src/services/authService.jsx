@@ -54,11 +54,7 @@ const logout = async () => {
       },
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Logout failed');
-    }
-    return await response.json(); 
+    return response; 
   } catch (error) {
     throw error;
   }
