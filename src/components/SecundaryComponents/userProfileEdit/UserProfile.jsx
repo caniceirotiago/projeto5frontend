@@ -94,7 +94,7 @@ const UserProfile = ({ onUpdateSuccess }) => {
     };
     fetchUserData();
     
-  }, []); 
+  }, [profileUsername]); 
 
   const fetchUserTasks = async () => {
     try {
@@ -160,14 +160,16 @@ const UserProfile = ({ onUpdateSuccess }) => {
   return (
     <IntlProvider locale={locale} messages={languages[locale]}>
       <div className={styles.profileContainer}>
-        <ToastContainer limit={1} newestOnTop transition={Zoom}/>
         <section className={styles.userHeader}>
           <img src={userProfile.photoURL} alt="User" className={styles.userPhoto} />
           <h2 className={styles.username}>{userProfile.username}</h2>
-          <UserProfileStatistics tasks={tasks}/>
+          {!isOwnProfile ? (<button onClick={(e) => handleOpenChat(e)} className={styles.chatbtn}>Chat</button>) : null}
+          <div className={styles.userStats}>
+            <UserProfileStatistics tasks={tasks}/>
+          </div>
         </section>
-
-        {isOwnProfile ? (
+        <div className={styles.formsContainer}>
+          {isOwnProfile ? (
           <>
             {!showPasswordForm ? (
               <ProfileForm userProfile={userProfile} onUpdateUserProfile={onUpdateUserProfile} />
@@ -180,9 +182,10 @@ const UserProfile = ({ onUpdateSuccess }) => {
           </>
           ) : (<>
             <ProfileForm userProfile={userProfile} readOnly={true} isOwnProfile/>
-            <button onClick={(e) => handleOpenChat(e)} className={styles.chatbtn}></button>
             </>
           )}
+        </div>
+        
       </div>
     </IntlProvider>
   );

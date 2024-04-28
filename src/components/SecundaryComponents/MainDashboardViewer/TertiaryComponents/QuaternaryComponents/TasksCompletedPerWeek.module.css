@@ -1,0 +1,54 @@
+.container {
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    align-self: center;
+}
+
+.chartContainer {
+    width: 100%; 
+    height: 300px; 
+}
+
+.recharts-text {
+    fill: var(--text-color); 
+}
+
+.recharts-legend-item {
+    font-size: 12px;
+}
+.numberContainer {
+    align-self: right;
+    background-color: var(--primary-color); 
+    padding: 0px 10px; 
+    display: inline-block;
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); 
+    font-size: 13px; 
+    color: var(--text-color);
+    font-weight: bold; 
+    text-align: center; 
+  }
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .header {
+        font-size: 18px; 
+    }
+
+    .chartContainer {
+        height: 200px; 
+    }
+}

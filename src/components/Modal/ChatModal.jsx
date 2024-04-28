@@ -4,12 +4,12 @@ import 'react-chat-elements/dist/main.css';
 import styles from './ChatModal.module.css';
 import useChatModalStore from '../../stores/useChatModalStore';
 import {messageService} from '../../services/messageService';
-import { parseISO, format } from 'date-fns';
 import {useChatWebSocket} from '../../services/websockets/useChatWebSocket';
 import  useTranslationStore  from '../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../translations';
 import useDomainStore from "../../stores/domainStore";
+import { useNavigate } from 'react-router-dom';
 
 
 const ChatModal = () => {
@@ -19,6 +19,7 @@ const ChatModal = () => {
     const [inputText, setInputText] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleMessage = useCallback((message) => {
         message = {
@@ -28,7 +29,8 @@ const ChatModal = () => {
             text: message.content,
             date: message.sentAt,
             title: message.senderUsername,
-            status: message.read ? 'read' : 'sent'
+            status: message.read ? 'read' : 'sent',
+            onTitleClick: () => {navigate(`/userProfile/${message.senderUsername}`)}
         };
         
         setMessages(prevMessages => [...prevMessages, message]);
@@ -71,6 +73,7 @@ const ChatModal = () => {
                         date: msg.sentAt,
                         title: msg.senderUsername,
                         status: msg.read ? 'read' : 'sent',
+                        onTitleClick: () => {navigate(`/userProfile/${msg.senderUsername}`)}
                     })));
                     if(messagesToUpdate.length > 0){
                     
@@ -84,7 +87,7 @@ const ChatModal = () => {
                     setLoading(false);
                 });
         }
-    }, [ isChatModalOpen]);
+    }, [ isChatModalOpen, selectedChatUser]);
     
     const [wsUrl, setWsUrl] = useState(null);
 
@@ -97,8 +100,6 @@ const ChatModal = () => {
     }, [selectedChatUser]);
     
     const { sendMessage } = useChatWebSocket(wsUrl, isChatModalOpen && wsUrl, handleMessage, closeChatModal, updateMessages);
-    
-    
     
     const messagesEndRef = useRef(null); 
 
@@ -137,7 +138,6 @@ const ChatModal = () => {
             data: messagesIds
         };
         sendMessage(dataToSend);
-
     };
     
 

@@ -75,7 +75,7 @@ const UsersList = () => {
                 <div className={styles.usersListBanner}>
                     <input
                         type="text"
-                        placeholder="Search user by username..."
+                        placeholder="🔍 username..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={styles.searchInput} 

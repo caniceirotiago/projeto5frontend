@@ -4,7 +4,7 @@ import HomepageHeader from '../../components/Headers/HomepageHeader';
 import HomepageFooter from '../../components/Footers/HomepageFooter';
 import styles from './MainLayout.module.css';
 import useLayoutStore from '../../stores/layoutStore';
-import {useNotificationWebSocket} from '../../services/websockets/useNotificationWebSocket';
+import {useGlobalWebSocket} from '../../services/websockets/useGlobalWebSocket';
 import useNotificationStore from '../../stores/useNotificationStore';
 import useDeviceStore from '../../stores/useDeviceStore.jsx'
 import HomepageMobileFooter from '../../components/Footers/HomepageMobileFooter.jsx'
@@ -46,8 +46,8 @@ const MainLayout = ({ children }) => {
         console.log("Received notification: ", notification);
         useNotificationStore.getState().addNotification(notification.content, notification);
       }, []);
-     const wsUrl = `ws://localhost:8080/projeto5backend/notification/${sessionStorage.getItem('token')}`; 
-    useNotificationWebSocket(wsUrl, true, onNotification);
+     const wsUrl = `ws://localhost:8080/projeto5backend/globalws/${sessionStorage.getItem('token')}`; 
+    useGlobalWebSocket(wsUrl, true, onNotification);
 
     useEffect(() => {
     const handleResize = () => {

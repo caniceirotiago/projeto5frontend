@@ -3,6 +3,10 @@ import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import  statisticsStore  from '../../../../../stores/statisticsStore'; 
 import styles from './UsersStatistics.module.css';
+import { FormattedMessage } from 'react-intl';
+import { IntlProvider, useIntl } from 'react-intl';
+import languages from '../../../../../translations';
+import  useTranslationStore  from '../../../../../stores/useTranslationsStore';
 
 const UsersStatistics = () => {
   const { totalUsers, confirmedUsers, unconfirmedUsers, averageTasksPerUser } = statisticsStore((state) => ({
@@ -11,17 +15,21 @@ const UsersStatistics = () => {
     unconfirmedUsers: state.unconfirmedUsers,
     averageTasksPerUser: state.averageTasksPerUser
   }));
-
+  const locale = useTranslationStore((state) => state.locale);
+  const intl = useIntl();
   const data = [
-    { name: 'Confirmed Users', value: confirmedUsers },
-    { name: 'Unconfirmed Users', value: unconfirmedUsers },
+    { name: intl.formatMessage({ id: 'confirmedUsers' }), value: confirmedUsers },
+    { name: intl.formatMessage({ id: 'unconfirmedUsers' }), value: unconfirmedUsers },
   ];
 
   const COLORS = ['var(--todo-color2)', 'var(--doing-color2)'];
 
   return (
+    <IntlProvider locale={locale} messages={languages[locale]}>
+
     <div className={styles.statisticsContainer}>
-        <p className={styles.statisticData}>Total Users: {totalUsers}</p>
+        <p className={styles.statisticData}><FormattedMessage id="totalUsers">Total Users: </FormattedMessage>
+        {totalUsers}</p>
         <ResponsiveContainer width="100%" height={200}>
           <PieChart>
             <Pie
@@ -50,10 +58,11 @@ const UsersStatistics = () => {
           </PieChart>
         </ResponsiveContainer>
         <div className={styles.numberContainer}>
-          {averageTasksPerUser} tasks/user
+          {averageTasksPerUser} <FormattedMessage id="tasks/user">tasks/user</FormattedMessage>
         </div>
 
     </div>
+    </IntlProvider>
   );
 };
 

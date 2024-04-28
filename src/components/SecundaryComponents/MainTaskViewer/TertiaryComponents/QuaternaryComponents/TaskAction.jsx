@@ -56,7 +56,7 @@ const TaskAction = ({ column, isVisible, onDelete , onMoveLeft, onMoveRight, mod
       {mode === "deleted" &&
        <AccessControl roles={["productOwner"]}>
         <button className={styles.deleteBtnDeletedBoard} onClick={(e) => {e.stopPropagation(); onPermDelete();}}>
-          <img src={deleteIcon} alt="Delete" />
+          <img src={deleteIcon} alt="DeletePerm" />
         </button>
         </AccessControl>}
       {mode === "deleted" &&

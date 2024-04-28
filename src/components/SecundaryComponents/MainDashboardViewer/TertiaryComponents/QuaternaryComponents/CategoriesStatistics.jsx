@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import styles from './CategoriesStatistics.module.css';
 import statisticsStore from '../../../../../stores/statisticsStore';
+import { FormattedMessage } from 'react-intl';
+import { IntlProvider } from 'react-intl';
+import languages from '../../../../../translations';
+import  useTranslationStore  from '../../../../../stores/useTranslationsStore';
+
 
 const CategoriesStatistics = () => {
   const rawData = statisticsStore((state) => state.categories);
+  const locale = useTranslationStore((state) => state.locale);
+
   if (rawData.length === 0) {
     return <div>No data available.</div>;
   }
@@ -15,8 +22,9 @@ const CategoriesStatistics = () => {
   categories.sort((a, b) => b.taskCount - a.taskCount);
 
   return (
+    <IntlProvider locale={locale} messages={languages[locale]}>
     <div className={styles.container}>
-      <h3 className={styles.header}>Category Statistics</h3>
+      <h3 className={styles.header}><FormattedMessage id="categoryStatistics">Category Statistics </FormattedMessage></h3>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
           data={categories}
@@ -37,6 +45,7 @@ const CategoriesStatistics = () => {
         </BarChart>
       </ResponsiveContainer>
     </div>
+    </IntlProvider>
   );
 };
 

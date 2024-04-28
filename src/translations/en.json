@@ -88,6 +88,23 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "deleteConfirmation": "Are you sure you want to delete this message?",
-    "settings": "Settings"
-
+    "settings": "Settings",
+    "categoryStatistics": "Category Statistics",
+    "totalUsers": "Total Users: ",
+    "tasks/user": "Tasks/User",
+    "confirmedUsers": "Confirmed Users",
+    "unconfirmedUsers": "Unconfirmed Users",
+    "monthlyUserRegistration": "Monthly User Registration",
+    "weeklyTaskCompletion": "Weekly Task Completion",
+    "weekPrefix": "Week ",
+    "taskStatistics": "Task Statistics",
+    "averageCompletionTime": "Average Completion Time",
+    "todo": "To Do",
+    "doing": "Doing",
+    "done": "Done",
+    "searchTaskByTitlePlaceholder": "Search task by title...",
+    "addCategory": "Add Category",
+    "thisUserDoNotHaveTasks": "This user do not have tasks",
+    "timeoutLabel": "Timeout (seconds):",
+    "updateButton": "Update Configuration"
 }

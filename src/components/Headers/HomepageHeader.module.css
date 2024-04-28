@@ -344,7 +344,7 @@ margin-left: 15px;
   z-index: 100; 
   display: none;
   flex-direction: column;
-  width: 200px; 
+  width: 280px; 
 }
 .menuBurger:hover, .dropdownContent, .dropdownContent:hover {
 display: flex; 
@@ -384,5 +384,61 @@ background-color: var(--secondary-color);
   margin-right: 20px;
   
 }
+.notificationItem {
+  display: flex;
+  flex-direction: row;
+  padding: 0px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  gap: 05px;
+  width: 85%;
+  border-bottom: 1px solid var(--divider-color);
+  align-items: center;
+}
 
+.notificationItem:last-child {
+  border-bottom: none;
+}
+
+.notificationItem:hover {
+  background-color: var(--hover-background-color);
+}
+
+.notificationHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notificationDate {
+  font-size: 0.85rem;
+  color: var(--secondary-text-color);
+}
+
+.notificationCount {
+  background-color: #ff0000;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  padding: 4px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+}
+
+.userImage {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.userName {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 

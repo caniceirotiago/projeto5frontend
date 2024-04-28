@@ -9,7 +9,7 @@ import { FaBars, FaMoon, FaSun, FaSignOutAlt, FaBell } from 'react-icons/fa';
 import notificationStore from '../../stores/useNotificationStore';
 import {notificationService} from '../../services/notificationService';
 import useChatModalStore from '../../stores/useChatModalStore';
-import {useNotificationWebSocket} from '../../services/websockets/useNotificationWebSocket';
+import {useBlobalWebSocket} from '../../services/websockets/useGlobalWebSocket';
 import useTranslationStore from '../../stores/useTranslationsStore';
 import {IntlProvider, FormattedMessage} from "react-intl";
 import languages from '../../translations';
@@ -98,11 +98,34 @@ const HomepageHeader = () => {
 
   const renderNotifications = () => {
     const entries = [];
+    console.log(notificationMap);
     notificationMap.forEach((notifs, user) => {
+      console.log(notifs);
+      console.log(user);
+      const truncateUsername = (username, maxLength) => {
+        if (username.length > maxLength) {
+          return `${username.substring(0, maxLength)}...`; 
+        }
+        return username;
+      };
+      const truncatedUser = truncateUsername(user, 4); 
+      
+        const mostRecentNotificationHourDate = notifs.length > 0 ? notifs[notifs.length - 1].sentAt : null;
+        console.log(mostRecentNotificationHourDate);
         entries.push(
           <IntlProvider locale={locale} messages={languages[locale]}>
             <div key={user} className={styles.notificationItem} onClick={() => handleNotificationClick('message', user)}>
-                {user} - {notifs.length} <FormattedMessage id="newMessages">new messages</FormattedMessage>
+                <span className={styles.notificationCount}>{notifs.length}</span>
+                {notifs[0].photoUrl ? <img src={notifs[0].photoUrl} alt="User" className={styles.userImage} /> : null}
+                <span className={styles.notificationUsername}>{truncatedUser}</span>
+                {mostRecentNotificationHourDate ? ` ${new Date(mostRecentNotificationHourDate).toLocaleString(locale, {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false 
+                })}` : 'No messages'}
             </div>
           </IntlProvider>
         );

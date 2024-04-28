@@ -21,7 +21,7 @@ import ConfirmationPage from './pages/ConfirmRegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordForm from './components/Auth/ResetPasswordForm';
 import ChatModal from './components/Modal/ChatModal';
-import {useNotificationWebSocket} from './services/websockets/useNotificationWebSocket';
+import {useGlobalWebSocket} from './services/websockets/useGlobalWebSocket';
 import useNotificationStore from './stores/useNotificationStore';
 import ResendEmailPage from './pages/ResendEmailPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
@@ -86,8 +86,9 @@ function App() {
         <DialogModal/>
         <ErrorMessageFormModal/>
         <ToastContainer limit={1} newestOnTop transition={Flip}/>
-        <ChatModal/>
+        
         <Router>
+          <ChatModal/>
           <Routes>
               <Route path="/" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} /> 

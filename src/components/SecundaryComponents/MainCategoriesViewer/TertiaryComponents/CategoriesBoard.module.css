@@ -7,7 +7,7 @@
 }
 
 .categoryCard {
-    background-color: #ffffff;
+    background-color: var(--quaternary-color);
     padding: 10px 15px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -64,7 +64,7 @@
 }
 
 .addButton {
-    background-color: #51cf66;
+    background-color: var(--quaternary-color);
     color: white;
     border: none;
     cursor: pointer;
@@ -74,5 +74,5 @@
 }
 
 .addButton:hover {
-    background-color: #40c057;
+    background-color:var(--primary-color);
 }

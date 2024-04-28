@@ -168,6 +168,34 @@ const taskService = {
           return { success: false, error: error.toString() };
         }
       },
+      editTaskStatus: async (taskData) => {
+        console.log("taskData", taskData);
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/status/${taskData.id}`, {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify(taskData)
+          });
+      
+          if (response.ok) {
+            return { success: true, message: "Task updated successfully." };
+          } else if ( response.status === 403 || response.status === 400 || response.status === 401) {
+            alert("You don't have permission to access this page. Please login again.");
+            window.location.href = "/";
+          } else if (response.status === 404) {
+            alert("Task with this id not found");
+            return { success: false, error: "Task with this id not found" };
+          } else {
+            const errorMessage = await response.text();
+            console.error("Failed to update task:", errorMessage);
+            return { success: false, error: errorMessage };
+          }
+        } catch (error) {
+          console.error("Network error when trying to update task:", error);
+          return { success: false, error: error.toString() };
+        }
+      },
       deleteAllTasksByUserTemporarily: async ( username) => {
         try {
             const response = await fetch(`${API_BASE_URL}/temp/all/${encodeURIComponent(username)}`, {

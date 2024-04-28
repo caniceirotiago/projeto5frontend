@@ -11,9 +11,14 @@ import { useWebSocket } from '../../../../services/websockets/useWebSocket';
 import { handleWebSocketMessage } from '../../../../services/websockets/websocketService';
 import style from './StatisticsBoard.module.css'
 import useDomainStore from "../../../../stores/domainStore";
+import { IntlProvider } from 'react-intl';
+import languages from '../../../../translations';
+import useTranslationStore from '../../../../stores/useTranslationsStore';
 
 const StatisticsBoard = () => {
   const wsUrl = 'ws:/' + useDomainStore.getState().domain + '/dashboard'; 
+  const locale = useTranslationStore((state) => state.locale);
+  
 
   useWebSocket(wsUrl, handleWebSocketMessage);
     const updateUserStatistics = statisticsStore((state) => state.updateUserStatistics);
@@ -36,20 +41,22 @@ const StatisticsBoard = () => {
         fetchUserStatistics();
       }, [updateUserStatistics]);
   return (
-    <div className={style.board}>
-      
-      <div className={style.usersSection}>
-        <UsersStatistics /> 
-        <ConfirmedRegistrationsPerMonth />
+    <IntlProvider locale={locale} messages={languages[locale]}>
+      <div className={style.board}>
+        
+        <div className={style.usersSection}>
+          <UsersStatistics /> 
+          <ConfirmedRegistrationsPerMonth />
+        </div>
+        <div className={style.tasksSection}>
+          <TasksCompletedPerWeek />
+          <TasksStatistics />         
+        </div>
+        <div className={style.categoriesSection}>
+            <CategoriesStatistics />
+        </div>
       </div>
-      <div className={style.tasksSection}>
-        <TasksCompletedPerWeek />
-        <TasksStatistics />         
-      </div>
-      <div className={style.categoriesSection}>
-          <CategoriesStatistics />
-      </div>
-    </div>
+    </IntlProvider>
   );
 };
 

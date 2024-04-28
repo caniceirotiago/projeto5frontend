@@ -4,7 +4,7 @@ import Header from "../components/Headers/HomepageHeader";
 import Footer from "../components/Footers/HomepageFooter";
 import UserProfile from "../components/SecundaryComponents/userProfileEdit/UserProfile";
 import useAuthStore from '../stores/authStore';
-import {useNotificationWebSocket} from '../services/websockets/useNotificationWebSocket';
+import {useGlobalWebSocket} from '../services/websockets/useGlobalWebSocket';
 import useNotificationStore from '../stores/useNotificationStore';
 
 /**
@@ -22,8 +22,8 @@ const UserProfilePage = () => {
     console.log("Received notification: ", notification);
     useNotificationStore.getState().addNotification(notification.content, notification);
   }, []);
-  const wsUrl = `ws://localhost:8080/projeto5backend/notification/${sessionStorage.getItem('token')}`; 
-  useNotificationWebSocket(wsUrl, true, onNotification);
+  const wsUrl = `ws://localhost:8080/projeto5backend/globalws/${sessionStorage.getItem('token')}`; 
+  useGlobalWebSocket(wsUrl, true, onNotification);
   const handleUpdateSuccess = () => {
     fetchUserBasicInfo(); 
   };

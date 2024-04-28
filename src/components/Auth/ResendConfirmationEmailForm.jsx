@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import userService from '../../services/userService';
-import styles from './LoginForm.module.css';
+import styles from './ResendConfirmationEmailForm.module.css';
 import useTranslationStore from '../../stores/useTranslationsStore';
 import {IntlProvider, FormattedMessage} from "react-intl";
 import languages from '../../translations';
 import DialogModalStore from '../../stores/DialogModalStore';
+import { FaEnvelope } from 'react-icons/fa';
+
 
 
 const ResendConfirmationEmailForm = () => {
@@ -46,14 +48,15 @@ const ResendConfirmationEmailForm = () => {
             <div className={styles.mainContent}>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.banner}>
-                        <img src={Image} alt="IMG" className={styles.loginIcon}/>
+                        <FaEnvelope className={styles.loginIcon}/>
                         <p className={styles.memberLoginBanner}><FormattedMessage id="resendConfirmationEmail">Resend Confirmation Email</FormattedMessage></p>
                     </div>
                     <label htmlFor="email">Email</label>
-                    <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    <button type="submit"><FormattedMessage id="askForNewConfirmation">Ask for Confirmation</FormattedMessage></button>
+                    <input className={styles.input} type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <button className={styles.button} type="submit"><FormattedMessage id="askForNewConfirmation">Ask for Confirmation</FormattedMessage></button>
+                    <button className={styles.button} onClick={() => navigate('/')}><FormattedMessage id="backToLogin">Back to login</FormattedMessage></button>
+
                 </form>
-                <div><Link to="/"><FormattedMessage id="backToLogin">Back to login</FormattedMessage></Link></div>
             </div>
         </IntlProvider>
     );

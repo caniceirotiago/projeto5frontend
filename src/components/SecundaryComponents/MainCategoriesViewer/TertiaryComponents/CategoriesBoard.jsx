@@ -5,6 +5,10 @@ import DeleteIcon from '../../../../assets/trashCanIcon.png';
 import toastStore from '../../../../stores/toastMessageStore';
 import DialogModalStore from '../../../../stores/DialogModalStore';
 import useCategoryStore from '../../../../stores/categoryStore'; 
+import { IntlProvider } from 'react-intl';
+import languages from '../../../../translations';
+import useTranslationStore from '../../../../stores/useTranslationsStore';
+import { FormattedMessage } from 'react-intl';
 
 
 /**
@@ -27,6 +31,7 @@ const CategoriesManagerBoard = () => {
     const categories = useCategoryStore((state) => state.categories); 
     const setCategories = useCategoryStore((state) => state.setCategories); 
     const [newCategoryName, setNewCategoryName] = useState('');
+    const locale = useTranslationStore((state) => state.locale);
 
     useEffect(() => {
         loadCategories();
@@ -84,13 +89,15 @@ const CategoriesManagerBoard = () => {
     };
 
     return (
+        <IntlProvider locale={locale} messages={languages[locale]}>
         <div className={styles.board}>
             <input 
+                className={styles.categoryInput}
                 value={newCategoryName} 
                 onChange={(e) => setNewCategoryName(e.target.value)} 
-                placeholder="New category name"
+                placeholder="   "
             />
-            <button onClick={handleAddCategory}>Add Category</button>
+            <button className={styles.addButton} onClick={handleAddCategory}><FormattedMessage id="addCategory">Add Category</FormattedMessage></button>
 
             {categories.map((category) => (
                 <div key={category.id} className={styles.categoryCard}>
@@ -108,6 +115,7 @@ const CategoriesManagerBoard = () => {
                 </div>
             ))}
         </div>
+        </IntlProvider>
     );
 };
 

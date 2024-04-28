@@ -1,0 +1,8 @@
+.graph{
+    display: flex;
+    flex-grow: 1;
+}
+.h3{
+    width: 100%;
+    text-align: center;
+}

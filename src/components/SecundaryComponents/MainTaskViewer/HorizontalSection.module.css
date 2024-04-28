@@ -23,11 +23,12 @@
     font-size: 13px; 
     border: none;
     outline: none; 
-    width: 34%; 
+    width: 55%; 
     margin: 0 0 0px 0; 
     box-sizing: border-box;
     border-radius: 8px; 
     background-color: var(--primary-color); 
+    color: var(--text-color);
   }
 
   @media (max-width: 768px) {

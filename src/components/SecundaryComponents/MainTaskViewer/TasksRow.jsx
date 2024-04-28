@@ -252,7 +252,7 @@ const TasksRow = React.memo(() => {
         sortTasks();
       
         try {
-          const result = await taskService.editTask(updateData);
+          const result = await taskService.editTaskStatus(updateData);
           if (!result.success) {
             setTasks(prevTasks => prevTasks.map(task => {
               if (task.id === parseInt(taskId)) {

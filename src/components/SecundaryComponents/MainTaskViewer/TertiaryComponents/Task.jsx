@@ -81,7 +81,7 @@ const Task = forwardRef(({ task, column, updateTasks, handleTaskClick, mode , up
     setTasks((prevTasks) =>
       prevTasks.map((t) => t.id === task.id ? updatedTask : t)
     );
-    const result = await taskService.editTask(updateData);
+    const result = await taskService.editTaskStatus(updateData);
     if (!result.success) {
       console.error("Error updating task on the server, reverting changes.");
       setTasks((prevTasks) =>
@@ -110,7 +110,7 @@ const Task = forwardRef(({ task, column, updateTasks, handleTaskClick, mode , up
     setTasks((prevTasks) =>
       prevTasks.map((t) => t.id === task.id ? updatedTask : t)
     );
-    const result = await taskService.editTask(updateData);
+    const result = await taskService.editTaskStatus(updateData);
     if (!result.success) {
       console.error("Error updating task on the server, reverting changes.");
       setTasks((prevTasks) =>

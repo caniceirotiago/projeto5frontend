@@ -6,6 +6,11 @@ import ViewAndEditTaskModal from '../../../Modal/ViewAndEditTaskModal.jsx';
 import { useCallback } from 'react';
 import {useTasksWebSocket} from '../../../../services/websockets/useTasksWebsocket';
 import useDomainStore from '../../../../stores/domainStore';
+import { FormattedMessage, useIntl } from 'react-intl';
+import languages from '../../../../translations';
+import useTranslationStore from '../../../../stores/useTranslationsStore';
+import { IntlProvider } from 'react-intl';
+
 
 /**
  * DeletedTasksBoard is a React component that renders a list of deleted tasks, offering functionalities 
@@ -33,6 +38,8 @@ const DeletedTasksBoard = () => {
     const [clickedTask, setClickedTask] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
     const {domain} = useDomainStore();
+    const intl = useIntl();
+    const locale = useTranslationStore((state) => state.locale);
 
     useEffect(() => {
         const fetchDeletedTasks = async () => {
@@ -78,10 +85,11 @@ const DeletedTasksBoard = () => {
     useTasksWebSocket(wsUrl, true, updateTaskWS, newTaskWS, deleteTaskWS,  deleteTaskFromDeletedBoard, newTaskOnDeletedBoard);
 
     return (
+        <IntlProvider locale={locale} messages={languages[locale]}>
         <div className={styles.board}>
              <input
                     type="text"
-                    placeholder="Search tasks by title..."
+                    placeholder="🔍"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={styles.searchInput} 
@@ -108,6 +116,7 @@ const DeletedTasksBoard = () => {
                 />
             )}
         </div>
+        </IntlProvider>
     );
 };
 

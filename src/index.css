@@ -19,7 +19,7 @@ body.theme-light {
    --primary-color: #e6e1dd;
    --secondary-color: rgb(255, 255, 255, 0.111);
    --tertiary-color: rgb(255, 255, 255, 0.111);
-   --quaternary-color: #78909C;
+   --quaternary-color: #5a7d9a;
    --quinary-color: rgb(255, 255, 255, 1);
    --todo-color: rgb(112, 170, 228);
    --todo-color2: rgb(112, 170, 228, 0.5);
@@ -45,7 +45,7 @@ body.theme-dark {
    --primary-color: #2D2D2D;
    --secondary-color: rgba(255, 255, 255, 0.05);
    --tertiary-color: rgba(255, 255, 255, 0.05);
-   --quaternary-color: #39424e;
+   --quaternary-color: #708090;
    --quinary-color: rgba(255, 255, 255, 0.1);
    --todo-color: rgb(80, 125, 188);
    --todo-color2: rgb(80, 125, 188, 0.4);

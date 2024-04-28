@@ -7,6 +7,8 @@ import {IntlProvider, FormattedMessage} from "react-intl";
 import languages from '../../translations';
 import DialogModalStore from '../../stores/DialogModalStore';
 import { useNavigate } from 'react-router-dom';
+import { FaKey } from 'react-icons/fa';
+
 
 
 const ForgotPasswordForm = () => {
@@ -50,7 +52,7 @@ const ForgotPasswordForm = () => {
             <div className={styles.mainContent}>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.banner}>
-                        <img src={Image} alt="IMG" className={styles.loginIcon}/>
+                        <FaKey className={styles.loginIcon}/>
                         <p className={styles.memberLoginBanner}><FormattedMessage id="recoverPassword">Recover Password</FormattedMessage></p>
                     </div>
                     <label htmlFor="email">Email</label>

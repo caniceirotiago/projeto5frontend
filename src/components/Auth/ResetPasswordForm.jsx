@@ -5,6 +5,7 @@ import  useTranslationStore  from '../../stores/useTranslationsStore';
 import { IntlProvider , FormattedMessage} from 'react-intl';
 import languages from '../../translations';
 import DialogModalStore from '../../stores/DialogModalStore';
+import styles from './ResetPasswordForm.module.css';
 
 const ResetPasswordForm = () => {
     const locale = useTranslationStore((state) => state.locale);
@@ -56,18 +57,20 @@ const ResetPasswordForm = () => {
 
     return (
         <IntlProvider locale={locale} messages={languages[locale]}>
-            <form onSubmit={handleSubmit}>
-                <h2><FormattedMessage id="changePassword">Change Password</FormattedMessage></h2>
-                <label>
-                    <FormattedMessage id="newPassword"> New Password:</FormattedMessage>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={4}/>
-                </label>
-                <label>
-                <FormattedMessage id="confirmPassword">Confirm Password:</FormattedMessage>
-                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required minLength={4}/>
-                </label>
-                <button type="submit"><FormattedMessage id="changePassword">Change Password</FormattedMessage></button>
-            </form>
+            <div className={styles.mainContent}>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <h2><FormattedMessage id="changePassword">Change Password</FormattedMessage></h2>
+                    <label>
+                        <FormattedMessage id="newPassword"> New Password:</FormattedMessage>
+                        <input className={styles.input} type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={4}/>
+                    </label>
+                    <label>
+                    <FormattedMessage id="confirmPassword">Confirm Password:</FormattedMessage>
+                        <input className={styles.input} type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required minLength={4}/>
+                    </label>
+                    <button type="submit" className={styles.button}><FormattedMessage id="changePassword">Change Password</FormattedMessage></button>
+                </form>
+            </div>
         </IntlProvider>
     );
 };
