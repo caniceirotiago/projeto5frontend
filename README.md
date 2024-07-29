@@ -1,70 +1,93 @@
-# Getting Started with Create React App
+# projeto5frontend
+<img width="105" alt="Captura de ecrã 2024-07-29, às 11 13 41" src="https://github.com/user-attachments/assets/88ef6178-61a9-45b6-a904-335fa71eab58">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+The frontend for the "Task Manager" project is designed to deliver a dynamic and responsive user experience. Built with React.js, this application leverages modern web technologies to provide an intuitive and interactive interface.
 
-In the project directory, you can run:
+This repository contains the frontend source code for the "Task Manager" application, developed as part of the 11th edition of the "Acertar o Rumo" program at the University of Coimbra. This project is the final one in an incremental multiple projects strategy. All other incremental projects where built in a team of two, except for project 5 , wich was bult by a single developer. This project received the highest grade. 
 
-### `npm start`
+The primary goal of this project is to create a robust and intuitive web application to facilitate the management of an Scrum based task manager. The application aims to provide a centralized environment for organizing, coordinating, and monitoring innovative projects, promoting team collaboration and optimizing the use of available resources.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+see: https://github.com/caniceirotiago/projeto5backend
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
 
-### `npm test`
+React.js: Utilized as the main library for building the user interface. React's component-based architecture allows for the creation of reusable and high-performance components, ensuring a dynamic and responsive user experience.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+React Router: Manages routing within the application, enabling efficient navigation between different pages without the need for full page reloads. This ensures smooth transitions for users.
 
-### `npm run build`
+CSS: Employed for detailed and aesthetic styling of interface elements, allowing for a customized look and feel of the application.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+React Intl: Integrated for internationalization, supporting multiple languages and cultures to ensure global accessibility and an inclusive user experience.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+WebSockets: Facilitates real-time communication between the frontend and backend, enabling instant updates and interactive features within the user interface.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+etc...
+## Installation
 
-### `npm run eject`
+To get started with the frontend application, follow these steps:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Clone the Repository
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install Dependencies:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Make sure you have Node.js installed. Then, run:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+npm install
 
-## Learn More
+npm start
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The application will be available at http://localhost:3000.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Ensure that the API endpoints point to your backend server.
 
-### Analyzing the Bundle Size
+Verify WebSocket connections and ensure the backend server is correctly set up to handle WebSocket communication.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+## Captures
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<p align="center">
+  <img width="367" alt="Captura de ecrã 2024-07-29, às 11 13 22" src="https://github.com/user-attachments/assets/f865ca92-fc79-4279-bb76-5720bd2b960c">
+</p>
+<p align="center">
+  <img width="1237" alt="Captura de ecrã 2024-07-29, às 11 14 19" src="https://github.com/user-attachments/assets/94537fce-4134-46cf-a5fe-8999cb36ec3a">
+</p>
+<p align="center">
+  <img width="1235" alt="Captura de ecrã 2024-07-29, às 11 14 43" src="https://github.com/user-attachments/assets/6b0824a1-c99a-4d96-ad52-97d0fdd9e87c">
+</p>
+<p align="center">
+  <img width="1227" alt="Captura de ecrã 2024-07-29, às 11 15 16" src="https://github.com/user-attachments/assets/71cdbcc3-3efc-4eca-8879-d825f8cfc59e">
+</p>
+<p align="center">
+  <img width="1235" alt="Captura de ecrã 2024-07-29, às 11 16 28" src="https://github.com/user-attachments/assets/d943c1e3-80cc-401f-9f9d-300db6d2ead8">
+</p>
+<p align="center">
+  <img width="1235" alt="Captura de ecrã 2024-07-29, às 11 16 28" src="https://github.com/user-attachments/assets/d943c1e3-80cc-401f-9f9d-300db6d2ead8">
+</p>
+<p align="center">
+  <img width="1236" alt="Captura de ecrã 2024-07-29, às 11 16 51" src="https://github.com/user-attachments/assets/928ed21a-15df-412c-b917-5d33603df325">
+</p>
+<p align="center">
+  <img width="1039" alt="Captura de ecrã 2024-07-29, às 11 17 18" src="https://github.com/user-attachments/assets/099fa042-238b-4aef-800e-3a7ce161b3fb">
+</p>
+<p align="center">
+  <img width="1268" alt="Captura de ecrã 2024-07-29, às 11 17 49" src="https://github.com/user-attachments/assets/55b8526c-fc0c-43e2-ac17-b1005c65ca84">
+</p>
+<p align="center">
+  <img width="1263" alt="Captura de ecrã 2024-07-29, às 11 18 15" src="https://github.com/user-attachments/assets/a1348b8a-efc6-416e-8b34-0a51f7f0379a">
+</p>
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+## Authors
+- Tiago Caniceiro
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Other Authors
+-Bernardo Câmara
+-Selmo Mariano
+-Daniel Silva
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
